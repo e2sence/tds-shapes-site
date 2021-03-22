@@ -83,4 +83,6 @@ slidersGroup
 draw.add(slidersGroup)
 slidersGroup.move(100, 500)
 
+// nice comment
+
 console.log(performance.now() - startMS)

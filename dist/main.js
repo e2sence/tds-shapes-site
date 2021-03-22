@@ -13087,6 +13087,7 @@ slidersGroup
     .add(sliderDemo.nonCirclePin.move(200, 400));
 draw.add(slidersGroup);
 slidersGroup.move(100, 500);
+// nice comment
 console.log(performance.now() - startMS);
 
 })();
