@@ -11918,36 +11918,60 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                         }
                     }
                     // set defs
-                    let defel;
-                    if (t[el].shape) {
-                        defel = t[el].shape;
-                    }
-                    else {
-                        defel = tline(el, t[el].side, t[el].size, t[el].sizeBase, t[el].stroke);
-                    }
-                    defel.id(op_id);
-                    this.root().defs().add(defel);
+                    // let defel: Element
+                    // if (t[el].shape) {
+                    //   defel = t[el].shape
+                    // } else {
+                    //   defel = tline(
+                    //     el,
+                    //     t[el].side,
+                    //     t[el].size,
+                    //     t[el].sizeBase,
+                    //     t[el].stroke
+                    //   )
+                    // }
+                    // defel.id(op_id)
+                    // this.root().defs().add(defel)
                 }
             }
             // draw ticks
             res[el].forEach((cel) => {
                 let sd = this.ticks[el].side;
-                let rbl = this.ticksGroup.use(op_id);
+                // let rbl = this.ticksGroup.use(op_id)
+                let noUseLine = tline(el, sd, t[el].size, t[el].sizeBase, t[el].stroke);
                 if (or == 'horizontal') {
-                    let horCor = cel - rbl.bbox().w / 2;
-                    sd == 'down' && rbl.move(horCor, rb.y2 - rb.height / 2);
-                    sd == 'up' && rbl.move(horCor, rb.y - rbl.bbox().h + rb.height / 2);
+                    let horCor = cel - noUseLine.bbox().w / 2;
+                    sd == 'down' && noUseLine.move(horCor, rb.y2 - rb.height / 2);
+                    sd == 'up' &&
+                        noUseLine.move(horCor, rb.y - noUseLine.bbox().h + rb.height / 2);
                     if (sd == 'both') {
-                        rbl.move(horCor, rb.y2 - rbl.bbox().h / 2 - rb.height / 2);
+                        noUseLine.move(horCor, rb.y2 - noUseLine.bbox().h / 2 - rb.height / 2);
                     }
                 }
                 if (or == 'vertical') {
-                    let verCor = cel - rbl.bbox().h / 2;
-                    sd == 'down' && rbl.move(rb.x2 - rb.width / 2, verCor);
-                    sd == 'up' && rbl.move(rb.x - rbl.bbox().w + rb.width / 2, verCor);
+                    let verCor = cel - noUseLine.bbox().h / 2;
+                    sd == 'down' && noUseLine.move(rb.x2 - rb.width / 2, verCor);
+                    sd == 'up' &&
+                        noUseLine.move(rb.x - noUseLine.bbox().w + rb.width / 2, verCor);
                     sd == 'both' &&
-                        rbl.move(rb.x2 - rbl.bbox().w / 2 - rb.width / 2, verCor);
+                        noUseLine.move(rb.x2 - noUseLine.bbox().w / 2 - rb.width / 2, verCor);
                 }
+                this.ticksGroup.add(noUseLine);
+                // if (or == 'horizontal') {
+                //   let horCor = cel - rbl.bbox().w / 2
+                //   sd == 'down' && rbl.move(horCor, rb.y2 - rb.height / 2)
+                //   sd == 'up' && rbl.move(horCor, rb.y - rbl.bbox().h + rb.height / 2)
+                //   if (sd == 'both') {
+                //     rbl.move(horCor, rb.y2 - rbl.bbox().h / 2 - rb.height / 2)
+                //   }
+                // }
+                // if (or == 'vertical') {
+                //   let verCor = cel - rbl.bbox().h / 2
+                //   sd == 'down' && rbl.move(rb.x2 - rb.width / 2, verCor)
+                //   sd == 'up' && rbl.move(rb.x - rbl.bbox().w + rb.width / 2, verCor)
+                //   sd == 'both' &&
+                //     rbl.move(rb.x2 - rbl.bbox().w / 2 - rb.width / 2, verCor)
+                // }
             });
         });
     }
