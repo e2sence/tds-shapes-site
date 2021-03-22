@@ -11586,9 +11586,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "slider": () => (/* binding */ slider)
 /* harmony export */ });
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "./src/tds-shapes/src/common.ts");
-/* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./label */ "./src/tds-shapes/src/label.ts");
-/* harmony import */ var _textbox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./textbox */ "./src/tds-shapes/src/textbox.ts");
+/* harmony import */ var _svgdotjs_svg_draggable_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @svgdotjs/svg.draggable.js */ "./node_modules/@svgdotjs/svg.draggable.js/src/svg.draggable.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./common */ "./src/tds-shapes/src/common.ts");
+/* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./label */ "./src/tds-shapes/src/label.ts");
+/* harmony import */ var _textbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./textbox */ "./src/tds-shapes/src/textbox.ts");
 var __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
     if (!privateMap.has(receiver)) {
         throw new TypeError("attempted to set private field on non-instance");
@@ -11608,11 +11609,8 @@ var _orientation, _sliderType;
 
 
 
-const tickKindOrder = [
-    'main',
-    'half',
-    'subhalf',
-];
+
+const tickKindOrder = ['main', 'half', 'subhalf'];
 class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
     constructor(attr) {
         super();
@@ -11621,11 +11619,9 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.ticksGroup = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G();
         // ticks storage
         attr.ticks && (this.ticks = attr.ticks);
-        this.ticksGroup
-            .id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)())
-            .addClass('tds-ticksgroup');
+        this.ticksGroup.id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)()).addClass('tds-ticksgroup');
         this.add(this.ticksGroup);
-        this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-slider');
+        this.id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)()).addClass('tds-slider');
         // apply properties from attr
         this.payload = Object.assign({}, attr.payload);
         this.ruller = attr.ruller;
@@ -11751,10 +11747,10 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
     getRawValue(c, rb, or, p) {
         let k = 0;
         if (or == 'vertical') {
-            k = (0,_common__WEBPACK_IMPORTED_MODULE_1__.vTo01)(c, rb.y2, rb.y);
+            k = (0,_common__WEBPACK_IMPORTED_MODULE_2__.vTo01)(c, rb.y2, rb.y);
         }
         else if (or == 'horizontal') {
-            k = (0,_common__WEBPACK_IMPORTED_MODULE_1__.vTo01)(c, rb.x, rb.x2);
+            k = (0,_common__WEBPACK_IMPORTED_MODULE_2__.vTo01)(c, rb.x, rb.x2);
         }
         return Number(p.min + k * (p.max - p.min));
     }
@@ -11781,7 +11777,7 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
      * @param p payload containing constraints
      */
     getCoordinate(v, rb, or, p) {
-        let k = (0,_common__WEBPACK_IMPORTED_MODULE_1__.vTo01)(v, p.min, p.max);
+        let k = (0,_common__WEBPACK_IMPORTED_MODULE_2__.vTo01)(v, p.min, p.max);
         let result;
         if (or == 'vertical') {
             result = rb.y2 - k * rb.height;
@@ -11869,7 +11865,7 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 default:
                     break;
             }
-            llk *= (0,_common__WEBPACK_IMPORTED_MODULE_1__.StyleSizeNumber)(size, sb);
+            llk *= (0,_common__WEBPACK_IMPORTED_MODULE_2__.StyleSizeNumber)(size, sb);
             let ml = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Line();
             // set len
             or == 'horizontal'
@@ -11902,13 +11898,9 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                     op_id = `${this.id()}_${el}`;
                     let count = Math.floor((p.max - p.min) / t[el].step);
                     // distance between ticks
-                    let len = or == 'horizontal'
-                        ? rb.width / count
-                        : rb.height / count;
+                    let len = or == 'horizontal' ? rb.width / count : rb.height / count;
                     for (let i = 0; i < count + 1; i++) {
-                        let r = or == 'horizontal'
-                            ? rb.x + len * i
-                            : rb.y2 - len * i;
+                        let r = or == 'horizontal' ? rb.x + len * i : rb.y2 - len * i;
                         switch (el) {
                             case 'main':
                                 res.main.push(r);
@@ -11943,20 +11935,16 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 let rbl = this.ticksGroup.use(op_id);
                 if (or == 'horizontal') {
                     let horCor = cel - rbl.bbox().w / 2;
-                    sd == 'down' &&
-                        rbl.move(horCor, rb.y2 - rb.height / 2);
-                    sd == 'up' &&
-                        rbl.move(horCor, rb.y - rbl.bbox().h + rb.height / 2);
+                    sd == 'down' && rbl.move(horCor, rb.y2 - rb.height / 2);
+                    sd == 'up' && rbl.move(horCor, rb.y - rbl.bbox().h + rb.height / 2);
                     if (sd == 'both') {
                         rbl.move(horCor, rb.y2 - rbl.bbox().h / 2 - rb.height / 2);
                     }
                 }
                 if (or == 'vertical') {
                     let verCor = cel - rbl.bbox().h / 2;
-                    sd == 'down' &&
-                        rbl.move(rb.x2 - rb.width / 2, verCor);
-                    sd == 'up' &&
-                        rbl.move(rb.x - rbl.bbox().w + rb.width / 2, verCor);
+                    sd == 'down' && rbl.move(rb.x2 - rb.width / 2, verCor);
+                    sd == 'up' && rbl.move(rb.x - rbl.bbox().w + rb.width / 2, verCor);
                     sd == 'both' &&
                         rbl.move(rb.x2 - rbl.bbox().w / 2 - rb.width / 2, verCor);
                 }
@@ -12029,7 +12017,7 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             };
         };
         const llb1 = () => {
-            let llb = new _label__WEBPACK_IMPORTED_MODULE_2__.label({
+            let llb = new _label__WEBPACK_IMPORTED_MODULE_3__.label({
                 title: title(),
                 backgroundRule: ['none'],
                 background: background(),
@@ -12039,7 +12027,7 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             return llb;
         };
         const ntt = () => {
-            return new _textbox__WEBPACK_IMPORTED_MODULE_3__.textbox({
+            return new _textbox__WEBPACK_IMPORTED_MODULE_4__.textbox({
                 label: {
                     title: ntitle(),
                     position: { x: 0, y: 0 },
@@ -13087,7 +13075,6 @@ slidersGroup
     .add(sliderDemo.nonCirclePin.move(200, 400));
 draw.add(slidersGroup);
 slidersGroup.move(100, 500);
-// nice comment
 console.log(performance.now() - startMS);
 
 })();
