@@ -13055,10 +13055,11 @@ slidersGroup
     .radius(20)
     .fill({ color: '#EEEEEE' })
     .stroke({ color: '#D2D2D2', width: 1 });
+let hs = sliderDemo.horizontal;
 slidersGroup
     .move(90, 90)
     .draggable()
-    .add(sliderDemo.horizontal.move(200, 130))
+    .add(hs.move(200, 130))
     .add(sliderDemo.vertical[0].move(180, 176))
     .add(sliderDemo.vertical[1].move(120, 176))
     .add(sliderDemo.htwostate.move(280, 220))
