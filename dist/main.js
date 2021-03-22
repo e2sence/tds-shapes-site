@@ -13098,7 +13098,7 @@ slidersGroup
     .add(sliderDemo.tickHor.move(280, 270))
     .add(sliderDemo.nonCirclePin.move(200, 400));
 draw.add(slidersGroup);
-slidersGroup.move(100, 500);
+slidersGroup.move(200, 250);
 console.log(performance.now() - startMS);
 
 })();
