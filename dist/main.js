@@ -13020,6 +13020,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const startMS = performance.now();
 var draw = (0,_svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.SVG)().size(1300, 1300).addTo('body');
 /**
@@ -13067,6 +13068,25 @@ draw.add(lm('and my s̬ong', { x: 40, y: 110 }));
 draw.add(lm(21111977, { x: 40, y: 150 }));
 draw.add(lm(27111981, { x: 40, y: 170 }));
 draw.add(lm('08112006', { x: 40, y: 190 }));
+/** slider demo item */
+let slidersGroup = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G().addClass('draggable');
+let sliderDemo = _src_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.slider.demo(draw);
+slidersGroup
+    .rect(400, 400)
+    .radius(20)
+    .fill({ color: '#EEEEEE' })
+    .stroke({ color: '#D2D2D2', width: 1 });
+slidersGroup
+    .move(90, 90)
+    .draggable()
+    .add(sliderDemo.horizontal.move(200, 130))
+    .add(sliderDemo.vertical[0].move(180, 176))
+    .add(sliderDemo.vertical[1].move(120, 176))
+    .add(sliderDemo.htwostate.move(280, 220))
+    .add(sliderDemo.tickHor.move(280, 270))
+    .add(sliderDemo.nonCirclePin.move(200, 400));
+draw.add(slidersGroup);
+slidersGroup.move(100, 500);
 console.log(performance.now() - startMS);
 
 })();
