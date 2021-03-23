@@ -15,10 +15,12 @@ module.exports = {
     ],
   },
   resolve: {
+    modules: [path.resolve(__dirname, 'node_modules')],
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
 }
