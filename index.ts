@@ -1,7 +1,7 @@
 import { SVG } from '@svgdotjs/svg.js'
 import '@svgdotjs/svg.draggable.js'
 
-import * as shape from './src/tds-shapes/tds-shapes-entry'
+import * as shape from '../tds-shapes/tds-shapes-entry'
 import { G } from '@svgdotjs/svg.js'
 
 const startMS = performance.now()
