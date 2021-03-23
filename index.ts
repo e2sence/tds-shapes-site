@@ -3,6 +3,7 @@ import '@svgdotjs/svg.draggable.js'
 
 import * as shape from '../tds-shapes/tds-shapes-entry'
 import { G } from '@svgdotjs/svg.js'
+import { label } from '../tds-shapes/src/label'
 
 const startMS = performance.now()
 
@@ -82,6 +83,7 @@ slidersGroup
   .add(sliderDemo.nonCirclePin.move(200, 400))
 
 draw.add(slidersGroup)
+
 slidersGroup.move(200, 250)
 
 console.log(performance.now() - startMS)
