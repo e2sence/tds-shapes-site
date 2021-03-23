@@ -2,8 +2,8 @@ const path = require('path')
 
 module.exports = {
   entry: './index.ts',
-  // mode: 'development',
-  mode: 'production',
+  mode: 'development',
+  // mode: 'production',
   devtool: 'source-map',
   module: {
     rules: [

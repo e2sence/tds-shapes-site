@@ -86,4 +86,6 @@ draw.add(slidersGroup)
 
 slidersGroup.move(200, 250)
 
+let li = shape.li()
+
 console.log(performance.now() - startMS)
