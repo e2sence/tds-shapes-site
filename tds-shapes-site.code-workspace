@@ -12,7 +12,7 @@
     //
     "prettier.semi": false,
     "prettier.singleQuote": true,
-    "prettier.printWidth": 80,
+    "prettier.printWidth": 70,
     "prettier.quoteProps": "as-needed"
   }
 }

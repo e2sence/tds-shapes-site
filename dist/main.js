@@ -11418,9 +11418,7 @@ __webpack_require__.r(__webpack_exports__);
  * @returns string like 'T40fbb0e49f748c'
  */
 function Create_ID() {
-    return `T${(~~((Math.random() * (1 - 0.5) + 0.5) *
-        1e8)).toString(16)}${(~~((Math.random() * (1 - 0.5) + 0.5) *
-        1e8)).toString(16)}`;
+    return `T${(~~((Math.random() * (1 - 0.5) + 0.5) * 1e8)).toString(16)}${(~~((Math.random() * (1 - 0.5) + 0.5) * 1e8)).toString(16)}`;
 }
 /**
  * translate 'xxs ... xxl' to number
@@ -11583,14 +11581,48 @@ const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "listItem": () => (/* binding */ listItem),
-/* harmony export */   "li": () => (/* binding */ li)
+/* harmony export */   "item": () => (/* binding */ item)
 /* harmony export */ });
-class listItem {
+/* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
+/* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
+/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
+
+
+
+//?        top
+//?  |  |  |  |  |  |  |
+//?  V  V  V  V  V  V  V
+//!  --------- foreground - background ------------
+//!  title - Title & [icon - PATH || shotrcut - Title]
+//!  --------- background - background ------------
+//?  A  A  A  A  A  A  A
+//?  |  |  |  |  |  |  |
+//?        bottom
+class item extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
+    constructor(attr) {
+        var _a;
+        super(attr.label);
+        this.suppIndent = 15;
+        this.kind = attr.kind;
+        // check type and adds icon or shortcut to core
+        if (this.kind == 'icon') {
+            this.suppItem = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Path(Object.assign({}, attr.icon));
+        }
+        else if (this.kind == 'shortcut') {
+            this.suppItem = new _title__WEBPACK_IMPORTED_MODULE_2__.title(Object.assign({}, attr.shortcut));
+        }
+        attr.suppIndent && (this.suppIndent = attr.suppIndent);
+        // set overal background width
+        if (this.kind != 'general') {
+            //prettier-ignore
+            this.suppItem.move(attr.label.position.x +
+                attr.width - ((_a = this.suppItem) === null || _a === void 0 ? void 0 : _a.bbox().width) - this.suppIndent, attr.label.position.y + attr.label.indents[1]);
+            this.add(this.suppItem);
+        }
+        this.background.width(attr.width);
+        // this.background.width(ol)
+    }
 }
-const li = () => {
-    console.log('ell');
-};
 
 
 /***/ }),
@@ -12931,8 +12963,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "label": () => (/* reexport safe */ _src_label__WEBPACK_IMPORTED_MODULE_4__.label),
 /* harmony export */   "textbox": () => (/* reexport safe */ _src_textbox__WEBPACK_IMPORTED_MODULE_5__.textbox),
 /* harmony export */   "slider": () => (/* reexport safe */ _src_slider__WEBPACK_IMPORTED_MODULE_6__.slider),
-/* harmony export */   "li": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.li),
-/* harmony export */   "listItem": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.listItem)
+/* harmony export */   "item": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.item)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13038,6 +13069,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const startMS = performance.now();
 var draw = (0,_svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.SVG)().size(1300, 1300).addTo('body');
+//#region  DATA
 /**
  * creating a label attributes
  * @param s text on label
@@ -13103,7 +13135,122 @@ slidersGroup
     .add(sliderDemo.nonCirclePin.move(200, 400));
 draw.add(slidersGroup);
 slidersGroup.move(200, 250);
-let li = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.li();
+//#endregion
+const rightChevron = 'M7.9 7C7.9 6.8 7.8 6.6 7.7 6.5L1.3 0.2C1.1 0.1 0.9 0 0.7 0 0.3 0 0 0.3 0 0.7 0 0.9 0.1 1.1 0.2 1.3L6.1 7 0.2 12.7C0.1 12.9 0 13.1 0 13.3 0 13.7 0.3 14 0.7 14 0.9 14 1.1 13.9 1.3 13.8L7.7 7.5C7.8 7.4 7.9 7.2 7.9 7Z';
+const generaltemStyleCreator = (s, pos = { x: 0, y: 0 }) => {
+    return {
+        label: {
+            title: {
+                value: typeof s == 'number' ? s.toString() : s,
+                font: 'Menlo',
+                fontWeight: 'normal',
+                size: 12,
+                fill: { color: 'black' },
+                position: { x: 0, y: 0 },
+            },
+            background: {
+                width: 120,
+                height: 0,
+                fill: { color: '#EEEEEE' },
+                stroke: { color: '#D2D2D2', width: 1 },
+                radius: 5,
+                position: { x: 0, y: 0 },
+            },
+            backgroundRule: ['indent'],
+            indents: [5, 3, 5, 3],
+            position: { x: pos.x, y: pos.y },
+        },
+    };
+};
+const iconItemStyleCreator = (s, pos = { x: 0, y: 0 }, path) => {
+    return {
+        label: {
+            title: {
+                value: typeof s == 'number' ? s.toString() : s,
+                font: 'Menlo',
+                fontWeight: 'normal',
+                size: 12,
+                fill: { color: 'black' },
+                position: { x: 0, y: 0 },
+            },
+            background: {
+                width: 120,
+                height: 0,
+                fill: { color: '#EEEEEE' },
+                stroke: { color: '#D2D2D2', width: 1 },
+                radius: 7,
+                position: { x: 0, y: 0 },
+            },
+            backgroundRule: ['indent'],
+            indents: [5, 3, 5, 3],
+            position: { x: pos.x, y: pos.y },
+        },
+        icon: {
+            d: path,
+            fill: { color: 'transparent' },
+            stroke: { color: 'black' },
+        },
+    };
+};
+const shortcutItemStyleCreator = (s, pos = { x: 0, y: 0 }, sc) => {
+    return {
+        label: {
+            title: {
+                value: typeof s == 'number' ? s.toString() : s,
+                font: 'Menlo',
+                fontWeight: 'normal',
+                size: 12,
+                fill: { color: 'black' },
+                position: { x: 0, y: 0 },
+            },
+            background: {
+                width: 120,
+                height: 0,
+                fill: { color: '#EEEEEE' },
+                stroke: { color: '#D2D2D2', width: 1 },
+                radius: 7,
+                position: { x: 0, y: 0 },
+            },
+            backgroundRule: ['indent'],
+            indents: [5, 3, 5, 3],
+            position: { x: pos.x, y: pos.y },
+        },
+        shortcut: {
+            value: sc,
+            font: 'Menlo',
+            fontWeight: 'normal',
+            size: 12,
+            fill: { color: '#999999' },
+            position: { x: 0, y: 0 },
+        },
+    };
+};
+let generalItemStyle = generaltemStyleCreator('Make delay', {
+    x: 400,
+    y: 70,
+});
+let iconItemStyle = iconItemStyleCreator('Reach by hand', { x: 400, y: 90 }, rightChevron);
+let shortcutItemStyle = shortcutItemStyleCreator('Bend down', { x: 400, y: 110 }, 'cmd + X');
+let generalItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.item({
+    kind: 'general',
+    width: 200,
+    label: generalItemStyle.label,
+});
+let iconItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.item({
+    kind: 'icon',
+    width: 200,
+    label: iconItemStyle.label,
+    icon: iconItemStyle.icon,
+});
+let shotcutItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.item({
+    kind: 'shortcut',
+    width: 200,
+    label: shortcutItemStyle.label,
+    shortcut: shortcutItemStyle.shortcut,
+}).draggable();
+draw.add(generalItem);
+draw.add(iconItem);
+draw.add(shotcutItem);
 console.log(performance.now() - startMS);
 
 })();
