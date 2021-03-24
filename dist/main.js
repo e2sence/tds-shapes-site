@@ -11599,7 +11599,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "itemPartOrder": () => (/* binding */ itemPartOrder),
 /* harmony export */   "ItemDefaultBehavior": () => (/* binding */ ItemDefaultBehavior),
-/* harmony export */   "item": () => (/* binding */ item)
+/* harmony export */   "listItem": () => (/* binding */ listItem)
 /* harmony export */ });
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
 /* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
@@ -11640,6 +11640,13 @@ const ItemDefaultBehavior = [
                     stroke: { color: '#999999', width: 1 },
                 },
             },
+            {
+                condition: 'inactive',
+                attr: {
+                    fill: { color: '#999999' },
+                    stroke: { color: '#999999', width: 1 },
+                },
+            },
         ],
     },
     // label
@@ -11653,6 +11660,10 @@ const ItemDefaultBehavior = [
             {
                 condition: 'mouseenter',
                 attr: { fill: { color: 'white' } },
+            },
+            {
+                condition: 'inactive',
+                attr: { fill: { color: '#F2F2F2' } },
             },
         ],
     },
@@ -11715,22 +11726,14 @@ const ItemDefaultBehavior = [
         ],
     },
 ];
-//#endregion
-//?        top
-//?  |  |  |  |  |  |  |
-//?  V  V  V  V  V  V  V
-//!  --------- foreground - background ------------
-//!  title - Title & [icon - PATH || shotrcut - Title]
-//!  --------- background - background ------------
-//?  A  A  A  A  A  A  A
-//?  |  |  |  |  |  |  |
-//?        bottom
-class item extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
+class listItem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
     constructor(attr) {
         var _a, _b;
         super(attr.label);
+        /** condition reflecting effect */
         this.condition = 'normal';
         this.state = 'active';
+        /** Path | title indent from right side */
         this.suppIndent = 15;
         this.kind = attr.kind;
         // check type and adds icon or shortcut to core
@@ -11782,6 +11785,9 @@ class item extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             this.condition = 'onclick';
             this.applyBehavior();
         });
+    }
+    moveTo(x, y) {
+        this.move(x, y);
     }
     /**
      * change the appearance of the element depending on the external influence
@@ -13149,8 +13155,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "textbox": () => (/* reexport safe */ _src_textbox__WEBPACK_IMPORTED_MODULE_5__.textbox),
 /* harmony export */   "slider": () => (/* reexport safe */ _src_slider__WEBPACK_IMPORTED_MODULE_6__.slider),
 /* harmony export */   "ItemDefaultBehavior": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.ItemDefaultBehavior),
-/* harmony export */   "item": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.item),
-/* harmony export */   "itemPartOrder": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.itemPartOrder)
+/* harmony export */   "itemPartOrder": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.itemPartOrder),
+/* harmony export */   "listItem": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.listItem)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13413,31 +13419,28 @@ const shortcutItemStyleCreator = (s, pos = { x: 0, y: 0 }, sc) => {
     };
 };
 let generalItemStyle = generaltemStyleCreator('Make delay', {
-    x: 400,
-    y: 70,
+    x: 0,
+    y: 0,
 });
-let iconItemStyle = iconItemStyleCreator('Reach by hand', { x: 400, y: 90 }, rightChevron);
-let shortcutItemStyle = shortcutItemStyleCreator('Bend down', { x: 400, y: 110 }, 'cmd + X');
-let generalItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.item({
+let iconItemStyle = iconItemStyleCreator('Reach by hand', { x: 0, y: 0 }, rightChevron);
+let shortcutItemStyle = shortcutItemStyleCreator('Bend down', { x: 0, y: 0 }, 'cmd + X');
+let generalItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem({
     kind: 'general',
     width: 200,
     label: generalItemStyle.label,
 });
-let iconItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.item({
+let iconItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem({
     kind: 'icon',
     width: 200,
     label: iconItemStyle.label,
     icon: iconItemStyle.icon,
 });
-let shotcutItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.item({
+let shotcutItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem({
     kind: 'shortcut',
     width: 200,
     label: shortcutItemStyle.label,
     shortcut: shortcutItemStyle.shortcut,
-}).draggable();
-draw.add(generalItem);
-draw.add(iconItem);
-draw.add(shotcutItem);
+});
 console.log(shotcutItem.behavior);
 console.log(performance.now() - startMS);
 

@@ -215,45 +215,41 @@ const shortcutItemStyleCreator = (
 }
 
 let generalItemStyle = generaltemStyleCreator('Make delay', {
-  x: 400,
-  y: 70,
+  x: 0,
+  y: 0,
 })
 
 let iconItemStyle = iconItemStyleCreator(
   'Reach by hand',
-  { x: 400, y: 90 },
+  { x: 0, y: 0 },
   rightChevron
 )
 
 let shortcutItemStyle = shortcutItemStyleCreator(
   'Bend down',
-  { x: 400, y: 110 },
+  { x: 0, y: 0 },
   'cmd + X'
 )
 
-let generalItem = new shape.item({
+let generalItem = new shape.listItem({
   kind: 'general',
   width: 200,
   label: generalItemStyle.label,
 })
 
-let iconItem = new shape.item({
+let iconItem = new shape.listItem({
   kind: 'icon',
   width: 200,
   label: iconItemStyle.label,
   icon: iconItemStyle.icon,
 })
 
-let shotcutItem = new shape.item({
+let shotcutItem = new shape.listItem({
   kind: 'shortcut',
   width: 200,
   label: shortcutItemStyle.label,
   shortcut: shortcutItemStyle.shortcut,
-}).draggable()
-
-draw.add(generalItem)
-draw.add(iconItem)
-draw.add(shotcutItem)
+})
 
 console.log(shotcutItem.behavior)
 
