@@ -11412,7 +11412,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Create_ID": () => (/* binding */ Create_ID),
 /* harmony export */   "StyleSizeNumber": () => (/* binding */ StyleSizeNumber),
 /* harmony export */   "vTo01": () => (/* binding */ vTo01),
-/* harmony export */   "rndX": () => (/* binding */ rndX)
+/* harmony export */   "rndX": () => (/* binding */ rndX),
+/* harmony export */   "objectMerge": () => (/* binding */ objectMerge)
 /* harmony export */ });
 /** simple ID string for object identification
  * @returns string like 'T40fbb0e49f748c'
@@ -11467,6 +11468,21 @@ const vTo01 = (v, vMin, vMax, d) => {
  */
 const rndX = (n, x) => {
     return Math.round(n / x) * x;
+};
+/**
+ * fill source with target
+ * @param s source
+ * @param t target
+ */
+const objectMerge = (s, t) => {
+    Object.keys(s).forEach((prop) => {
+        if (typeof s[prop] == 'object' || undefined) {
+            !t[prop] ? (t[prop] = s[prop]) : objectMerge(s[prop], t[prop]);
+        }
+        else {
+            !t[prop] ? (t[prop] = s[prop]) : 0;
+        }
+    });
 };
 
 
@@ -11581,6 +11597,8 @@ const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "itemPartOrder": () => (/* binding */ itemPartOrder),
+/* harmony export */   "ItemDefaultBehavior": () => (/* binding */ ItemDefaultBehavior),
 /* harmony export */   "item": () => (/* binding */ item)
 /* harmony export */ });
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
@@ -11589,6 +11607,115 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const itemPartOrder = [
+    'background',
+    'title',
+    'icon',
+    'shotrcut',
+    'foreground',
+];
+const ItemDefaultBehavior = [
+    // background
+    {
+        itemPart: 'background',
+        behavior: [
+            {
+                condition: 'normal',
+                attr: {
+                    fill: { color: '#EEEEEE' },
+                    stroke: { color: '#D2D2D2', width: 1 },
+                },
+            },
+            {
+                condition: 'mouseenter',
+                attr: {
+                    fill: { color: '#00AAFF' },
+                    stroke: { color: '#00AAFF', width: 1 },
+                },
+            },
+            {
+                condition: 'onclick',
+                attr: {
+                    fill: { color: '#999999' },
+                    stroke: { color: '#999999', width: 1 },
+                },
+            },
+        ],
+    },
+    // label
+    {
+        itemPart: 'title',
+        behavior: [
+            {
+                condition: 'normal',
+                attr: { fill: { color: 'black' } },
+            },
+            {
+                condition: 'mouseenter',
+                attr: { fill: { color: 'white' } },
+            },
+        ],
+    },
+    // foreground
+    {
+        itemPart: 'foreground',
+        behavior: [
+            {
+                condition: 'normal',
+                attr: {
+                    fill: { color: 'transparent' },
+                    stroke: { color: 'transparent' },
+                },
+            },
+            {
+                condition: 'mouseenter',
+                attr: {
+                    fill: { color: '#00AAFF' },
+                    stroke: { color: 'transparent' },
+                },
+            },
+        ],
+    },
+    // shortcut
+    {
+        itemPart: 'shotrcut',
+        behavior: [
+            {
+                condition: 'normal',
+                attr: {
+                    fill: { color: '#999999' },
+                },
+            },
+            {
+                condition: 'mouseenter',
+                attr: {
+                    fill: { color: '#FFFFFF' },
+                },
+            },
+        ],
+    },
+    // icon
+    {
+        itemPart: 'icon',
+        behavior: [
+            {
+                condition: 'normal',
+                attr: {
+                    fill: { color: 'black' },
+                    stroke: { color: 'black' },
+                },
+            },
+            {
+                condition: 'mouseenter',
+                attr: {
+                    fill: { color: 'white' },
+                    stroke: { color: 'white' },
+                },
+            },
+        ],
+    },
+];
+//#endregion
 //?        top
 //?  |  |  |  |  |  |  |
 //?  V  V  V  V  V  V  V
@@ -11600,8 +11727,10 @@ __webpack_require__.r(__webpack_exports__);
 //?        bottom
 class item extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
     constructor(attr) {
-        var _a;
+        var _a, _b;
         super(attr.label);
+        this.condition = 'normal';
+        this.state = 'active';
         this.suppIndent = 15;
         this.kind = attr.kind;
         // check type and adds icon or shortcut to core
@@ -11616,13 +11745,68 @@ class item extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
         if (this.kind != 'general') {
             //prettier-ignore
             this.suppItem.move(attr.label.position.x +
-                attr.width - ((_a = this.suppItem) === null || _a === void 0 ? void 0 : _a.bbox().width) - this.suppIndent, attr.label.position.y + attr.label.indents[1]);
-            this.add(this.suppItem);
+                attr.width - ((_a = this.suppItem) === null || _a === void 0 ? void 0 : _a.bbox().width) - this.suppIndent, this.bbox().cy - ((_b = this.suppItem) === null || _b === void 0 ? void 0 : _b.bbox().height) / 2);
         }
         this.background.width(attr.width);
-        // this.background.width(ol)
+        // foreground
+        this.foreground = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
+            .width(this.background.width())
+            .height(this.background.height())
+            // .fill({ color: 'red', opacity: 0.2 })
+            .fill({ color: 'transparent' })
+            .move(this.background.x(), this.background.y());
+        // set state and condition
+        this.condition = attr.condition ? attr.condition : 'normal';
+        this.state = attr.state ? attr.state : 'active';
+        // finally set how it will look )
+        attr.behavior
+            ? (this.behavior = attr.behavior)
+            : (this.behavior = ItemDefaultBehavior);
+        this.applyBehavior();
+        // adds supp item and foreground
+        this.add(this.suppItem);
+        this.add(this.foreground);
+        // handle mouseenter / mouseleave and mousedown
+        this.foreground.on('mouseenter', () => {
+            this.condition != 'highlight'
+                ? (this.condition = 'mouseenter')
+                : 0;
+            this.front();
+            this.applyBehavior();
+        });
+        this.foreground.on('mouseleave', () => {
+            this.condition != 'highlight' ? (this.condition = 'normal') : 0;
+            this.applyBehavior();
+        });
+        this.foreground.on('mousedown', () => {
+            this.condition = 'onclick';
+            this.applyBehavior();
+        });
+    }
+    /**
+     * change the appearance of the element depending on the external influence
+     * @param c current condition
+     */
+    applyBehavior(c) {
+        !c && (c = this.condition);
+        getB(this, this.background, c, 'background');
+        getB(this, this.title, c, 'title');
+        if (this.suppItem instanceof _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Path) {
+            getB(this, this.suppItem, c, 'icon');
+        }
+        if (this.suppItem instanceof _title__WEBPACK_IMPORTED_MODULE_2__.title) {
+            getB(this, this.suppItem, c, 'shotrcut');
+        }
     }
 }
+//! wtf (...
+const getB = (i, rop, c, pt) => {
+    let bf = i.behavior.find((el) => el.itemPart == pt);
+    let dbc = bf && bf.behavior.find((el) => el.condition == c);
+    dbc &&
+        (rop.fill(Object.assign({}, dbc.attr.fill)),
+            rop.stroke(Object.assign({}, dbc.attr.stroke)));
+};
 
 
 /***/ }),
@@ -12954,6 +13138,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Create_ID": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID),
 /* harmony export */   "StyleSizeNumber": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.StyleSizeNumber),
+/* harmony export */   "objectMerge": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.objectMerge),
 /* harmony export */   "rndX": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.rndX),
 /* harmony export */   "vTo01": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.vTo01),
 /* harmony export */   "StyleClasses": () => (/* reexport safe */ _src_style__WEBPACK_IMPORTED_MODULE_1__.StyleClasses),
@@ -12963,7 +13148,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "label": () => (/* reexport safe */ _src_label__WEBPACK_IMPORTED_MODULE_4__.label),
 /* harmony export */   "textbox": () => (/* reexport safe */ _src_textbox__WEBPACK_IMPORTED_MODULE_5__.textbox),
 /* harmony export */   "slider": () => (/* reexport safe */ _src_slider__WEBPACK_IMPORTED_MODULE_6__.slider),
-/* harmony export */   "item": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.item)
+/* harmony export */   "ItemDefaultBehavior": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.ItemDefaultBehavior),
+/* harmony export */   "item": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.item),
+/* harmony export */   "itemPartOrder": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.itemPartOrder)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13136,7 +13323,7 @@ slidersGroup
 draw.add(slidersGroup);
 slidersGroup.move(200, 250);
 //#endregion
-const rightChevron = 'M7.9 7C7.9 6.8 7.8 6.6 7.7 6.5L1.3 0.2C1.1 0.1 0.9 0 0.7 0 0.3 0 0 0.3 0 0.7 0 0.9 0.1 1.1 0.2 1.3L6.1 7 0.2 12.7C0.1 12.9 0 13.1 0 13.3 0 13.7 0.3 14 0.7 14 0.9 14 1.1 13.9 1.3 13.8L7.7 7.5C7.8 7.4 7.9 7.2 7.9 7Z';
+const rightChevron = 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z';
 const generaltemStyleCreator = (s, pos = { x: 0, y: 0 }) => {
     return {
         label: {
@@ -13153,7 +13340,7 @@ const generaltemStyleCreator = (s, pos = { x: 0, y: 0 }) => {
                 height: 0,
                 fill: { color: '#EEEEEE' },
                 stroke: { color: '#D2D2D2', width: 1 },
-                radius: 5,
+                radius: 7,
                 position: { x: 0, y: 0 },
             },
             backgroundRule: ['indent'],
@@ -13220,7 +13407,7 @@ const shortcutItemStyleCreator = (s, pos = { x: 0, y: 0 }, sc) => {
             font: 'Menlo',
             fontWeight: 'normal',
             size: 12,
-            fill: { color: '#999999' },
+            fill: { color: '' },
             position: { x: 0, y: 0 },
         },
     };
@@ -13251,6 +13438,7 @@ let shotcutItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.
 draw.add(generalItem);
 draw.add(iconItem);
 draw.add(shotcutItem);
+console.log(shotcutItem.behavior);
 console.log(performance.now() - startMS);
 
 })();

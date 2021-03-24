@@ -7,8 +7,13 @@ import { label, LabelAttr } from '../tds-shapes/src/label'
 import {
   BackgroundStyle,
   ItemIconStyle,
+  objectMerge,
   TitleStyle,
 } from '../tds-shapes/src/common'
+import {
+  ItemDefaultBehavior,
+  ItemPartsBehavior,
+} from '../tds-shapes/tds-shapes-entry'
 
 const startMS = performance.now()
 
@@ -96,7 +101,7 @@ slidersGroup.move(200, 250)
 //#endregion
 
 const rightChevron =
-  'M7.9 7C7.9 6.8 7.8 6.6 7.7 6.5L1.3 0.2C1.1 0.1 0.9 0 0.7 0 0.3 0 0 0.3 0 0.7 0 0.9 0.1 1.1 0.2 1.3L6.1 7 0.2 12.7C0.1 12.9 0 13.1 0 13.3 0 13.7 0.3 14 0.7 14 0.9 14 1.1 13.9 1.3 13.8L7.7 7.5C7.8 7.4 7.9 7.2 7.9 7Z'
+  'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z'
 const generaltemStyleCreator = (
   s: string | number,
   pos: { x: number; y: number } = { x: 0, y: 0 }
@@ -120,7 +125,7 @@ const generaltemStyleCreator = (
         height: 0,
         fill: { color: '#EEEEEE' },
         stroke: { color: '#D2D2D2', width: 1 },
-        radius: 5,
+        radius: 7,
         position: { x: 0, y: 0 },
       },
       backgroundRule: ['indent'],
@@ -203,7 +208,7 @@ const shortcutItemStyleCreator = (
       font: 'Menlo',
       fontWeight: 'normal',
       size: 12,
-      fill: { color: '#999999' },
+      fill: { color: '' },
       position: { x: 0, y: 0 },
     },
   }
@@ -249,5 +254,7 @@ let shotcutItem = new shape.item({
 draw.add(generalItem)
 draw.add(iconItem)
 draw.add(shotcutItem)
+
+console.log(shotcutItem.behavior)
 
 console.log(performance.now() - startMS)
