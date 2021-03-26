@@ -11409,12 +11409,16 @@ class background extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "iconPath": () => (/* binding */ iconPath),
 /* harmony export */   "Create_ID": () => (/* binding */ Create_ID),
 /* harmony export */   "StyleSizeNumber": () => (/* binding */ StyleSizeNumber),
 /* harmony export */   "vTo01": () => (/* binding */ vTo01),
 /* harmony export */   "rndX": () => (/* binding */ rndX),
 /* harmony export */   "objectMerge": () => (/* binding */ objectMerge)
 /* harmony export */ });
+const iconPath = {
+    rightChevron: 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z',
+};
 /** simple ID string for object identification
  * @returns string like 'T40fbb0e49f748c'
  */
@@ -11516,19 +11520,24 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.rules.push(...attr.backgroundRule);
         (_b = attr.indents) !== null && _b !== void 0 ? _b : (attr.indents = [0, 0, 0, 0]);
         this.indents = attr.indents;
-        attr.title instanceof _title__WEBPACK_IMPORTED_MODULE_2__.title
-            ? Object.assign(attr.title, this.title)
-            : (this.title = new _title__WEBPACK_IMPORTED_MODULE_2__.title(attr.title));
+        if (attr.title instanceof _title__WEBPACK_IMPORTED_MODULE_2__.title) {
+            Object.assign(attr.title, this.title);
+        }
+        else {
+            this.title = new _title__WEBPACK_IMPORTED_MODULE_2__.title(attr.title);
+        }
         if (attr.background && !this.rules.includes('none')) {
-            attr.background instanceof _background__WEBPACK_IMPORTED_MODULE_3__.background
-                ? Object.assign(attr.background, this.background)
-                : (this.background = new _background__WEBPACK_IMPORTED_MODULE_3__.background(attr.background));
+            if (attr.background instanceof _background__WEBPACK_IMPORTED_MODULE_3__.background) {
+                Object.assign(attr.background, this.background);
+            }
+            else {
+                this.background = new _background__WEBPACK_IMPORTED_MODULE_3__.background(attr.background);
+            }
         }
         applyRules(this.title, this.background, this.rules, this.indents);
         this.background && this.add(this.background);
         this.add(this.title);
-        attr.position &&
-            this.move(attr.position.x, attr.position.y);
+        attr.position && this.move(attr.position.x, attr.position.y);
     }
     // value operations
     /** get value from title */
@@ -11589,6 +11598,153 @@ const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
 
 /***/ }),
 
+/***/ "../tds-shapes/src/list.ts":
+/*!*********************************!*\
+  !*** ../tds-shapes/src/list.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ListAttrDefault": () => (/* binding */ ListAttrDefault),
+/* harmony export */   "list": () => (/* binding */ list)
+/* harmony export */ });
+/* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
+/* harmony import */ var _listItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listItem */ "../tds-shapes/src/listItem.ts");
+
+
+
+
+const ListAttrDefault = {
+    //
+    body: {
+        width: 206,
+        height: 200,
+        fill: { color: '#EEEEEE' },
+        stroke: { color: '#D2D2D2', width: 1 },
+        radius: 10,
+        position: { x: 300, y: 300 },
+    },
+    indents: [8, 8, 8, 8],
+    subItemIndents: {
+        item: 0,
+        separator: 20,
+        itemIcon: 20,
+        itemShortcut: 20,
+    },
+    //
+    itemWidth: 190,
+    itemsStyle: {
+        title: {
+            value: '',
+            font: 'Menlo',
+            fontWeight: 'normal',
+            size: 12,
+            fill: { color: 'black' },
+            position: { x: 0, y: 0 },
+        },
+        backgroundRule: ['indent'],
+        background: {
+            width: 50,
+            height: 20,
+            fill: { color: '#EEEEEE' },
+            stroke: { color: '#EEEEEE' },
+            radius: 8,
+            position: { x: 0, y: 0 },
+        },
+        indents: [13, 5, 3, 5],
+        position: { x: 0, y: 0 },
+    },
+    // prettier-ignore
+    itemsInstances: [
+        { kind: 'general', str: 'File' },
+        { kind: 'general', str: 'Edit' },
+        { kind: 'shortcut', str: 'Window', shortcut: { value: 'cmd + X', font: 'Menlo', fontWeight: 'normal', size: 12, position: { x: 0, y: 0 }, fill: { color: 'red' } } },
+        { kind: 'general', str: 'View' },
+        { kind: 'icon', str: 'Magic line', icon: { d: _common__WEBPACK_IMPORTED_MODULE_1__.iconPath.rightChevron, fill: { color: 'black' }, stroke: { color: 'black' } } },
+        { kind: 'general', str: 'Terminal' },
+    ],
+    // prettier-ignore
+    separatorsInstances: [
+        { order: 3, value: { start: { x: 0, y: 0 }, length: 180, stroke: { color: 'black' } } }
+    ],
+};
+class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
+    constructor(attr = ListAttrDefault) {
+        super();
+        this.items = [];
+        this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-list');
+        // create body rectangle
+        this.body = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
+            .width(attr.body.width)
+            .height(attr.body.height)
+            .fill(Object.assign({}, attr.body.fill))
+            .stroke(Object.assign({}, attr.body.stroke))
+            .radius(attr.body.radius);
+        this.add(this.body);
+        // create items
+        let seprCount = 0;
+        let itemCount = 0;
+        let curItemHeight = 0;
+        attr.itemsInstances.forEach((ii, num) => {
+            // base indent
+            let isi = attr.subItemIndents.item;
+            let bi = {
+                x: attr.indents[0],
+                y: attr.indents[0] + isi,
+            };
+            let el;
+            // set string
+            let is = attr.itemsStyle;
+            is.title.value = ii.str;
+            if (num == 0) {
+                is.position = { x: attr.indents[0], y: attr.indents[1] };
+            }
+            else {
+                is.position = {
+                    x: attr.indents[0],
+                    y: num * curItemHeight + attr.indents[1],
+                };
+            }
+            if (ii.kind == 'general') {
+                el = new _listItem__WEBPACK_IMPORTED_MODULE_2__.listItem({
+                    label: is,
+                    kind: 'general',
+                    width: attr.itemWidth,
+                }).draggable();
+            }
+            if (ii.kind == 'shortcut') {
+                el = new _listItem__WEBPACK_IMPORTED_MODULE_2__.listItem({
+                    label: is,
+                    kind: 'shortcut',
+                    width: attr.itemWidth,
+                    suppIndent: 20,
+                    shortcut: ii.shortcut,
+                }).draggable();
+            }
+            if (ii.kind == 'icon') {
+                el = new _listItem__WEBPACK_IMPORTED_MODULE_2__.listItem({
+                    label: is,
+                    kind: 'icon',
+                    width: attr.itemWidth,
+                    suppIndent: 20,
+                    icon: ii.icon,
+                }).draggable();
+            }
+            num == 0 &&
+                (curItemHeight =
+                    el.title.bbox().height + el.indents[1] + el.indents[3]); // set items height
+            //   console.log(curItemHeight + el.indents[1] + el.indents[3])
+            this.items.push(el);
+        });
+        this.items.forEach((i) => this.add(i));
+    }
+}
+
+
+/***/ }),
+
 /***/ "../tds-shapes/src/listItem.ts":
 /*!*************************************!*\
   !*** ../tds-shapes/src/listItem.ts ***!
@@ -11597,7 +11753,6 @@ const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "itemPartOrder": () => (/* binding */ itemPartOrder),
 /* harmony export */   "ItemDefaultBehavior": () => (/* binding */ ItemDefaultBehavior),
 /* harmony export */   "listItem": () => (/* binding */ listItem)
 /* harmony export */ });
@@ -11607,124 +11762,42 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const itemPartOrder = [
-    'background',
-    'title',
-    'icon',
-    'shotrcut',
-    'foreground',
-];
+// prettier-ignore
 const ItemDefaultBehavior = [
     // background
-    {
-        itemPart: 'background',
+    { itemPart: 'background',
         behavior: [
-            {
-                condition: 'normal',
-                attr: {
-                    fill: { color: '#EEEEEE' },
-                    stroke: { color: '#D2D2D2', width: 1 },
-                },
-            },
-            {
-                condition: 'mouseenter',
-                attr: {
-                    fill: { color: '#00AAFF' },
-                    stroke: { color: '#00AAFF', width: 1 },
-                },
-            },
-            {
-                condition: 'onclick',
-                attr: {
-                    fill: { color: '#999999' },
-                    stroke: { color: '#999999', width: 1 },
-                },
-            },
-            {
-                condition: 'inactive',
-                attr: {
-                    fill: { color: '#999999' },
-                    stroke: { color: '#999999', width: 1 },
-                },
-            },
-        ],
-    },
+            { condition: 'normal', attr: { fill: { color: '#EEEEEE' }, stroke: { color: '#D2D2D2', width: 1 }, }, },
+            { condition: 'mouseenter', attr: { fill: { color: '#00AAFF' }, stroke: { color: '#00AAFF', width: 1 }, }, },
+            { condition: 'onclick', attr: { fill: { color: '#999999' }, stroke: { color: '#999999', width: 1 }, }, },
+            { condition: 'inactive', attr: { fill: { color: '#999999' }, stroke: { color: '#999999', width: 1 }, }, },
+        ], },
     // label
-    {
-        itemPart: 'title',
+    { itemPart: 'title',
         behavior: [
-            {
-                condition: 'normal',
-                attr: { fill: { color: 'black' } },
-            },
-            {
-                condition: 'mouseenter',
-                attr: { fill: { color: 'white' } },
-            },
-            {
-                condition: 'inactive',
-                attr: { fill: { color: '#F2F2F2' } },
-            },
+            { condition: 'normal', attr: { fill: { color: 'black' } }, },
+            { condition: 'mouseenter', attr: { fill: { color: 'white' } }, },
+            { condition: 'inactive', attr: { fill: { color: '#F2F2F2' } }, },
         ],
     },
     // foreground
-    {
-        itemPart: 'foreground',
+    { itemPart: 'foreground',
         behavior: [
-            {
-                condition: 'normal',
-                attr: {
-                    fill: { color: 'transparent' },
-                    stroke: { color: 'transparent' },
-                },
-            },
-            {
-                condition: 'mouseenter',
-                attr: {
-                    fill: { color: '#00AAFF' },
-                    stroke: { color: 'transparent' },
-                },
-            },
-        ],
-    },
+            { condition: 'normal', attr: { fill: { color: 'transparent' }, stroke: { color: 'transparent' }, }, },
+            { condition: 'mouseenter', attr: { fill: { color: 'transparent' }, stroke: { color: 'transparent' }, }, },
+        ], },
     // shortcut
-    {
-        itemPart: 'shotrcut',
+    { itemPart: 'shotrcut',
         behavior: [
-            {
-                condition: 'normal',
-                attr: {
-                    fill: { color: '#999999' },
-                },
-            },
-            {
-                condition: 'mouseenter',
-                attr: {
-                    fill: { color: '#FFFFFF' },
-                },
-            },
-        ],
-    },
+            { condition: 'normal', attr: { fill: { color: '#999999' }, }, },
+            { condition: 'mouseenter', attr: { fill: { color: '#FFFFFF' }, }, },
+        ], },
     // icon
-    {
-        itemPart: 'icon',
+    { itemPart: 'icon',
         behavior: [
-            {
-                condition: 'normal',
-                attr: {
-                    fill: { color: 'black' },
-                    stroke: { color: 'black' },
-                },
-            },
-            {
-                condition: 'mouseenter',
-                attr: {
-                    fill: { color: 'white' },
-                    stroke: { color: 'white' },
-                },
-            },
-        ],
-    },
+            { condition: 'normal', attr: { fill: { color: 'black' }, stroke: { color: 'black' }, }, },
+            { condition: 'mouseenter', attr: { fill: { color: 'white' }, stroke: { color: 'white' }, }, },
+        ], },
 ];
 class listItem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
     constructor(attr) {
@@ -11741,6 +11814,7 @@ class listItem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             this.suppItem = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Path(Object.assign({}, attr.icon));
         }
         else if (this.kind == 'shortcut') {
+            // console.log(attr.shortcut)
             this.suppItem = new _title__WEBPACK_IMPORTED_MODULE_2__.title(Object.assign({}, attr.shortcut));
         }
         attr.suppIndent && (this.suppIndent = attr.suppIndent);
@@ -11809,6 +11883,7 @@ class listItem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
 const getB = (i, rop, c, pt) => {
     let bf = i.behavior.find((el) => el.itemPart == pt);
     let dbc = bf && bf.behavior.find((el) => el.condition == c);
+    // ItemDefaultBehavior
     dbc &&
         (rop.fill(Object.assign({}, dbc.attr.fill)),
             rop.stroke(Object.assign({}, dbc.attr.stroke)));
@@ -13144,6 +13219,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Create_ID": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID),
 /* harmony export */   "StyleSizeNumber": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.StyleSizeNumber),
+/* harmony export */   "iconPath": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.iconPath),
 /* harmony export */   "objectMerge": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.objectMerge),
 /* harmony export */   "rndX": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.rndX),
 /* harmony export */   "vTo01": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.vTo01),
@@ -13155,8 +13231,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "textbox": () => (/* reexport safe */ _src_textbox__WEBPACK_IMPORTED_MODULE_5__.textbox),
 /* harmony export */   "slider": () => (/* reexport safe */ _src_slider__WEBPACK_IMPORTED_MODULE_6__.slider),
 /* harmony export */   "ItemDefaultBehavior": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.ItemDefaultBehavior),
-/* harmony export */   "itemPartOrder": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.itemPartOrder),
-/* harmony export */   "listItem": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.listItem)
+/* harmony export */   "listItem": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.listItem),
+/* harmony export */   "ListAttrDefault": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_8__.ListAttrDefault),
+/* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_8__.list)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13166,6 +13243,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_textbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./src/textbox */ "../tds-shapes/src/textbox.ts");
 /* harmony import */ var _src_slider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/slider */ "../tds-shapes/src/slider.ts");
 /* harmony import */ var _src_listItem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/listItem */ "../tds-shapes/src/listItem.ts");
+/* harmony import */ var _src_list__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/list */ "../tds-shapes/src/list.ts");
+
 
 
 
@@ -13256,6 +13335,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
 /* harmony import */ var _svgdotjs_svg_draggable_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @svgdotjs/svg.draggable.js */ "./node_modules/@svgdotjs/svg.draggable.js/src/svg.draggable.js");
 /* harmony import */ var _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tds-shapes/tds-shapes-entry */ "../tds-shapes/tds-shapes-entry.ts");
+/* harmony import */ var _tds_shapes_src_list__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tds-shapes/src/list */ "../tds-shapes/src/list.ts");
+
 
 
 
@@ -13330,7 +13411,7 @@ draw.add(slidersGroup);
 slidersGroup.move(200, 250);
 //#endregion
 const rightChevron = 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z';
-const generaltemStyleCreator = (s, pos = { x: 0, y: 0 }) => {
+const generaltemStyleCreator = (s, pos = { x: 0, y: 0 }, w) => {
     return {
         label: {
             title: {
@@ -13353,6 +13434,8 @@ const generaltemStyleCreator = (s, pos = { x: 0, y: 0 }) => {
             indents: [5, 3, 5, 3],
             position: { x: pos.x, y: pos.y },
         },
+        kind: 'general',
+        width: w,
     };
 };
 const iconItemStyleCreator = (s, pos = { x: 0, y: 0 }, path) => {
@@ -13418,17 +13501,12 @@ const shortcutItemStyleCreator = (s, pos = { x: 0, y: 0 }, sc) => {
         },
     };
 };
-let generalItemStyle = generaltemStyleCreator('Make delay', {
-    x: 0,
-    y: 0,
-});
 let iconItemStyle = iconItemStyleCreator('Reach by hand', { x: 0, y: 0 }, rightChevron);
-let shortcutItemStyle = shortcutItemStyleCreator('Bend down', { x: 0, y: 0 }, 'cmd + X');
-let generalItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem({
-    kind: 'general',
-    width: 200,
-    label: generalItemStyle.label,
-});
+let shortcutItemStyle = shortcutItemStyleCreator('Bend down', { x: 330, y: 30 }, 'cmd + X');
+let generalItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem(generaltemStyleCreator('Make delay', {
+    x: 330,
+    y: 50,
+}, 200));
 let iconItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem({
     kind: 'icon',
     width: 200,
@@ -13441,7 +13519,11 @@ let shotcutItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.
     label: shortcutItemStyle.label,
     shortcut: shortcutItemStyle.shortcut,
 });
-console.log(shotcutItem.behavior);
+draw.add(shotcutItem);
+draw.add(generalItem);
+let ls = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.list(_tds_shapes_src_list__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault).draggable();
+draw.add(ls);
+ls.move(600, 50);
 console.log(performance.now() - startMS);
 
 })();

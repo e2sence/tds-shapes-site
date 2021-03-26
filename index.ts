@@ -13,7 +13,9 @@ import {
 import {
   ItemDefaultBehavior,
   ItemPartsBehavior,
+  ListItemAttr,
 } from '../tds-shapes/tds-shapes-entry'
+import { list, ListAttrDefault } from '../tds-shapes/src/list'
 
 const startMS = performance.now()
 
@@ -102,14 +104,12 @@ slidersGroup.move(200, 250)
 
 const rightChevron =
   'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z'
+
 const generaltemStyleCreator = (
   s: string | number,
-  pos: { x: number; y: number } = { x: 0, y: 0 }
-): {
-  label: LabelAttr
-  icon?: ItemIconStyle
-  shortcut?: TitleStyle
-} => {
+  pos: { x: number; y: number } = { x: 0, y: 0 },
+  w: number
+): ListItemAttr => {
   return {
     label: {
       title: {
@@ -132,6 +132,8 @@ const generaltemStyleCreator = (
       indents: [5, 3, 5, 3],
       position: { x: pos.x, y: pos.y },
     },
+    kind: 'general',
+    width: w,
   }
 }
 const iconItemStyleCreator = (
@@ -214,11 +216,6 @@ const shortcutItemStyleCreator = (
   }
 }
 
-let generalItemStyle = generaltemStyleCreator('Make delay', {
-  x: 0,
-  y: 0,
-})
-
 let iconItemStyle = iconItemStyleCreator(
   'Reach by hand',
   { x: 0, y: 0 },
@@ -227,15 +224,20 @@ let iconItemStyle = iconItemStyleCreator(
 
 let shortcutItemStyle = shortcutItemStyleCreator(
   'Bend down',
-  { x: 0, y: 0 },
+  { x: 330, y: 30 },
   'cmd + X'
 )
 
-let generalItem = new shape.listItem({
-  kind: 'general',
-  width: 200,
-  label: generalItemStyle.label,
-})
+let generalItem = new shape.listItem(
+  generaltemStyleCreator(
+    'Make delay',
+    {
+      x: 330,
+      y: 50,
+    },
+    200
+  )
+)
 
 let iconItem = new shape.listItem({
   kind: 'icon',
@@ -251,6 +253,11 @@ let shotcutItem = new shape.listItem({
   shortcut: shortcutItemStyle.shortcut,
 })
 
-console.log(shotcutItem.behavior)
+draw.add(shotcutItem)
+draw.add(generalItem)
+
+let ls = new shape.list(ListAttrDefault).draggable()
+draw.add(ls)
+ls.move(600, 50)
 
 console.log(performance.now() - startMS)
