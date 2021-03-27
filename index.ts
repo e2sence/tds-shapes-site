@@ -7,6 +7,7 @@ import { label, LabelAttr } from '../tds-shapes/src/label'
 import {
   BackgroundStyle,
   ItemIconStyle,
+  ListAttrDefault,
   objectMerge,
   TitleStyle,
 } from '../tds-shapes/src/common'
@@ -15,7 +16,7 @@ import {
   ItemPartsBehavior,
   ListItemAttr,
 } from '../tds-shapes/tds-shapes-entry'
-import { list, ListAttrDefault } from '../tds-shapes/src/list'
+import { list } from '../tds-shapes/src/list'
 
 const startMS = performance.now()
 
@@ -102,162 +103,20 @@ slidersGroup.move(200, 250)
 
 //#endregion
 
-const rightChevron =
-  'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z'
-
-const generaltemStyleCreator = (
-  s: string | number,
-  pos: { x: number; y: number } = { x: 0, y: 0 },
-  w: number
-): ListItemAttr => {
-  return {
-    label: {
-      title: {
-        value: typeof s == 'number' ? s.toString() : s,
-        font: 'Menlo',
-        fontWeight: 'normal',
-        size: 12,
-        fill: { color: 'black' },
-        position: { x: 0, y: 0 },
-      },
-      background: {
-        width: 120,
-        height: 0,
-        fill: { color: '#EEEEEE' },
-        stroke: { color: '#D2D2D2', width: 1 },
-        radius: 7,
-        position: { x: 0, y: 0 },
-      },
-      backgroundRule: ['indent'],
-      indents: [5, 3, 5, 3],
-      position: { x: pos.x, y: pos.y },
-    },
-    kind: 'general',
-    width: w,
-  }
-}
-const iconItemStyleCreator = (
-  s: string | number,
-  pos: { x: number; y: number } = { x: 0, y: 0 },
-  path: string
-): {
-  label: LabelAttr
-  icon?: ItemIconStyle
-  shortcut?: TitleStyle
-} => {
-  return {
-    label: {
-      title: {
-        value: typeof s == 'number' ? s.toString() : s,
-        font: 'Menlo',
-        fontWeight: 'normal',
-        size: 12,
-        fill: { color: 'black' },
-        position: { x: 0, y: 0 },
-      },
-      background: {
-        width: 120,
-        height: 0,
-        fill: { color: '#EEEEEE' },
-        stroke: { color: '#D2D2D2', width: 1 },
-        radius: 7,
-        position: { x: 0, y: 0 },
-      },
-      backgroundRule: ['indent'],
-      indents: [5, 3, 5, 3],
-      position: { x: pos.x, y: pos.y },
-    },
-    icon: {
-      d: path,
-      fill: { color: 'transparent' },
-      stroke: { color: 'black' },
-    },
-  }
-}
-const shortcutItemStyleCreator = (
-  s: string | number,
-  pos: { x: number; y: number } = { x: 0, y: 0 },
-  sc: string
-): {
-  label: LabelAttr
-  icon?: ItemIconStyle
-  shortcut?: TitleStyle
-} => {
-  return {
-    label: {
-      title: {
-        value: typeof s == 'number' ? s.toString() : s,
-        font: 'Menlo',
-        fontWeight: 'normal',
-        size: 12,
-        fill: { color: 'black' },
-        position: { x: 0, y: 0 },
-      },
-      background: {
-        width: 120,
-        height: 0,
-        fill: { color: '#EEEEEE' },
-        stroke: { color: '#D2D2D2', width: 1 },
-        radius: 7,
-        position: { x: 0, y: 0 },
-      },
-      backgroundRule: ['indent'],
-      indents: [5, 3, 5, 3],
-      position: { x: pos.x, y: pos.y },
-    },
-    shortcut: {
-      value: sc,
-      font: 'Menlo',
-      fontWeight: 'normal',
-      size: 12,
-      fill: { color: '' },
-      position: { x: 0, y: 0 },
-    },
-  }
-}
-
-let iconItemStyle = iconItemStyleCreator(
-  'Reach by hand',
-  { x: 0, y: 0 },
-  rightChevron
-)
-
-let shortcutItemStyle = shortcutItemStyleCreator(
-  'Bend down',
-  { x: 330, y: 30 },
-  'cmd + X'
-)
-
-let generalItem = new shape.listItem(
-  generaltemStyleCreator(
-    'Make delay',
-    {
-      x: 330,
-      y: 50,
-    },
-    200
-  )
-)
-
-let iconItem = new shape.listItem({
-  kind: 'icon',
-  width: 200,
-  label: iconItemStyle.label,
-  icon: iconItemStyle.icon,
-})
-
-let shotcutItem = new shape.listItem({
-  kind: 'shortcut',
-  width: 200,
-  label: shortcutItemStyle.label,
-  shortcut: shortcutItemStyle.shortcut,
-})
-
-draw.add(shotcutItem)
-draw.add(generalItem)
-
 let ls = new shape.list(ListAttrDefault).draggable()
 draw.add(ls)
-ls.move(600, 50)
+ls.move(350, 50)
+
+let cbt: TitleStyle = {
+  value: 'Your choice:',
+  font: 'Menlo',
+  fontWeight: 'normal',
+  size: 12,
+  fill: { color: 'black' },
+  position: { x: -90, y: 10 },
+}
+let cb = new shape.combobox(ListAttrDefault, 3, cbt).draggable()
+draw.add(cb)
+cb.move(650, 50)
 
 console.log(performance.now() - startMS)

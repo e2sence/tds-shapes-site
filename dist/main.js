@@ -11401,6 +11401,118 @@ class background extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect {
 
 /***/ }),
 
+/***/ "../tds-shapes/src/combobox.ts":
+/*!*************************************!*\
+  !*** ../tds-shapes/src/combobox.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "combobox": () => (/* binding */ combobox)
+/* harmony export */ });
+/* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
+/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./list */ "../tds-shapes/src/list.ts");
+/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
+
+
+
+class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
+    constructor(attr, curntSelection, cbt) {
+        super();
+        this.pdy = 0;
+        // set title
+        cbt && (this.title = new _title__WEBPACK_IMPORTED_MODULE_2__.title(cbt));
+        // set initial state
+        this.state = 'openend';
+        // create list
+        this.list = new _list__WEBPACK_IMPORTED_MODULE_1__.list(Object.assign({}, attr));
+        // set selection
+        this.curntSelection = this.list.items[curntSelection];
+        // add list to instance
+        this.add(this.list);
+        // set visual state
+        this.initialSet();
+        // add title
+        this.add(this.title);
+        this.list.items.forEach((el) => {
+            el.on('mousedown', () => {
+                this.curntSelection = el;
+                this.switchState();
+            });
+            // for avoid stroke overlapping
+            el.on('mouseenter', () => {
+                this.curntSelection.front();
+            });
+        });
+    }
+    initialSet() {
+        var _a;
+        // move selection to top of 'combobox'
+        this.curntSelection.addTo(this).front();
+        // set position for 'background' 'title' and 'suppitem'
+        // position of the first item
+        let cs = this.curntSelection;
+        let dy = cs.background.bbox().y - this.list.items[0].background.bbox().y;
+        // move
+        cs.background.dmove(0, -dy);
+        cs.title.dmove(0, -dy);
+        (_a = cs.suppItem) === null || _a === void 0 ? void 0 : _a.dmove(0, -dy);
+        cs.foreground.dmove(0, -dy);
+        // hide list
+        this.list.hide();
+        // change state
+        this.state = 'closed';
+        // remember dy
+        this.pdy = dy;
+    }
+    switchState() {
+        // change instance state
+        if (this.state == 'closed') {
+            this.state = 'openend';
+        }
+        else {
+            this.state = 'closed';
+        }
+        this.checkState();
+    }
+    checkState() {
+        // do smth for 'close' or 'open'
+        if (this.state == 'closed') {
+            this.hideList();
+        }
+        else {
+            this.showList();
+        }
+    }
+    hideList() {
+        // move selection to top
+        this.curntSelection.addTo(this).front();
+        let tp = this.list.items[0].background.bbox();
+        let dy = this.curntSelection.background.bbox().y - tp.y;
+        this.pdy = dy;
+        this.curntSelection.move(tp.x, tp.y);
+        this.list.hide();
+        this.list.items.forEach((el) => {
+            el.condition = 'normal';
+            el.applyBehavior();
+        });
+    }
+    showList() {
+        // show list
+        this.list.show();
+        // return selection to list
+        this.curntSelection.addTo(this.list).front();
+        // highlight current selection
+        this.curntSelection.condition = 'highlight';
+        // move selection to its initial position
+        this.curntSelection.dmove(0, this.pdy);
+    }
+}
+
+
+/***/ }),
+
 /***/ "../tds-shapes/src/common.ts":
 /*!***********************************!*\
   !*** ../tds-shapes/src/common.ts ***!
@@ -11414,7 +11526,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "StyleSizeNumber": () => (/* binding */ StyleSizeNumber),
 /* harmony export */   "vTo01": () => (/* binding */ vTo01),
 /* harmony export */   "rndX": () => (/* binding */ rndX),
-/* harmony export */   "objectMerge": () => (/* binding */ objectMerge)
+/* harmony export */   "objectMerge": () => (/* binding */ objectMerge),
+/* harmony export */   "ListAttrDefault": () => (/* binding */ ListAttrDefault)
 /* harmony export */ });
 const iconPath = {
     rightChevron: 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z',
@@ -11487,6 +11600,78 @@ const objectMerge = (s, t) => {
             !t[prop] ? (t[prop] = s[prop]) : 0;
         }
     });
+};
+/**
+ * list config example
+ */
+const ListAttrDefault = {
+    //
+    body: {
+        width: 206,
+        height: 200,
+        fill: { color: '#EEEEEE' },
+        stroke: { color: '#D2D2D2', width: 1 },
+        radius: 10,
+        position: { x: 300, y: 300 },
+    },
+    autoHeight: true,
+    indents: [5, 8, 5, 8],
+    subItemIndents: {
+        item: 0,
+        separator: 5,
+        itemIcon: 20,
+        itemShortcut: 20,
+    },
+    //
+    itemWidth: 190,
+    itemsStyle: {
+        title: {
+            value: '',
+            font: 'Menlo',
+            fontWeight: 'normal',
+            size: 12,
+            fill: { color: 'black' },
+            position: { x: 0, y: 0 },
+        },
+        backgroundRule: ['indent'],
+        background: {
+            width: 50,
+            height: 20,
+            fill: { color: '#EEEEEE' },
+            stroke: { color: '#EEEEEE' },
+            radius: 4,
+            position: { x: 0, y: 0 },
+        },
+        indents: [8, 2, 8, 2],
+        position: { x: 0, y: 0 },
+    },
+    // prettier-ignore
+    itemsBehavior: [{
+            itemPart: 'background', behavior: [
+            //    { condition: 'normal', attr: { fill: { color: 'red' }, stroke: { color: 'blue', width: 2 } } },
+            //    { condition: 'mouseenter', attr: {fill: {color: 'grey'}, stroke: { color: 'black', width: 2}}}
+            ]
+        }, {
+            itemPart: 'shotrcut', behavior: [
+            //    {condition: 'mouseenter', attr: {fill: { color : 'red'}}},
+            //    {},   
+            ]
+        }],
+    // prettier-ignore
+    itemsInstances: [
+        { kind: 'general', str: 'File', state: 'active', condition: 'normal' },
+        { kind: 'general', str: 'Edit', state: 'active', condition: 'normal' },
+        { kind: 'shortcut', str: 'Window', state: 'active', condition: 'normal', shortcut: { value: 'cmd + X', font: 'Menlo', fontWeight: 'normal', size: 12, position: { x: 0, y: 0 }, fill: { color: 'green' } } },
+        { kind: 'general', str: 'View', state: 'active', condition: 'normal' },
+        { kind: 'icon', str: 'Magic line', state: 'active', condition: 'normal', icon: { d: iconPath.rightChevron, fill: { color: 'black' }, stroke: { color: 'black' } } },
+        { kind: 'general', str: 'Terminal', state: 'active', condition: 'normal' },
+        { kind: 'general', str: 'Wait a minutes...', state: 'active', condition: 'normal' },
+    ],
+    // prettier-ignore
+    separatorsInstances: [
+        { order: 2, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } },
+        { order: 4, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } }
+    ],
 };
 
 
@@ -11606,92 +11791,30 @@ const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ListAttrDefault": () => (/* binding */ ListAttrDefault),
 /* harmony export */   "list": () => (/* binding */ list)
 /* harmony export */ });
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
 /* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _listItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listItem */ "../tds-shapes/src/listItem.ts");
 /* harmony import */ var _separator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./separator */ "../tds-shapes/src/separator.ts");
+/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
 
 
 
 
 
-const ListAttrDefault = {
-    //
-    body: {
-        width: 206,
-        height: 200,
-        fill: { color: '#EEEEEE' },
-        stroke: { color: '#D2D2D2', width: 1 },
-        radius: 10,
-        position: { x: 300, y: 300 },
-    },
-    autoHeight: true,
-    indents: [5, 8, 5, 8],
-    subItemIndents: {
-        item: 0,
-        separator: 5,
-        itemIcon: 20,
-        itemShortcut: 20,
-    },
-    //
-    itemWidth: 190,
-    itemsStyle: {
-        title: {
-            value: '',
-            font: 'Menlo',
-            fontWeight: 'normal',
-            size: 12,
-            fill: { color: 'black' },
-            position: { x: 0, y: 0 },
-        },
-        backgroundRule: ['indent'],
-        background: {
-            width: 50,
-            height: 20,
-            fill: { color: '#EEEEEE' },
-            stroke: { color: '#EEEEEE' },
-            radius: 4,
-            position: { x: 0, y: 0 },
-        },
-        indents: [8, 2, 8, 2],
-        position: { x: 0, y: 0 },
-    },
-    // prettier-ignore
-    itemsBehavior: [{
-            itemPart: 'background', behavior: [
-            //    { condition: 'normal', attr: { fill: { color: 'red' }, stroke: { color: 'blue', width: 2 } } },
-            //    { condition: 'mouseenter', attr: {fill: {color: 'grey'}, stroke: { color: 'black', width: 2}}}
-            ]
-        }, {
-            itemPart: 'shotrcut', behavior: [
-            //    {condition: 'mouseenter', attr: {fill: { color : 'red'}}},
-            //    {},   
-            ]
-        }],
-    // prettier-ignore
-    itemsInstances: [
-        { kind: 'general', str: 'File' },
-        { kind: 'general', str: 'Edit' },
-        { kind: 'shortcut', str: 'Window', shortcut: { value: 'cmd + X', font: 'Menlo', fontWeight: 'normal', size: 12, position: { x: 0, y: 0 }, fill: { color: 'green' } } },
-        { kind: 'general', str: 'View' },
-        { kind: 'icon', str: 'Magic line', icon: { d: _common__WEBPACK_IMPORTED_MODULE_1__.iconPath.rightChevron, fill: { color: 'black' }, stroke: { color: 'black' } } },
-        { kind: 'general', str: 'Terminal' },
-        { kind: 'general', str: 'Wait a minutes...' },
-    ],
-    // prettier-ignore
-    separatorsInstances: [
-        { order: 2, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } },
-        { order: 4, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } }
-    ],
-};
+
 class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
-    constructor(attr = ListAttrDefault) {
+    constructor(attr = _common__WEBPACK_IMPORTED_MODULE_1__.ListAttrDefault) {
         super();
-        this.items = [];
+        this.items = []; //| separator | label> = []
+        this.separators = [];
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-list');
+        // create titile
+        if (attr.titleStyle) {
+            this.title = new _title__WEBPACK_IMPORTED_MODULE_4__.title(attr.titleStyle);
+            this.add(this.title);
+        }
         // create body rectangle
         this.body = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
             .width(attr.body.width)
@@ -11709,10 +11832,11 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             if (isSep) {
                 isSep.value.start.y =
                     summHeight + attr.subItemIndents.separator;
-                this.items.push(new _separator__WEBPACK_IMPORTED_MODULE_3__.separator(isSep.value));
+                let cs = new _separator__WEBPACK_IMPORTED_MODULE_3__.separator(isSep.value);
+                this.separators.push(cs);
+                this.add(cs);
                 summHeight += attr.subItemIndents.separator * 2;
             }
-            // base indent
             let el;
             // get item style
             let is = attr.itemsStyle;
@@ -11727,35 +11851,49 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                     kind: 'general',
                     width: attr.itemWidth,
                     behavior: attr.itemsBehavior,
-                }).draggable();
+                    condition: ii.condition,
+                    state: ii.state,
+                });
             }
             if (ii.kind == 'shortcut') {
                 el = new _listItem__WEBPACK_IMPORTED_MODULE_2__.listItem({
                     label: is,
                     kind: 'shortcut',
                     width: attr.itemWidth,
-                    suppIndent: 20,
+                    suppIndent: attr.subItemIndents.itemShortcut,
                     shortcut: ii.shortcut,
                     behavior: attr.itemsBehavior,
-                }).draggable();
+                    condition: ii.condition,
+                    state: ii.state,
+                });
             }
             if (ii.kind == 'icon') {
                 el = new _listItem__WEBPACK_IMPORTED_MODULE_2__.listItem({
                     label: is,
                     kind: 'icon',
                     width: attr.itemWidth,
-                    suppIndent: 20,
+                    suppIndent: attr.subItemIndents.itemIcon,
                     icon: ii.icon,
                     behavior: attr.itemsBehavior,
-                }).draggable();
+                    condition: ii.condition,
+                    state: ii.state,
+                });
             }
             // adds element to list items collection
             this.items.push(el);
             // increase overal items height
             summHeight +=
-                el.title.bbox().height + el.indents[1] + el.indents[3];
+                el.title.bbox().height +
+                    el.indents[1] +
+                    el.indents[3] +
+                    attr.subItemIndents.item;
         });
-        this.items.forEach((i) => this.add(i));
+        this.items.forEach((i) => {
+            i.on('mousedown', () => {
+                this.dispatch('tds-list-mousedown', i);
+            });
+            this.add(i);
+        });
         // set auto height
         attr.autoHeight && this.body.height(attr.indents[3] + summHeight);
     }
@@ -11790,15 +11928,16 @@ const ItemDefaultBehavior = [
         behavior: [
             { condition: 'normal', attr: { fill: { color: '#EEEEEE' }, stroke: { color: 'transparent', width: 1 }, }, },
             { condition: 'mouseenter', attr: { fill: { color: '#00AAFF' }, stroke: { color: '#00AAFF', width: 1 }, }, },
+            { condition: 'highlight', attr: { fill: { color: '#00AAFF' }, stroke: { color: '#00AAFF', width: 1 }, }, },
             { condition: 'onclick', attr: { fill: { color: '#999999' }, stroke: { color: '#999999', width: 1 }, }, },
-            { condition: 'inactive', attr: { fill: { color: '#999999' }, stroke: { color: '#999999', width: 1 }, }, },
+            { condition: 'inactive', attr: { fill: { color: '#EEEEEE' }, stroke: { color: '#transparent', width: 1 }, }, },
         ], },
     // label
     { itemPart: 'title',
         behavior: [
             { condition: 'normal', attr: { fill: { color: 'black' } }, },
             { condition: 'mouseenter', attr: { fill: { color: 'white' } }, },
-            { condition: 'inactive', attr: { fill: { color: '#F2F2F2' } }, },
+            { condition: 'inactive', attr: { fill: { color: '#999999' } }, },
         ],
     },
     // foreground
@@ -11856,7 +11995,7 @@ class listItem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
             .move(this.background.x(), this.background.y());
         // set state and condition
         this.condition = attr.condition ? attr.condition : 'normal';
-        this.state = attr.state ? attr.state : 'active';
+        this.state = attr.state ? attr.state : 'inactive';
         // finally set how it will look )
         attr.behavior
             ? (this.behavior = attr.behavior)
@@ -11867,22 +12006,26 @@ class listItem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
         this.add(this.foreground);
         // handle mouseenter / mouseleave and mousedown
         this.foreground.on('mouseenter', () => {
-            this.condition != 'highlight'
+            this.condition != 'highlight' && this.state != 'inactive'
                 ? (this.condition = 'mouseenter')
                 : 0;
-            // this.front()
+            this.front();
             this.applyBehavior();
         });
         this.foreground.on('mouseleave', () => {
-            this.condition != 'highlight' ? (this.condition = 'normal') : 0;
+            this.condition != 'highlight' && this.state != 'inactive'
+                ? (this.condition = 'normal')
+                : 0;
             this.applyBehavior();
         });
         this.foreground.on('mousedown', () => {
-            this.condition = 'onclick';
+            this.condition != 'highlight' && this.state != 'inactive'
+                ? (this.condition = 'onclick')
+                : 0;
             this.applyBehavior();
         });
         this.foreground.on('mouseup', () => {
-            this.condition != 'highlight'
+            this.condition != 'highlight' && this.state != 'inactive'
                 ? (this.condition = 'mouseenter')
                 : 0;
             this.front();
@@ -13289,6 +13432,7 @@ class title extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Text {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Create_ID": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID),
+/* harmony export */   "ListAttrDefault": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.ListAttrDefault),
 /* harmony export */   "StyleSizeNumber": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.StyleSizeNumber),
 /* harmony export */   "iconPath": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.iconPath),
 /* harmony export */   "objectMerge": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.objectMerge),
@@ -13303,8 +13447,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "slider": () => (/* reexport safe */ _src_slider__WEBPACK_IMPORTED_MODULE_6__.slider),
 /* harmony export */   "ItemDefaultBehavior": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.ItemDefaultBehavior),
 /* harmony export */   "listItem": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.listItem),
-/* harmony export */   "ListAttrDefault": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_8__.ListAttrDefault),
-/* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_8__.list)
+/* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_8__.list),
+/* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_9__.combobox)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13315,6 +13459,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_slider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/slider */ "../tds-shapes/src/slider.ts");
 /* harmony import */ var _src_listItem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/listItem */ "../tds-shapes/src/listItem.ts");
 /* harmony import */ var _src_list__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/list */ "../tds-shapes/src/list.ts");
+/* harmony import */ var _src_combobox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./src/combobox */ "../tds-shapes/src/combobox.ts");
+
 
 
 
@@ -13406,7 +13552,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
 /* harmony import */ var _svgdotjs_svg_draggable_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @svgdotjs/svg.draggable.js */ "./node_modules/@svgdotjs/svg.draggable.js/src/svg.draggable.js");
 /* harmony import */ var _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tds-shapes/tds-shapes-entry */ "../tds-shapes/tds-shapes-entry.ts");
-/* harmony import */ var _tds_shapes_src_list__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tds-shapes/src/list */ "../tds-shapes/src/list.ts");
+/* harmony import */ var _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tds-shapes/src/common */ "../tds-shapes/src/common.ts");
 
 
 
@@ -13481,120 +13627,20 @@ slidersGroup
 draw.add(slidersGroup);
 slidersGroup.move(200, 250);
 //#endregion
-const rightChevron = 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z';
-const generaltemStyleCreator = (s, pos = { x: 0, y: 0 }, w) => {
-    return {
-        label: {
-            title: {
-                value: typeof s == 'number' ? s.toString() : s,
-                font: 'Menlo',
-                fontWeight: 'normal',
-                size: 12,
-                fill: { color: 'black' },
-                position: { x: 0, y: 0 },
-            },
-            background: {
-                width: 120,
-                height: 0,
-                fill: { color: '#EEEEEE' },
-                stroke: { color: '#D2D2D2', width: 1 },
-                radius: 7,
-                position: { x: 0, y: 0 },
-            },
-            backgroundRule: ['indent'],
-            indents: [5, 3, 5, 3],
-            position: { x: pos.x, y: pos.y },
-        },
-        kind: 'general',
-        width: w,
-    };
-};
-const iconItemStyleCreator = (s, pos = { x: 0, y: 0 }, path) => {
-    return {
-        label: {
-            title: {
-                value: typeof s == 'number' ? s.toString() : s,
-                font: 'Menlo',
-                fontWeight: 'normal',
-                size: 12,
-                fill: { color: 'black' },
-                position: { x: 0, y: 0 },
-            },
-            background: {
-                width: 120,
-                height: 0,
-                fill: { color: '#EEEEEE' },
-                stroke: { color: '#D2D2D2', width: 1 },
-                radius: 7,
-                position: { x: 0, y: 0 },
-            },
-            backgroundRule: ['indent'],
-            indents: [5, 3, 5, 3],
-            position: { x: pos.x, y: pos.y },
-        },
-        icon: {
-            d: path,
-            fill: { color: 'transparent' },
-            stroke: { color: 'black' },
-        },
-    };
-};
-const shortcutItemStyleCreator = (s, pos = { x: 0, y: 0 }, sc) => {
-    return {
-        label: {
-            title: {
-                value: typeof s == 'number' ? s.toString() : s,
-                font: 'Menlo',
-                fontWeight: 'normal',
-                size: 12,
-                fill: { color: 'black' },
-                position: { x: 0, y: 0 },
-            },
-            background: {
-                width: 120,
-                height: 0,
-                fill: { color: '#EEEEEE' },
-                stroke: { color: '#D2D2D2', width: 1 },
-                radius: 7,
-                position: { x: 0, y: 0 },
-            },
-            backgroundRule: ['indent'],
-            indents: [5, 3, 5, 3],
-            position: { x: pos.x, y: pos.y },
-        },
-        shortcut: {
-            value: sc,
-            font: 'Menlo',
-            fontWeight: 'normal',
-            size: 12,
-            fill: { color: '' },
-            position: { x: 0, y: 0 },
-        },
-    };
-};
-let iconItemStyle = iconItemStyleCreator('Reach by hand', { x: 0, y: 0 }, rightChevron);
-let shortcutItemStyle = shortcutItemStyleCreator('Bend down', { x: 330, y: 30 }, 'cmd + X');
-let generalItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem(generaltemStyleCreator('Make delay', {
-    x: 330,
-    y: 50,
-}, 200));
-let iconItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem({
-    kind: 'icon',
-    width: 200,
-    label: iconItemStyle.label,
-    icon: iconItemStyle.icon,
-});
-let shotcutItem = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItem({
-    kind: 'shortcut',
-    width: 200,
-    label: shortcutItemStyle.label,
-    shortcut: shortcutItemStyle.shortcut,
-});
-draw.add(shotcutItem);
-draw.add(generalItem);
-let ls = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.list(_tds_shapes_src_list__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault).draggable();
+let ls = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.list(_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault).draggable();
 draw.add(ls);
-ls.move(600, 50);
+ls.move(350, 50);
+let cbt = {
+    value: 'Your choice:',
+    font: 'Menlo',
+    fontWeight: 'normal',
+    size: 12,
+    fill: { color: 'black' },
+    position: { x: -90, y: 10 },
+};
+let cb = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.combobox(_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault, 3, cbt).draggable();
+draw.add(cb);
+cb.move(650, 50);
 console.log(performance.now() - startMS);
 
 })();
