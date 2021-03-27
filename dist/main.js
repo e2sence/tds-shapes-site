@@ -11505,6 +11505,7 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.curntSelection.addTo(this.list).front();
         // highlight current selection
         this.curntSelection.condition = 'highlight';
+        this.curntSelection.applyBehavior();
         // move selection to its initial position
         this.curntSelection.dmove(0, this.pdy);
     }
