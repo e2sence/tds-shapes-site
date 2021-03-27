@@ -11435,6 +11435,12 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.initialSet();
         // add title
         this.add(this.title);
+        this.on('mouseleave', () => {
+            this.state == 'openend' && this.switchState();
+        });
+        this.on('mouseenter', () => {
+            this.state == 'closed' && this.switchState();
+        });
         this.list.items.forEach((el) => {
             el.on('mousedown', () => {
                 this.curntSelection = el;
