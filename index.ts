@@ -6,8 +6,10 @@ import { G } from '@svgdotjs/svg.js'
 import { label, LabelAttr } from '../tds-shapes/src/label'
 import {
   BackgroundStyle,
+  iconPath,
   ItemIconStyle,
   ListAttrDefault,
+  ListAttrGroupDefault,
   objectMerge,
   TitleStyle,
 } from '../tds-shapes/src/common'
@@ -101,12 +103,12 @@ draw.add(slidersGroup)
 
 slidersGroup.move(200, 250)
 
-//#endregion
-
+// list
 let ls = new shape.list(ListAttrDefault).draggable()
 draw.add(ls)
 ls.move(350, 50)
 
+// combobox
 let cbt: TitleStyle = {
   value: 'Your choice:',
   font: 'Menlo',
@@ -115,8 +117,53 @@ let cbt: TitleStyle = {
   fill: { color: 'black' },
   position: { x: -90, y: 10 },
 }
-let cb = new shape.combobox(ListAttrDefault, 3, cbt).draggable()
+let cb = new shape.combobox({
+  listAttr: ListAttrGroupDefault,
+  selection: 3,
+  title: cbt,
+}).draggable()
 draw.add(cb)
 cb.move(650, 50)
+
+//#endregion
+
+let lia: ListItemAttr = {
+  label: {
+    title: {
+      value: 'I`am grouped item',
+      fontWeight: 'normal',
+      font: 'Menlo',
+      size: 12,
+      fill: { color: 'black' },
+      position: { x: 0, y: 0 },
+    },
+    background: {
+      width: 10,
+      height: 10,
+      fill: { color: '#EEEEEE' },
+      stroke: { color: '#EEEEEE' },
+      radius: 5,
+      position: { x: 0, y: 0 },
+    },
+    indents: [8, 2, 8, 2],
+    position: { x: 0, y: 0 },
+    backgroundRule: ['indent'],
+  },
+  kind: 'icon',
+  width: 220,
+  suppIndent: 15,
+  icon: {
+    d: iconPath.rightChevron,
+    fill: { color: 'black' },
+    stroke: { color: 'black' },
+  },
+}
+
+let gi = new shape.listItemGrouped(
+  lia,
+  ListAttrGroupDefault
+).draggable()
+gi.move(650, 250)
+draw.add(gi)
 
 console.log(performance.now() - startMS)

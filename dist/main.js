@@ -11412,35 +11412,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "combobox": () => (/* binding */ combobox)
 /* harmony export */ });
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
-/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./list */ "../tds-shapes/src/list.ts");
-/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
+/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./list */ "../tds-shapes/src/list.ts");
+/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
+
 
 
 
 class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
-    constructor(attr, curntSelection, cbt) {
+    constructor(attr) {
         super();
         this.pdy = 0;
+        this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-combobox');
         // set title
-        cbt && (this.title = new _title__WEBPACK_IMPORTED_MODULE_2__.title(cbt));
+        attr.title && (this.title = new _title__WEBPACK_IMPORTED_MODULE_3__.title(attr.title));
         // set initial state
         this.state = 'openend';
         // create list
-        this.list = new _list__WEBPACK_IMPORTED_MODULE_1__.list(Object.assign({}, attr));
+        this.list = new _list__WEBPACK_IMPORTED_MODULE_2__.list(Object.assign({}, attr.listAttr));
         // set selection
-        this.curntSelection = this.list.items[curntSelection];
+        this.curntSelection = this.list.items[attr.selection];
         // add list to instance
         this.add(this.list);
         // set visual state
         this.initialSet();
         // add title
         this.add(this.title);
-        this.on('mouseleave', () => {
-            this.state == 'openend' && this.switchState();
-        });
-        this.on('mouseenter', () => {
-            this.state == 'closed' && this.switchState();
-        });
+        attr.autohide &&
+            this.on('mouseleave', () => {
+                this.state == 'openend' && this.switchState();
+            });
+        attr.autoshow &&
+            this.on('mouseenter', () => {
+                this.state == 'closed' && this.switchState();
+            });
         this.list.items.forEach((el) => {
             el.on('mousedown', () => {
                 this.curntSelection = el;
@@ -11534,10 +11539,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "vTo01": () => (/* binding */ vTo01),
 /* harmony export */   "rndX": () => (/* binding */ rndX),
 /* harmony export */   "objectMerge": () => (/* binding */ objectMerge),
+/* harmony export */   "ListAttrGroupDefault": () => (/* binding */ ListAttrGroupDefault),
 /* harmony export */   "ListAttrDefault": () => (/* binding */ ListAttrDefault)
 /* harmony export */ });
 const iconPath = {
     rightChevron: 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z',
+    dstack: 'M6.3 12C6.5 12 6.7 11.8 6.8 11.7L3.7 6.2C3.6 6.1 3.6 6.1 3.6 6 3.6 5.9 3.6 5.9 3.7 5.8L6.8 0.3C6.7 0.2 6.5 0 6.3 0 6.1 0 5.9 0.1 5.8 0.3L2.8 5.4C2.7 5.6 2.6 5.8 2.6 6 2.6 6.2 2.7 6.4 2.8 6.6L5.8 11.7C5.9 11.9 6.1 12 6.3 12ZM9.2 12C9.6 12 9.8 11.8 10 11.3L12.7 6.7C12.9 6.5 13 6.2 13 6 13 5.8 12.9 5.5 12.7 5.3L10 0.7C9.8 0.2 9.6 0 9.2 0 8.9 0 8.7 0.2 8.4 0.7L5.8 5.3C5.6 5.5 5.5 5.8 5.5 6 5.5 6.2 5.6 6.5 5.8 6.7L8.4 11.3C8.7 11.8 8.9 12 9.2 12ZM3.4 0.9C3.6 0.9 3.8 0.7 3.8 0.5 3.8 0.3 3.6 0.1 3.4 0.1 3.2 0.1 3 0.3 3 0.5 3 0.7 3.2 0.9 3.4 0.9ZM2.8 2C3 2 3.2 1.8 3.2 1.6 3.2 1.4 3 1.2 2.8 1.2 2.6 1.2 2.4 1.4 2.4 1.6 2.4 1.8 2.6 2 2.8 2ZM2.2 3.1C2.4 3.1 2.6 2.9 2.6 2.7 2.6 2.5 2.4 2.3 2.2 2.3 2 2.3 1.8 2.5 1.8 2.7 1.8 2.9 2 3.1 2.2 3.1ZM1.6 4.1C1.8 4.1 2 4 2 3.8 2 3.5 1.8 3.4 1.6 3.4 1.4 3.4 1.2 3.5 1.2 3.8 1.2 4 1.4 4.1 1.6 4.1ZM1 5.2C1.2 5.2 1.4 5.1 1.4 4.9 1.4 4.6 1.2 4.5 1 4.5 0.8 4.5 0.6 4.6 0.6 4.9 0.6 5.1 0.8 5.2 1 5.2ZM0.4 6.3C0.6 6.3 0.8 6.2 0.8 5.9 0.8 5.7 0.6 5.6 0.4 5.6 0.2 5.6 0 5.7 0 5.9 0 6.2 0.2 6.3 0.4 6.3ZM1 7.4C1.2 7.4 1.4 7.2 1.4 7 1.4 6.8 1.2 6.6 1 6.6 0.8 6.6 0.6 6.8 0.6 7 0.6 7.2 0.8 7.4 1 7.4ZM1.6 8.5C1.8 8.5 2 8.3 2 8.1 2 7.9 1.8 7.7 1.6 7.7 1.4 7.7 1.2 7.9 1.2 8.1 1.2 8.3 1.4 8.5 1.6 8.5ZM2.2 9.6C2.4 9.6 2.6 9.4 2.6 9.2 2.6 9 2.4 8.8 2.2 8.8 2 8.8 1.8 9 1.8 9.2 1.8 9.4 2 9.6 2.2 9.6ZM2.8 10.7C3 10.7 3.2 10.5 3.2 10.3 3.2 10.1 3 9.9 2.8 9.9 2.6 9.9 2.4 10.1 2.4 10.3 2.4 10.5 2.6 10.7 2.8 10.7ZM3.4 11.8C3.6 11.8 3.8 11.6 3.8 11.4 3.8 11.2 3.6 11 3.4 11 3.2 11 3 11.2 3 11.4 3 11.6 3.2 11.8 3.4 11.8Z',
 };
 /** simple ID string for object identification
  * @returns string like 'T40fbb0e49f748c'
@@ -11609,6 +11616,75 @@ const objectMerge = (s, t) => {
     });
 };
 /**
+ * list group config example
+ */
+const ListAttrGroupDefault = {
+    //
+    body: {
+        width: 206,
+        height: 200,
+        fill: { color: '#EEEEEE' },
+        stroke: { color: '#D2D2D2', width: 1 },
+        radius: 10,
+        position: { x: 300, y: 300 },
+    },
+    autoHeight: true,
+    indents: [5, 8, 5, 8],
+    subItemIndents: {
+        item: 0,
+        separator: 5,
+        itemIcon: 20,
+        itemShortcut: 20,
+    },
+    //
+    itemWidth: 190,
+    itemsStyle: {
+        title: {
+            value: '',
+            font: 'Menlo',
+            fontWeight: 'normal',
+            size: 12,
+            fill: { color: 'black' },
+            position: { x: 0, y: 0 },
+        },
+        backgroundRule: ['indent'],
+        background: {
+            width: 50,
+            height: 20,
+            fill: { color: '#EEEEEE' },
+            stroke: { color: '#EEEEEE' },
+            radius: 4,
+            position: { x: 0, y: 0 },
+        },
+        indents: [8, 2, 8, 2],
+        position: { x: 0, y: 0 },
+    },
+    // prettier-ignore
+    itemsBehavior: [{
+            itemPart: 'background', behavior: [
+            //    { condition: 'normal', attr: { fill: { color: 'red' }, stroke: { color: 'blue', width: 2 } } },
+            //    { condition: 'mouseenter', attr: {fill: {color: 'grey'}, stroke: { color: 'black', width: 2}}}
+            ]
+        }, {
+            itemPart: 'shotrcut', behavior: [
+            //    {condition: 'mouseenter', attr: {fill: { color : 'red'}}},
+            //    {},   
+            ]
+        }],
+    // prettier-ignore
+    itemsInstances: [
+        { kind: 'general', str: 'File', state: 'active', condition: 'normal' },
+        { kind: 'general', str: 'Edit', state: 'active', condition: 'normal' },
+        { kind: 'general', str: 'View', state: 'active', condition: 'normal' },
+        { kind: 'general', str: 'Terminal', state: 'active', condition: 'normal' },
+        { kind: 'general', str: 'Wait a minutes...', state: 'active', condition: 'normal' },
+    ],
+    // prettier-ignore
+    separatorsInstances: [
+        { order: 2, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } },
+    ],
+};
+/**
  * list config example
  */
 const ListAttrDefault = {
@@ -11673,11 +11749,13 @@ const ListAttrDefault = {
         { kind: 'icon', str: 'Magic line', state: 'active', condition: 'normal', icon: { d: iconPath.rightChevron, fill: { color: 'black' }, stroke: { color: 'black' } } },
         { kind: 'general', str: 'Terminal', state: 'active', condition: 'normal' },
         { kind: 'general', str: 'Wait a minutes...', state: 'active', condition: 'normal' },
+        { kind: 'group', str: 'Wonder group', state: 'active', condition: 'normal', icon: { d: iconPath.rightChevron, fill: { color: 'black' }, stroke: { color: 'black' } }, list: ListAttrGroupDefault },
     ],
     // prettier-ignore
     separatorsInstances: [
         { order: 2, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } },
-        { order: 4, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } }
+        { order: 4, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } },
+        { order: 7, value: { start: { x: 25, y: 0 }, length: 160, stroke: { color: '#D2D2D2' } } },
     ],
 };
 
@@ -11803,8 +11881,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
 /* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _listItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listItem */ "../tds-shapes/src/listItem.ts");
-/* harmony import */ var _separator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./separator */ "../tds-shapes/src/separator.ts");
-/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
+/* harmony import */ var _listItemGrouped__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./listItemGrouped */ "../tds-shapes/src/listItemGrouped.ts");
+/* harmony import */ var _separator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./separator */ "../tds-shapes/src/separator.ts");
+/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
+
 
 
 
@@ -11819,7 +11899,7 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-list');
         // create titile
         if (attr.titleStyle) {
-            this.title = new _title__WEBPACK_IMPORTED_MODULE_4__.title(attr.titleStyle);
+            this.title = new _title__WEBPACK_IMPORTED_MODULE_5__.title(attr.titleStyle);
             this.add(this.title);
         }
         // create body rectangle
@@ -11839,7 +11919,7 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             if (isSep) {
                 isSep.value.start.y =
                     summHeight + attr.subItemIndents.separator;
-                let cs = new _separator__WEBPACK_IMPORTED_MODULE_3__.separator(isSep.value);
+                let cs = new _separator__WEBPACK_IMPORTED_MODULE_4__.separator(isSep.value);
                 this.separators.push(cs);
                 this.add(cs);
                 summHeight += attr.subItemIndents.separator * 2;
@@ -11885,6 +11965,30 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                     condition: ii.condition,
                     state: ii.state,
                 });
+            }
+            if (ii.kind == 'group') {
+                let lia = {
+                    label: is,
+                    kind: 'icon',
+                    width: attr.itemWidth,
+                    suppIndent: attr.subItemIndents.itemIcon,
+                    icon: ii.icon,
+                    behavior: attr.itemsBehavior,
+                    condition: ii.condition,
+                    state: ii.state,
+                };
+                let la = ii.list;
+                el = new _listItemGrouped__WEBPACK_IMPORTED_MODULE_3__.listItemGrouped(lia, la);
+                // el = new listItem({
+                //   label: is,
+                //   kind: 'icon',
+                //   width: attr.itemWidth,
+                //   suppIndent: attr.subItemIndents.itemIcon,
+                //   icon: ii.icon,
+                //   behavior: attr.itemsBehavior,
+                //   condition: ii.condition,
+                //   state: ii.state,
+                // })
             }
             // adds element to list items collection
             this.items.push(el);
@@ -12074,6 +12178,45 @@ const getB = (i, rop, c, pt) => {
         (rop.fill(Object.assign({}, dbc.attr.fill)),
             rop.stroke(Object.assign({}, dbc.attr.stroke)));
 };
+
+
+/***/ }),
+
+/***/ "../tds-shapes/src/listItemGrouped.ts":
+/*!********************************************!*\
+  !*** ../tds-shapes/src/listItemGrouped.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "listItemGrouped": () => (/* binding */ listItemGrouped)
+/* harmony export */ });
+/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./list */ "../tds-shapes/src/list.ts");
+/* harmony import */ var _listItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listItem */ "../tds-shapes/src/listItem.ts");
+
+
+class listItemGrouped extends _listItem__WEBPACK_IMPORTED_MODULE_1__.listItem {
+    constructor(itemAttr, listAttr) {
+        super(itemAttr);
+        setTimeout(() => {
+            this.list = new _list__WEBPACK_IMPORTED_MODULE_0__.list(listAttr).hide();
+            this.add(this.list);
+        }, 0);
+        this.on('mouseenter', () => {
+            this.condition = 'highlight';
+            let x = this.x() + this.width();
+            let y = this.y();
+            this.list.show();
+            this.list.move(x, y - 5);
+        });
+        this.on('mouseleave', () => {
+            this.condition = 'normal';
+            this.applyBehavior();
+            this.list.hide();
+        });
+    }
+}
 
 
 /***/ }),
@@ -13440,6 +13583,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Create_ID": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID),
 /* harmony export */   "ListAttrDefault": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.ListAttrDefault),
+/* harmony export */   "ListAttrGroupDefault": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.ListAttrGroupDefault),
 /* harmony export */   "StyleSizeNumber": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.StyleSizeNumber),
 /* harmony export */   "iconPath": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.iconPath),
 /* harmony export */   "objectMerge": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.objectMerge),
@@ -13454,8 +13598,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "slider": () => (/* reexport safe */ _src_slider__WEBPACK_IMPORTED_MODULE_6__.slider),
 /* harmony export */   "ItemDefaultBehavior": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.ItemDefaultBehavior),
 /* harmony export */   "listItem": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.listItem),
-/* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_8__.list),
-/* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_9__.combobox)
+/* harmony export */   "listItemGrouped": () => (/* reexport safe */ _src_listItemGrouped__WEBPACK_IMPORTED_MODULE_8__.listItemGrouped),
+/* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_9__.list),
+/* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_10__.combobox)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13465,8 +13610,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_textbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./src/textbox */ "../tds-shapes/src/textbox.ts");
 /* harmony import */ var _src_slider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/slider */ "../tds-shapes/src/slider.ts");
 /* harmony import */ var _src_listItem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/listItem */ "../tds-shapes/src/listItem.ts");
-/* harmony import */ var _src_list__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/list */ "../tds-shapes/src/list.ts");
-/* harmony import */ var _src_combobox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./src/combobox */ "../tds-shapes/src/combobox.ts");
+/* harmony import */ var _src_listItemGrouped__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/listItemGrouped */ "../tds-shapes/src/listItemGrouped.ts");
+/* harmony import */ var _src_list__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./src/list */ "../tds-shapes/src/list.ts");
+/* harmony import */ var _src_combobox__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./src/combobox */ "../tds-shapes/src/combobox.ts");
+
 
 
 
@@ -13633,10 +13780,11 @@ slidersGroup
     .add(sliderDemo.nonCirclePin.move(200, 400));
 draw.add(slidersGroup);
 slidersGroup.move(200, 250);
-//#endregion
+// list
 let ls = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.list(_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault).draggable();
 draw.add(ls);
 ls.move(350, 50);
+// combobox
 let cbt = {
     value: 'Your choice:',
     font: 'Menlo',
@@ -13645,9 +13793,48 @@ let cbt = {
     fill: { color: 'black' },
     position: { x: -90, y: 10 },
 };
-let cb = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.combobox(_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault, 3, cbt).draggable();
+let cb = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.combobox({
+    listAttr: _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrGroupDefault,
+    selection: 3,
+    title: cbt,
+}).draggable();
 draw.add(cb);
 cb.move(650, 50);
+//#endregion
+let lia = {
+    label: {
+        title: {
+            value: 'I`am grouped item',
+            fontWeight: 'normal',
+            font: 'Menlo',
+            size: 12,
+            fill: { color: 'black' },
+            position: { x: 0, y: 0 },
+        },
+        background: {
+            width: 10,
+            height: 10,
+            fill: { color: '#EEEEEE' },
+            stroke: { color: '#EEEEEE' },
+            radius: 5,
+            position: { x: 0, y: 0 },
+        },
+        indents: [8, 2, 8, 2],
+        position: { x: 0, y: 0 },
+        backgroundRule: ['indent'],
+    },
+    kind: 'icon',
+    width: 220,
+    suppIndent: 15,
+    icon: {
+        d: _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.iconPath.rightChevron,
+        fill: { color: 'black' },
+        stroke: { color: 'black' },
+    },
+};
+let gi = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItemGrouped(lia, _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrGroupDefault).draggable();
+gi.move(650, 250);
+draw.add(gi);
 console.log(performance.now() - startMS);
 
 })();
