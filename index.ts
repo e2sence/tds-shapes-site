@@ -3,22 +3,18 @@ import '@svgdotjs/svg.draggable.js'
 
 import * as shape from '../tds-shapes/tds-shapes-entry'
 import { G } from '@svgdotjs/svg.js'
-import { label, LabelAttr } from '../tds-shapes/src/label'
+
 import {
-  BackgroundStyle,
   iconPath,
-  ItemIconStyle,
   ListAttrDefault,
   ListAttrGroupDefault,
-  objectMerge,
   TitleStyle,
 } from '../tds-shapes/src/common'
+import { ListItemAttr } from '../tds-shapes/tds-shapes-entry'
 import {
-  ItemDefaultBehavior,
+  Behavior,
   ItemPartsBehavior,
-  ListItemAttr,
-} from '../tds-shapes/tds-shapes-entry'
-import { list } from '../tds-shapes/src/list'
+} from '../tds-shapes/src/listItem'
 
 const startMS = performance.now()
 
@@ -78,6 +74,19 @@ draw.add(lm(21111977, { x: 40, y: 150 }))
 draw.add(lm(27111981, { x: 40, y: 170 }))
 draw.add(lm('08112006', { x: 40, y: 190 }))
 
+/** text boxes */
+let tb1 = new shape.textbox({
+  label: la('hello', { x: 190, y: 120 }),
+  inputType: 'text',
+}).draggable()
+draw.add(tb1)
+
+let tb2 = new shape.textbox({
+  label: la('1984', { x: 190, y: 140 }),
+  inputType: 'number',
+}).draggable()
+draw.add(tb2)
+
 /** slider demo item */
 let slidersGroup = new G().addClass('draggable')
 let sliderDemo = shape.slider.demo(draw)
@@ -88,7 +97,7 @@ slidersGroup
   .fill({ color: '#EEEEEE' })
   .stroke({ color: '#D2D2D2', width: 1 })
 
-let hs = sliderDemo.horizontal
+let hs = sliderDemo.horizontal.draggable(false)
 slidersGroup
   .move(90, 90)
   .draggable()
@@ -99,12 +108,42 @@ slidersGroup
   .add(sliderDemo.tickHor.move(280, 270))
   .add(sliderDemo.nonCirclePin.move(200, 400))
 
+sliderDemo.htwostate.draggable(false)
+sliderDemo.htwostate.on(
+  'tds-slider-valueChanged',
+  (ev: CustomEvent) => {
+    console.log(ev.detail.payload.value)
+  }
+)
+
 draw.add(slidersGroup)
 
 slidersGroup.move(200, 250)
 
 // list
 let ls = new shape.list(ListAttrDefault).draggable()
+let b: ItemPartsBehavior = [
+  {
+    itemPart: 'icon',
+    behavior: [
+      {
+        condition: 'normal',
+        attr: {
+          fill: { color: 'transparent' },
+          stroke: { color: 'red', width: 0.5 },
+        },
+      },
+      {
+        condition: 'onclick',
+        attr: { fill: { color: 'red' }, stroke: { color: 'red' } },
+      },
+    ],
+  },
+]
+let fi = ls.items[4]
+fi.behavior = b
+fi.applyBehavior()
+
 draw.add(ls)
 ls.move(350, 50)
 
@@ -121,7 +160,7 @@ let cb = new shape.combobox({
   listAttr: ListAttrGroupDefault,
   selection: 3,
   title: cbt,
-}).draggable()
+}) // .draggable()
 draw.add(cb)
 cb.move(650, 50)
 

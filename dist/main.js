@@ -11499,11 +11499,15 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
     hideList() {
         // move selection to top
         this.curntSelection.addTo(this).front();
+        // store position
         let tp = this.list.items[0].background.bbox();
         let dy = this.curntSelection.background.bbox().y - tp.y;
         this.pdy = dy;
+        // uprise selection
         this.curntSelection.move(tp.x, tp.y);
+        // hide list
         this.list.hide();
+        // reset condition for hiden items
         this.list.items.forEach((el) => {
             el.condition = 'normal';
             el.applyBehavior();
@@ -11545,6 +11549,7 @@ __webpack_require__.r(__webpack_exports__);
 const iconPath = {
     rightChevron: 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z',
     dstack: 'M6.3 12C6.5 12 6.7 11.8 6.8 11.7L3.7 6.2C3.6 6.1 3.6 6.1 3.6 6 3.6 5.9 3.6 5.9 3.7 5.8L6.8 0.3C6.7 0.2 6.5 0 6.3 0 6.1 0 5.9 0.1 5.8 0.3L2.8 5.4C2.7 5.6 2.6 5.8 2.6 6 2.6 6.2 2.7 6.4 2.8 6.6L5.8 11.7C5.9 11.9 6.1 12 6.3 12ZM9.2 12C9.6 12 9.8 11.8 10 11.3L12.7 6.7C12.9 6.5 13 6.2 13 6 13 5.8 12.9 5.5 12.7 5.3L10 0.7C9.8 0.2 9.6 0 9.2 0 8.9 0 8.7 0.2 8.4 0.7L5.8 5.3C5.6 5.5 5.5 5.8 5.5 6 5.5 6.2 5.6 6.5 5.8 6.7L8.4 11.3C8.7 11.8 8.9 12 9.2 12ZM3.4 0.9C3.6 0.9 3.8 0.7 3.8 0.5 3.8 0.3 3.6 0.1 3.4 0.1 3.2 0.1 3 0.3 3 0.5 3 0.7 3.2 0.9 3.4 0.9ZM2.8 2C3 2 3.2 1.8 3.2 1.6 3.2 1.4 3 1.2 2.8 1.2 2.6 1.2 2.4 1.4 2.4 1.6 2.4 1.8 2.6 2 2.8 2ZM2.2 3.1C2.4 3.1 2.6 2.9 2.6 2.7 2.6 2.5 2.4 2.3 2.2 2.3 2 2.3 1.8 2.5 1.8 2.7 1.8 2.9 2 3.1 2.2 3.1ZM1.6 4.1C1.8 4.1 2 4 2 3.8 2 3.5 1.8 3.4 1.6 3.4 1.4 3.4 1.2 3.5 1.2 3.8 1.2 4 1.4 4.1 1.6 4.1ZM1 5.2C1.2 5.2 1.4 5.1 1.4 4.9 1.4 4.6 1.2 4.5 1 4.5 0.8 4.5 0.6 4.6 0.6 4.9 0.6 5.1 0.8 5.2 1 5.2ZM0.4 6.3C0.6 6.3 0.8 6.2 0.8 5.9 0.8 5.7 0.6 5.6 0.4 5.6 0.2 5.6 0 5.7 0 5.9 0 6.2 0.2 6.3 0.4 6.3ZM1 7.4C1.2 7.4 1.4 7.2 1.4 7 1.4 6.8 1.2 6.6 1 6.6 0.8 6.6 0.6 6.8 0.6 7 0.6 7.2 0.8 7.4 1 7.4ZM1.6 8.5C1.8 8.5 2 8.3 2 8.1 2 7.9 1.8 7.7 1.6 7.7 1.4 7.7 1.2 7.9 1.2 8.1 1.2 8.3 1.4 8.5 1.6 8.5ZM2.2 9.6C2.4 9.6 2.6 9.4 2.6 9.2 2.6 9 2.4 8.8 2.2 8.8 2 8.8 1.8 9 1.8 9.2 1.8 9.4 2 9.6 2.2 9.6ZM2.8 10.7C3 10.7 3.2 10.5 3.2 10.3 3.2 10.1 3 9.9 2.8 9.9 2.6 9.9 2.4 10.1 2.4 10.3 2.4 10.5 2.6 10.7 2.8 10.7ZM3.4 11.8C3.6 11.8 3.8 11.6 3.8 11.4 3.8 11.2 3.6 11 3.4 11 3.2 11 3 11.2 3 11.4 3 11.6 3.2 11.8 3.4 11.8Z',
+    cross: 'M0 6.9C0 8 0.5 8.5 1.5 8.5H3.5V10.5C3.5 11.5 4 12 5.1 12H6.9C8 12 8.5 11.5 8.5 10.5V8.5H10.5C11.5 8.5 12 8 12 6.9V5.1C12 4 11.5 3.5 10.5 3.5H8.5V1.5C8.5 0.5 8 0 6.9 0H5.1C4 0 3.5 0.5 3.5 1.5V3.5H1.5C0.5 3.5 0 4 0 5.1V6.9ZM0.9 6.9V5.1C0.9 4.7 1.1 4.4 1.6 4.4H4.4V1.6C4.4 1.1 4.7 0.9 5.1 0.9H6.9C7.3 0.9 7.6 1.1 7.6 1.6V4.4H10.4C10.9 4.4 11.1 4.7 11.1 5.1V6.9C11.1 7.3 10.9 7.6 10.4 7.6H7.6V10.4C7.6 10.9 7.3 11.1 6.9 11.1H5.1C4.7 11.1 4.4 10.9 4.4 10.4V7.6H1.6C1.1 7.6 0.9 7.3 0.9 6.9Z',
 };
 /** simple ID string for object identification
  * @returns string like 'T40fbb0e49f748c'
@@ -11746,7 +11751,7 @@ const ListAttrDefault = {
         { kind: 'general', str: 'Edit', state: 'active', condition: 'normal' },
         { kind: 'shortcut', str: 'Window', state: 'active', condition: 'normal', shortcut: { value: 'cmd + X', font: 'Menlo', fontWeight: 'normal', size: 12, position: { x: 0, y: 0 }, fill: { color: 'green' } } },
         { kind: 'general', str: 'View', state: 'active', condition: 'normal' },
-        { kind: 'icon', str: 'Magic line', state: 'active', condition: 'normal', icon: { d: iconPath.rightChevron, fill: { color: 'black' }, stroke: { color: 'black' } } },
+        { kind: 'icon', str: 'Magic cross', state: 'active', condition: 'normal', icon: { d: iconPath.cross, fill: { color: 'black' }, stroke: { color: 'black' } } },
         { kind: 'general', str: 'Terminal', state: 'active', condition: 'normal' },
         { kind: 'general', str: 'Wait a minutes...', state: 'active', condition: 'normal' },
         { kind: 'group', str: 'Wonder group', state: 'active', condition: 'normal', icon: { d: iconPath.rightChevron, fill: { color: 'black' }, stroke: { color: 'black' } }, list: ListAttrGroupDefault },
@@ -11979,16 +11984,6 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 };
                 let la = ii.list;
                 el = new _listItemGrouped__WEBPACK_IMPORTED_MODULE_3__.listItemGrouped(lia, la);
-                // el = new listItem({
-                //   label: is,
-                //   kind: 'icon',
-                //   width: attr.itemWidth,
-                //   suppIndent: attr.subItemIndents.itemIcon,
-                //   icon: ii.icon,
-                //   behavior: attr.itemsBehavior,
-                //   condition: ii.condition,
-                //   state: ii.state,
-                // })
             }
             // adds element to list items collection
             this.items.push(el);
@@ -12291,11 +12286,7 @@ var _orientation, _sliderType;
 
 
 
-const tickKindOrder = [
-    'main',
-    'half',
-    'subhalf',
-];
+const tickKindOrder = ['main', 'half', 'subhalf'];
 class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
     constructor(attr) {
         super();
@@ -12304,9 +12295,7 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.ticksGroup = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G();
         // ticks storage
         attr.ticks && (this.ticks = attr.ticks);
-        this.ticksGroup
-            .id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)())
-            .addClass('tds-ticksgroup');
+        this.ticksGroup.id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)()).addClass('tds-ticksgroup');
         this.add(this.ticksGroup);
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)()).addClass('tds-slider');
         // apply properties from attr
@@ -12330,18 +12319,31 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             this.valueBox.remove();
         // set pin to value
         this.value = this.payload.value;
-        setTimeout(() => {
-            this.tickHandler();
-        }, 0);
         // handle two state slider
-        this.pin.on('click', (ev) => {
-            ev.preventDefault();
-            if (this.sliderType == 'twostate') {
-                let v = this.payload.value;
-                v == 1 ? (this.value = 0) : (this.value = 1);
+        if (this.sliderType == 'twostate') {
+            this.pin.on('beforedrag', (ev) => {
+                ev.preventDefault();
+            });
+            this.pin.on('click', (ev) => {
+                twoStateHandler(this, ev);
+            });
+            this.pin.on('touchstart', (ev) => {
+                twoStateHandler(this, ev);
+            });
+            function twoStateHandler(sl, ev) {
+                ev.preventDefault();
+                if (sl.sliderType == 'twostate') {
+                    let v = sl.payload.value;
+                    if (v == 0) {
+                        sl.value = 1;
+                    }
+                    else {
+                        sl.value = 0;
+                    }
+                }
+                return true;
             }
-            return true;
-        });
+        }
         // set constrainted pin move
         // on move update values in 'value box' and 'payload' storage
         this.pin.on('dragmove', (ev) => {
@@ -12369,6 +12371,9 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                     (this.value = Number(el.value));
             };
         });
+        setTimeout(() => {
+            this.tickHandler();
+        }, 0);
     }
     //?--------------------------------------------------- drag handler
     /**
@@ -12583,13 +12588,9 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 if (t[el]) {
                     let count = Math.floor((p.max - p.min) / t[el].step);
                     // distance between ticks
-                    let len = or == 'horizontal'
-                        ? rb.width / count
-                        : rb.height / count;
+                    let len = or == 'horizontal' ? rb.width / count : rb.height / count;
                     for (let i = 0; i < count + 1; i++) {
-                        let r = or == 'horizontal'
-                            ? rb.x + len * i
-                            : rb.y2 - len * i;
+                        let r = or == 'horizontal' ? rb.x + len * i : rb.y2 - len * i;
                         switch (el) {
                             case 'main':
                                 res.main.push(r);
@@ -12624,8 +12625,7 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 }
                 if (or == 'vertical') {
                     let verCor = cel - noUseLine.bbox().h / 2;
-                    sd == 'down' &&
-                        noUseLine.move(rb.x2 - rb.width / 2, verCor);
+                    sd == 'down' && noUseLine.move(rb.x2 - rb.width / 2, verCor);
                     sd == 'up' &&
                         noUseLine.move(rb.x - noUseLine.bbox().w + rb.width / 2, verCor);
                     sd == 'both' &&
@@ -12986,16 +12986,18 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             ruller: new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
                 .width(25)
                 .height(10)
-                .fill({ color: '#F5F5F5' })
-                .stroke({ color: '#D2D2D2', width: 1 })
+                .fill({ color: '#F25F5C' })
+                .stroke({ color: 'black', width: 1 })
                 .radius(4),
             filler: new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
                 .height(10)
                 .fill({ color: '#7CBB00' })
                 .stroke({ color: 'black', width: 2 })
                 .radius(4),
-            pin: new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Circle()
-                .radius(10)
+            pin: new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
+                .width(20)
+                .height(20)
+                .radius(5)
                 .fill({ color: '#FFBB00' })
                 .stroke({ color: 'black', width: 1 })
                 .draggable(),
@@ -13006,7 +13008,6 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         }).draggable();
         sw.title.value = 'me too !!... state )';
         sw.title.move(-10, -25);
-        sw.valueBox.move(50, 0).hide();
         draw.add(sw);
         return {
             horizontal: sl,
@@ -13422,57 +13423,84 @@ class textbox extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
         this.inputID = (0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)();
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)()).addClass('tds-textbox');
         this.inputType = attr.inputType;
-        this.on('dblclick', (ev) => {
+        this.on('dblclick', () => {
+            changeHandler(this);
+        });
+        let tf = 0;
+        this.on('touchstart', (ev) => {
+            // changeHandler(this)
+            tf = 1;
+            setTimeout(() => {
+                tf == 1 && changeHandler(this);
+            }, 1000);
+            console.log('touchstart');
+        });
+        this.on('touchend', (ev) => {
+            // changeHandler(this)
+            tf = 0;
+            console.log('touchend');
+        });
+        this.on('touchcancel', (ev) => {
+            // changeHandler(this)
+            console.log('touchcancel');
+        });
+        this.on('touchmove', (ev) => {
+            // changeHandler(this)
+            tf = 0;
+            console.log('touchmove');
+        });
+        function changeHandler(tb) {
             // id for foreing element
             let frid = (0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)();
             // create foreign object
-            this.input = this.root()
+            tb.input = tb
+                .root()
                 .element('foreignObject')
                 .attr({
-                width: this.width() + 20,
-                height: this.height() + 20,
-                x: this.title.bbox().x - 3,
-                y: this.title.bbox().y - 3,
+                width: tb.width() + 20,
+                height: tb.height() + 20,
+                x: tb.title.bbox().x - 3,
+                y: tb.title.bbox().y - 3,
                 id: frid,
             });
             // value to transfer to input
-            let _v = this.title.value;
+            let _v = tb.title.value;
             if (_v == '\u2800')
                 _v = '';
             // DOM string of input
-            let inputHTML = `<input id="${this.inputID}" 
+            let inputHTML = `<input id="${tb.inputID}" 
                                 class="txtinput"
                                 value="${_v}" 
-                                type="${this.inputType}"
+                                type="${tb.inputType}"
                                 size="1" 
                                 style="width:100%;">
                         </input>`;
             // show input with new data
-            this.input.node.innerHTML = inputHTML;
-            this.setInputVisibility(true);
-            this.dispatch('tds-textbox-changingStart', this);
+            tb.input.node.innerHTML = inputHTML;
+            tb.setInputVisibility(true);
+            tb.dispatch('tds-textbox-changingStart', tb);
             // handle loose focus
-            this.input.node.addEventListener('blur', () => {
-                this.setInputVisibility(false);
-                this.input.node.remove();
+            tb.input.node.addEventListener('blur', () => {
+                tb.setInputVisibility(false);
+                tb.input.node.remove();
             }, true);
             // handle keyboard
-            this.input.node.addEventListener('keydown', (ev) => {
+            tb.input.node.addEventListener('keydown', (ev) => {
                 if (ev.key == 'Enter') {
-                    let _v = this.getInput().value;
+                    let _v = tb.getInput().value;
                     _v !== ''
-                        ? (this.value = _v)
-                        : this.inputType == 'text'
-                            ? (this.value = '\u2800')
-                            : (this.value = Number(0).toString());
-                    this.setInputVisibility(false);
-                    this.dispatch('tds-textbox-changingEnd', this);
+                        ? (tb.value = _v)
+                        : tb.inputType == 'text'
+                            ? (tb.value = '\u2800')
+                            : (tb.value = Number(0).toString());
+                    tb.setInputVisibility(false);
+                    tb.dispatch('tds-textbox-changingEnd', tb);
                 }
                 if (ev.key == 'Escape') {
-                    this.setInputVisibility(false);
+                    tb.setInputVisibility(false);
                 }
             }, true);
-        });
+        }
     }
     reset() {
         this.setInputVisibility(false);
@@ -13760,6 +13788,17 @@ draw.add(lm('and my s̬ong', { x: 40, y: 110 }));
 draw.add(lm(21111977, { x: 40, y: 150 }));
 draw.add(lm(27111981, { x: 40, y: 170 }));
 draw.add(lm('08112006', { x: 40, y: 190 }));
+/** text boxes */
+let tb1 = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textbox({
+    label: la('hello', { x: 190, y: 120 }),
+    inputType: 'text',
+}).draggable();
+draw.add(tb1);
+let tb2 = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textbox({
+    label: la('1984', { x: 190, y: 140 }),
+    inputType: 'number',
+}).draggable();
+draw.add(tb2);
 /** slider demo item */
 let slidersGroup = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G().addClass('draggable');
 let sliderDemo = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.slider.demo(draw);
@@ -13768,7 +13807,7 @@ slidersGroup
     .radius(20)
     .fill({ color: '#EEEEEE' })
     .stroke({ color: '#D2D2D2', width: 1 });
-let hs = sliderDemo.horizontal;
+let hs = sliderDemo.horizontal.draggable(false);
 slidersGroup
     .move(90, 90)
     .draggable()
@@ -13778,10 +13817,35 @@ slidersGroup
     .add(sliderDemo.htwostate.move(280, 220))
     .add(sliderDemo.tickHor.move(280, 270))
     .add(sliderDemo.nonCirclePin.move(200, 400));
+sliderDemo.htwostate.draggable(false);
+sliderDemo.htwostate.on('tds-slider-valueChanged', (ev) => {
+    console.log(ev.detail.payload.value);
+});
 draw.add(slidersGroup);
 slidersGroup.move(200, 250);
 // list
 let ls = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.list(_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault).draggable();
+let b = [
+    {
+        itemPart: 'icon',
+        behavior: [
+            {
+                condition: 'normal',
+                attr: {
+                    fill: { color: 'transparent' },
+                    stroke: { color: 'red', width: 0.5 },
+                },
+            },
+            {
+                condition: 'onclick',
+                attr: { fill: { color: 'red' }, stroke: { color: 'red' } },
+            },
+        ],
+    },
+];
+let fi = ls.items[4];
+fi.behavior = b;
+fi.applyBehavior();
 draw.add(ls);
 ls.move(350, 50);
 // combobox
@@ -13797,7 +13861,7 @@ let cb = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.combobox(
     listAttr: _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrGroupDefault,
     selection: 3,
     title: cbt,
-}).draggable();
+}); // .draggable()
 draw.add(cb);
 cb.move(650, 50);
 //#endregion
