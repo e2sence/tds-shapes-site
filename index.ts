@@ -224,6 +224,20 @@ draw.add(
   shape.mitemCreator('Установить', { x: 650, y: 700 }).draggable()
 )
 
-console.log(isPointInCircle(698, 292, 700, 700, 400))
+draw.add(
+  shape
+    .mitemCreator('Перевести взгляд', { x: 850, y: 400 })
+    .draggable()
+)
+draw.add(shape.mitemCreator('Сесть', { x: 600, y: 200 }).draggable())
+draw.add(
+  shape.mitemCreator('Наклониться', { x: 750, y: 600 }).draggable()
+)
+
+draw.add(
+  shape
+    .mitemCreator('Very long element for acc...', { x: 550, y: 550 })
+    .draggable()
+)
 
 console.log(performance.now() - startMS)

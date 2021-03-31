@@ -11946,7 +11946,7 @@ wf) => {
         }
         // check factor
         if (wf) {
-            let rw = b.width() - (b.width() % wf) + wf;
+            let rw = b.width() - (b.width() % wf);
             b.width(rw);
         }
     });
@@ -12334,7 +12334,7 @@ const mitemCreator = (v, p) => {
             stroke: { color: 'black', width: 1 },
         },
         backgroundRule: ['indent', 'centered'],
-        indents: [4, 2, 4, 2],
+        indents: [4, 2, 18, 2],
         position: { x: p.x, y: p.y },
         widthFactor: 9,
     }, {
@@ -12380,12 +12380,10 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
                     this.anchors.forEach((this_el) => {
                         can.forEach((c_el) => {
                             let adist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
-                            if (adist < 22) {
+                            if (adist < 18) {
                                 ev.preventDefault();
                                 const { box } = ev.detail;
                                 ev.detail.handler.el.move(box.x - (box.x % 9), box.y - (box.y % 9));
-                                (0,_common__WEBPACK_IMPORTED_MODULE_1__.createPinPoint)(this.root(), c_el[0], c_el[1], 5, el.id(), undefined, undefined);
-                                (0,_common__WEBPACK_IMPORTED_MODULE_1__.createPinPoint)(this.root(), this_el[0], this_el[1], 5, this.id(), { color: 'green', width: 1 });
                                 return true;
                             }
                         });
@@ -12394,15 +12392,10 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
             });
         });
         this.on('dragend', (ev) => {
-            const { handler, box } = ev.detail;
-            ev.detail.handler.el.move(box.x - (box.x % 9), box.y - (box.y % 9));
+            const box = this.bbox();
+            this.move(box.x - (box.x % 9), box.y - (box.y % 9));
             // 639 288
             // 632 281
-            this.root()
-                .children()
-                .map((el) => {
-                el.hasClass('tds-pinpoint' + this.id()) && el.remove();
-            });
         });
         const bb = this.bbox();
         let tx = bb.x - (bb.x % this.widthFactor); //- this.widthFactor
@@ -14177,7 +14170,12 @@ draw.add(mit);
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Move tool', { x: 650, y: 300 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Machine time', { x: 700, y: 400 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Установить', { x: 650, y: 700 }).draggable());
-console.log((0,_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.isPointInCircle)(698, 292, 700, 700, 400));
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Перевести взгляд', { x: 850, y: 400 })
+    .draggable());
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Сесть', { x: 600, y: 200 }).draggable());
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Наклониться', { x: 750, y: 600 }).draggable());
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Very long element for acc...', { x: 550, y: 550 })
+    .draggable());
 console.log(performance.now() - startMS);
 
 })();
