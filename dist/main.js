@@ -11374,6 +11374,7 @@ __webpack_require__.r(__webpack_exports__);
  * @returns Rect object, <rect> node
  */
 const createRect = (attr) => {
+    var _a, _b;
     let outline = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect();
     outline
         .width(attr.width)
@@ -11382,8 +11383,8 @@ const createRect = (attr) => {
         .stroke(attr.stroke)
         .radius(attr.radius)
         .attr({
-        x: attr.position.x,
-        y: attr.position.y,
+        x: (_a = attr.position) === null || _a === void 0 ? void 0 : _a.x,
+        y: (_b = attr.position) === null || _b === void 0 ? void 0 : _b.y,
     });
     return outline;
 };
@@ -11543,9 +11544,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "vTo01": () => (/* binding */ vTo01),
 /* harmony export */   "rndX": () => (/* binding */ rndX),
 /* harmony export */   "objectMerge": () => (/* binding */ objectMerge),
+/* harmony export */   "getRandomColor": () => (/* binding */ getRandomColor),
+/* harmony export */   "isPointInCircle": () => (/* binding */ isPointInCircle),
+/* harmony export */   "distP": () => (/* binding */ distP),
+/* harmony export */   "createTempLine": () => (/* binding */ createTempLine),
+/* harmony export */   "createPinPoint": () => (/* binding */ createPinPoint),
 /* harmony export */   "ListAttrGroupDefault": () => (/* binding */ ListAttrGroupDefault),
 /* harmony export */   "ListAttrDefault": () => (/* binding */ ListAttrDefault)
 /* harmony export */ });
+/* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
+
+
 const iconPath = {
     rightChevron: 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z',
     dstack: 'M6.3 12C6.5 12 6.7 11.8 6.8 11.7L3.7 6.2C3.6 6.1 3.6 6.1 3.6 6 3.6 5.9 3.6 5.9 3.7 5.8L6.8 0.3C6.7 0.2 6.5 0 6.3 0 6.1 0 5.9 0.1 5.8 0.3L2.8 5.4C2.7 5.6 2.6 5.8 2.6 6 2.6 6.2 2.7 6.4 2.8 6.6L5.8 11.7C5.9 11.9 6.1 12 6.3 12ZM9.2 12C9.6 12 9.8 11.8 10 11.3L12.7 6.7C12.9 6.5 13 6.2 13 6 13 5.8 12.9 5.5 12.7 5.3L10 0.7C9.8 0.2 9.6 0 9.2 0 8.9 0 8.7 0.2 8.4 0.7L5.8 5.3C5.6 5.5 5.5 5.8 5.5 6 5.5 6.2 5.6 6.5 5.8 6.7L8.4 11.3C8.7 11.8 8.9 12 9.2 12ZM3.4 0.9C3.6 0.9 3.8 0.7 3.8 0.5 3.8 0.3 3.6 0.1 3.4 0.1 3.2 0.1 3 0.3 3 0.5 3 0.7 3.2 0.9 3.4 0.9ZM2.8 2C3 2 3.2 1.8 3.2 1.6 3.2 1.4 3 1.2 2.8 1.2 2.6 1.2 2.4 1.4 2.4 1.6 2.4 1.8 2.6 2 2.8 2ZM2.2 3.1C2.4 3.1 2.6 2.9 2.6 2.7 2.6 2.5 2.4 2.3 2.2 2.3 2 2.3 1.8 2.5 1.8 2.7 1.8 2.9 2 3.1 2.2 3.1ZM1.6 4.1C1.8 4.1 2 4 2 3.8 2 3.5 1.8 3.4 1.6 3.4 1.4 3.4 1.2 3.5 1.2 3.8 1.2 4 1.4 4.1 1.6 4.1ZM1 5.2C1.2 5.2 1.4 5.1 1.4 4.9 1.4 4.6 1.2 4.5 1 4.5 0.8 4.5 0.6 4.6 0.6 4.9 0.6 5.1 0.8 5.2 1 5.2ZM0.4 6.3C0.6 6.3 0.8 6.2 0.8 5.9 0.8 5.7 0.6 5.6 0.4 5.6 0.2 5.6 0 5.7 0 5.9 0 6.2 0.2 6.3 0.4 6.3ZM1 7.4C1.2 7.4 1.4 7.2 1.4 7 1.4 6.8 1.2 6.6 1 6.6 0.8 6.6 0.6 6.8 0.6 7 0.6 7.2 0.8 7.4 1 7.4ZM1.6 8.5C1.8 8.5 2 8.3 2 8.1 2 7.9 1.8 7.7 1.6 7.7 1.4 7.7 1.2 7.9 1.2 8.1 1.2 8.3 1.4 8.5 1.6 8.5ZM2.2 9.6C2.4 9.6 2.6 9.4 2.6 9.2 2.6 9 2.4 8.8 2.2 8.8 2 8.8 1.8 9 1.8 9.2 1.8 9.4 2 9.6 2.2 9.6ZM2.8 10.7C3 10.7 3.2 10.5 3.2 10.3 3.2 10.1 3 9.9 2.8 9.9 2.6 9.9 2.4 10.1 2.4 10.3 2.4 10.5 2.6 10.7 2.8 10.7ZM3.4 11.8C3.6 11.8 3.8 11.6 3.8 11.4 3.8 11.2 3.6 11 3.4 11 3.2 11 3 11.2 3 11.4 3 11.6 3.2 11.8 3.4 11.8Z',
@@ -11619,6 +11628,72 @@ const objectMerge = (s, t) => {
             !t[prop] ? (t[prop] = s[prop]) : 0;
         }
     });
+};
+/** random hex color */
+const getRandomColor = () => {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
+/**
+ * checks if coordinates are in a circle
+ *
+ * @param x x coordinate
+ * @param y y coordinate
+ * @param x1 circle x coordinate
+ * @param y1 circle y coordinate
+ * @param r circle radius
+ */
+const isPointInCircle = (x, y, x1, y1, r) => {
+    let distance = (x - x1) * (x - x1) + (y - y1) * (y - y1);
+    r *= r;
+    return distance < r;
+};
+/**
+ * distance from point to point (circle center...etc)
+ *
+ * @param x x coordinate
+ * @param y y coordinate
+ * @param x1 circle x coordinate
+ * @param y1 circle y coordinate
+ */
+const distP = (x, y, x1, y1) => {
+    return Math.sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y));
+};
+/** controled, 'auto erase' line from point to point */
+const createTempLine = (root, x, y, x1, y1, id, la) => {
+    root.children().map((el) => {
+        el.hasClass('tds-templine' + id) && el.remove();
+    });
+    !la && (la = { color: 'red', width: 1, dasharray: '5 2 5' });
+    root.add(new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Line()
+        .plot([
+        [x, y],
+        [x1, y1],
+    ])
+        .stroke({
+        color: la.color,
+        width: la.width,
+        dasharray: la.dasharray,
+    })
+        .addClass('tds-templine' + id));
+};
+const createPinPoint = (root, x, y, r, id, la, fd) => {
+    root.children().map((el) => {
+        el.hasClass('tds-pinpoint' + id) && el.remove();
+    });
+    !la && (la = { color: 'red', width: 1 });
+    !fd && (fd = { color: 'transparent' });
+    root.add(new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Circle()
+        .radius(r)
+        .stroke(Object.assign({}, la))
+        .fill(Object.assign({}, fd))
+        .cx(x)
+        .cy(y)
+        .addClass('tds-pinpoint' + id));
 };
 /**
  * list group config example
@@ -11793,6 +11868,7 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-label');
         (_a = attr.backgroundRule) !== null && _a !== void 0 ? _a : (attr.backgroundRule = ['none']);
         this.rules.push(...attr.backgroundRule);
+        attr.widthFactor && (this.widthFactor = attr.widthFactor);
         (_b = attr.indents) !== null && _b !== void 0 ? _b : (attr.indents = [0, 0, 0, 0]);
         this.indents = attr.indents;
         if (attr.title instanceof _title__WEBPACK_IMPORTED_MODULE_2__.title) {
@@ -11809,7 +11885,7 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 this.background = new _background__WEBPACK_IMPORTED_MODULE_3__.background(attr.background);
             }
         }
-        applyRules(this.title, this.background, this.rules, this.indents);
+        applyRules(this.title, this.background, this.rules, this.indents, this.widthFactor);
         this.background && this.add(this.background);
         this.add(this.title);
         attr.position && this.move(attr.position.x, attr.position.y);
@@ -11835,7 +11911,7 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.rules = [];
         this.rules.push(...r);
         this.indents = i;
-        applyRules(this.title, this.background, this.rules, this.indents);
+        applyRules(this.title, this.background, this.rules, this.indents, this.widthFactor);
     }
 }
 /**
@@ -11845,9 +11921,10 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
  * @param b background
  * @param r array of rules from TitleToBackgroundRules
  * @param i indents array [0,0,0,0] by default
+ * @param wf width factor
  */
-const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
-) => {
+const applyRules = (t, b, r, i, //| { sp: Position; tp: Position }
+wf) => {
     r.forEach((rule) => {
         switch (rule) {
             case 'centered':
@@ -11866,6 +11943,11 @@ const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
                 break;
             default:
                 break;
+        }
+        // check factor
+        if (wf) {
+            let rw = b.width() - (b.width() % wf) + wf;
+            b.width(rw);
         }
     });
 };
@@ -12210,6 +12292,185 @@ class listItemGrouped extends _listItem__WEBPACK_IMPORTED_MODULE_1__.listItem {
             this.applyBehavior();
             this.list.hide();
         });
+    }
+}
+
+
+/***/ }),
+
+/***/ "../tds-shapes/src/mitem.ts":
+/*!**********************************!*\
+  !*** ../tds-shapes/src/mitem.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "mitemCreator": () => (/* binding */ mitemCreator),
+/* harmony export */   "mitem": () => (/* binding */ mitem),
+/* harmony export */   "mitemOutline": () => (/* binding */ mitemOutline)
+/* harmony export */ });
+/* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
+/* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
+
+
+
+
+const mitemCreator = (v, p) => {
+    return new mitem({
+        title: {
+            value: v,
+            font: 'Menlo',
+            fontWeight: 'normal',
+            size: 12,
+            fill: { color: 'black' },
+        },
+        background: {
+            width: 5,
+            height: 5,
+            radius: 4,
+            fill: { color: '#FFFFFF' },
+            stroke: { color: 'black', width: 1 },
+        },
+        backgroundRule: ['indent', 'centered'],
+        indents: [4, 2, 4, 2],
+        position: { x: p.x, y: p.y },
+        widthFactor: 9,
+    }, {
+        border: {
+            width: 1,
+            height: 1,
+            fill: { color: 'transparent' },
+            stroke: { color: '#3F8EFC', width: 1, dasharray: '5 5' },
+            radius: 3,
+        },
+        indents: [2, 2, 2, 2],
+    });
+};
+/** base item for tds-core */
+class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
+    constructor(attr, outline) {
+        super(attr);
+        this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-mitem');
+        // set outline
+        this.outline = new mitemOutline(outline.border, outline.indents);
+        this.setOutline();
+        this.add(this.outline);
+        this.outline.hide();
+        this.on('mouseenter', () => {
+            this.outline.show();
+        });
+        this.on('mouseleave', () => {
+            this.outline.hide();
+        });
+        this.on('dragmove', (ev) => {
+            let cb = this.bbox();
+            // find mitem instances
+            this.parent()
+                .children()
+                .filter((el) => el.hasClass('tds-mitem') && el != this)
+                .forEach((el) => {
+                let elb = el.bbox();
+                // mitem in range
+                let dist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(cb.x, cb.y, elb.x, elb.y);
+                if (dist < 200 && el instanceof mitem) {
+                    // el - element in range
+                    let can = el.anchors;
+                    this.anchors.forEach((this_el) => {
+                        can.forEach((c_el) => {
+                            let adist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
+                            if (adist < 22) {
+                                ev.preventDefault();
+                                const { box } = ev.detail;
+                                ev.detail.handler.el.move(box.x - (box.x % 9), box.y - (box.y % 9));
+                                (0,_common__WEBPACK_IMPORTED_MODULE_1__.createPinPoint)(this.root(), c_el[0], c_el[1], 5, el.id(), undefined, undefined);
+                                (0,_common__WEBPACK_IMPORTED_MODULE_1__.createPinPoint)(this.root(), this_el[0], this_el[1], 5, this.id(), { color: 'green', width: 1 });
+                                return true;
+                            }
+                        });
+                    });
+                }
+            });
+        });
+        this.on('dragend', (ev) => {
+            const { handler, box } = ev.detail;
+            ev.detail.handler.el.move(box.x - (box.x % 9), box.y - (box.y % 9));
+            // 639 288
+            // 632 281
+            this.root()
+                .children()
+                .map((el) => {
+                el.hasClass('tds-pinpoint' + this.id()) && el.remove();
+            });
+        });
+        const bb = this.bbox();
+        let tx = bb.x - (bb.x % this.widthFactor); //- this.widthFactor
+        let ty = bb.y - (bb.y % this.widthFactor); //- this.widthFactor
+        this.move(tx, ty);
+        // console.log(this.bbox())
+    }
+    /**
+     * 1 | 2
+     * -----
+     * 4 | 3
+     */
+    /** control of the quarter approach to the goal */
+    getQuater(dx, dy) {
+        if (dx >= 0 && dy >= 0)
+            return 1;
+        if (dx <= 0 && dy >= 0)
+            return 2;
+        if (dx <= 0 && dy <= 0)
+            return 3;
+        if (dx >= 0 && dy <= 0)
+            return 4;
+        return 5;
+    }
+    /** get string value from item */
+    get titleString() {
+        return this.value;
+    }
+    /** set string value to item */
+    set titleString(v) {
+        this.value = v;
+        this.setOutline();
+    }
+    /** stick points */
+    get anchors() {
+        let bb = this.background.bbox();
+        return [
+            [bb.x, bb.y + bb.height / 2],
+            [bb.x, bb.y],
+            [bb.x + bb.width / 2, bb.y],
+            [bb.x2, bb.y],
+            [bb.x2, bb.y + bb.height / 2],
+            [bb.x2, bb.y2],
+            [bb.x + bb.width / 2, bb.y2],
+            [bb.x, bb.y2],
+        ];
+    }
+    /** set outline size and position according to its indents  */
+    setOutline() {
+        let bb = this.background.bbox();
+        let b = this.outline;
+        b.border.width(bb.width + b.indents[0] + b.indents[2]);
+        b.border.height(bb.height + b.indents[1] + b.indents[3]);
+        b.x(bb.x - b.indents[0]);
+        b.y(bb.y - b.indents[0]);
+    }
+}
+/** the stroke line is activated when you hover over an object */
+class mitemOutline extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
+    /** create outline instance */
+    constructor(attr, i) {
+        super();
+        this.indents = i;
+        this.border = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
+            .fill(Object.assign({}, attr.fill))
+            .stroke(Object.assign({}, attr.stroke))
+            .radius(attr.radius);
+        this.add(this.border);
     }
 }
 
@@ -13554,6 +13815,7 @@ __webpack_require__.r(__webpack_exports__);
  * @returns Text object, <text> node
  */
 const createText = (attr) => {
+    var _a, _b;
     let title = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Text();
     // direct set value to node
     title.node.innerHTML = attr.value;
@@ -13566,8 +13828,8 @@ const createText = (attr) => {
     title.attr({
         fill: attr.fill.color,
         'fill-opacity': attr.fill.opacity,
-        x: attr.position.x,
-        y: attr.position.y + ts.height - ts.y2,
+        x: (_a = attr.position) === null || _a === void 0 ? void 0 : _a.x,
+        y: ((_b = attr.position) === null || _b === void 0 ? void 0 : _b.y) + ts.height - ts.y2,
     });
     return title;
 };
@@ -13613,7 +13875,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ListAttrDefault": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.ListAttrDefault),
 /* harmony export */   "ListAttrGroupDefault": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.ListAttrGroupDefault),
 /* harmony export */   "StyleSizeNumber": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.StyleSizeNumber),
+/* harmony export */   "createPinPoint": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.createPinPoint),
+/* harmony export */   "createTempLine": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.createTempLine),
+/* harmony export */   "distP": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.distP),
+/* harmony export */   "getRandomColor": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.getRandomColor),
 /* harmony export */   "iconPath": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.iconPath),
+/* harmony export */   "isPointInCircle": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.isPointInCircle),
 /* harmony export */   "objectMerge": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.objectMerge),
 /* harmony export */   "rndX": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.rndX),
 /* harmony export */   "vTo01": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.vTo01),
@@ -13628,7 +13895,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "listItem": () => (/* reexport safe */ _src_listItem__WEBPACK_IMPORTED_MODULE_7__.listItem),
 /* harmony export */   "listItemGrouped": () => (/* reexport safe */ _src_listItemGrouped__WEBPACK_IMPORTED_MODULE_8__.listItemGrouped),
 /* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_9__.list),
-/* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_10__.combobox)
+/* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_10__.combobox),
+/* harmony export */   "mitem": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitem),
+/* harmony export */   "mitemCreator": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemCreator),
+/* harmony export */   "mitemOutline": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemOutline)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13641,6 +13911,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_listItemGrouped__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/listItemGrouped */ "../tds-shapes/src/listItemGrouped.ts");
 /* harmony import */ var _src_list__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./src/list */ "../tds-shapes/src/list.ts");
 /* harmony import */ var _src_combobox__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./src/combobox */ "../tds-shapes/src/combobox.ts");
+/* harmony import */ var _src_mitem__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./src/mitem */ "../tds-shapes/src/mitem.ts");
+
 
 
 
@@ -13822,7 +14094,7 @@ sliderDemo.htwostate.on('tds-slider-valueChanged', (ev) => {
     console.log(ev.detail.payload.value);
 });
 draw.add(slidersGroup);
-slidersGroup.move(200, 250);
+slidersGroup.move(100, 250);
 // list
 let ls = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.list(_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrDefault).draggable();
 let b = [
@@ -13864,7 +14136,6 @@ let cb = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.combobox(
 }); // .draggable()
 draw.add(cb);
 cb.move(650, 50);
-//#endregion
 let lia = {
     label: {
         title: {
@@ -13897,8 +14168,16 @@ let lia = {
     },
 };
 let gi = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.listItemGrouped(lia, _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.ListAttrGroupDefault).draggable();
-gi.move(650, 250);
+gi.move(650, 100);
 draw.add(gi);
+//#endregion
+let mit = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Reach by hand', { x: 700, y: 230 })
+    .draggable();
+draw.add(mit);
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Move tool', { x: 650, y: 300 }).draggable());
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Machine time', { x: 700, y: 400 }).draggable());
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Установить', { x: 650, y: 700 }).draggable());
+console.log((0,_tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__.isPointInCircle)(698, 292, 700, 700, 400));
 console.log(performance.now() - startMS);
 
 })();

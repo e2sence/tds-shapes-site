@@ -5,7 +5,10 @@ import * as shape from '../tds-shapes/tds-shapes-entry'
 import { G } from '@svgdotjs/svg.js'
 
 import {
+  Create_ID,
+  getRandomColor,
   iconPath,
+  isPointInCircle,
   ListAttrDefault,
   ListAttrGroupDefault,
   TitleStyle,
@@ -118,7 +121,7 @@ sliderDemo.htwostate.on(
 
 draw.add(slidersGroup)
 
-slidersGroup.move(200, 250)
+slidersGroup.move(100, 250)
 
 // list
 let ls = new shape.list(ListAttrDefault).draggable()
@@ -164,8 +167,6 @@ let cb = new shape.combobox({
 draw.add(cb)
 cb.move(650, 50)
 
-//#endregion
-
 let lia: ListItemAttr = {
   label: {
     title: {
@@ -202,7 +203,27 @@ let gi = new shape.listItemGrouped(
   lia,
   ListAttrGroupDefault
 ).draggable()
-gi.move(650, 250)
+gi.move(650, 100)
 draw.add(gi)
+
+//#endregion
+
+let mit = shape
+  .mitemCreator('Reach by hand', { x: 700, y: 230 })
+  .draggable()
+
+draw.add(mit)
+
+draw.add(
+  shape.mitemCreator('Move tool', { x: 650, y: 300 }).draggable()
+)
+draw.add(
+  shape.mitemCreator('Machine time', { x: 700, y: 400 }).draggable()
+)
+draw.add(
+  shape.mitemCreator('Установить', { x: 650, y: 700 }).draggable()
+)
+
+console.log(isPointInCircle(698, 292, 700, 700, 400))
 
 console.log(performance.now() - startMS)
