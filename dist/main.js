@@ -12355,18 +12355,9 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
     constructor(attr, outline, wFactor) {
         super(attr);
         this.fromFreeDrag = true;
+        this.snaped = false;
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-mitem');
         this.widthFactor = wFactor;
-        // set outline
-        this.outline = new mitemOutline(outline.border, outline.indents);
-        this.add(this.outline);
-        this.outline.hide();
-        this.on('mouseenter', () => {
-            this.outline.show();
-        });
-        this.on('mouseleave', () => {
-            this.outline.hide();
-        });
         // correct width according to widthFactor
         this.correctWidth();
         // set initial position to grid
@@ -12374,50 +12365,75 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
         let tx = bb.x - (bb.x % this.widthFactor) + attr.indents[1];
         let ty = bb.y - (bb.y % this.widthFactor) + attr.indents[3];
         this.move(tx, ty);
+        // set outline
+        this.outline = new mitemOutline(outline.border, outline.indents);
+        this.add(this.outline);
+        this.outline.hide();
+        this.on('mouseenter', () => {
+            this.outline.show();
+        });
+        this.on('touchstart', () => {
+            console.log('ts');
+            this.outline.show();
+        });
+        this.on('mouseleave', () => {
+            this.outline.hide();
+        });
         // correct outline
         this.setOutline();
         this.on('dragmove', (ev) => {
             snapHandler(ev, this);
         });
         function snapHandler(ev, inst) {
-            let cb = inst.bbox();
-            // find mitem instances
-            inst
-                .parent()
-                .children()
-                .filter((el) => el.hasClass('tds-mitem') && el != inst)
-                .forEach((el) => {
-                let elb = el.bbox();
-                // get distance to mitems
-                let dist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(cb.x, cb.y, elb.x, elb.y);
-                if (dist < MITEM_FRIENDS_ZONE && el instanceof mitem) {
-                    // el - mitem in range
-                    let can = el.anchors;
-                    inst.anchors.forEach((this_el) => {
-                        can.forEach((c_el) => {
-                            let adist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
-                            // turn on snap to grid mode
-                            if (adist < inst.widthFactor) {
-                                //   let dx = this_el[0] - c_el[0]
-                                //   let dy = this_el[1] - c_el[1]
-                                //   let q = inst.getQuater(dx, dy)
-                                //   console.log(`${dx} ${dy} ${q}`)
-                                ev.preventDefault();
-                                const { box } = ev.detail;
-                                ev.detail.handler.el.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
-                                //   inst.fromFreeDrag = false
-                                return true;
-                            }
+            //
+            if (!inst.snaped) {
+                let cb = inst.bbox();
+                // find mitem instances
+                inst
+                    .parent()
+                    .children()
+                    .filter((el) => el.hasClass('tds-mitem') && el != inst)
+                    .forEach((el) => {
+                    let elb = el.bbox();
+                    // get distance to mitems
+                    let dist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(cb.x, cb.y, elb.x, elb.y);
+                    if (dist < MITEM_FRIENDS_ZONE && el instanceof mitem) {
+                        // el - mitem in range
+                        let can = el.anchors;
+                        inst.anchors.forEach((this_el) => {
+                            can.forEach((c_el) => {
+                                let adist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
+                                // turn on snap to grid mode
+                                if (adist < inst.widthFactor) {
+                                    let dx = this_el[0] - c_el[0];
+                                    let dy = this_el[1] - c_el[1];
+                                    let q = inst.getQuater(dx, dy);
+                                    console.log(q);
+                                    ev.preventDefault();
+                                    const { box } = ev.detail;
+                                    if (!inst.snaped) {
+                                        inst.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
+                                        inst.snaped = true;
+                                    }
+                                    return true;
+                                }
+                            });
                         });
-                    });
-                }
-            });
+                    }
+                });
+            }
+            else {
+                ev.preventDefault();
+                const { box } = ev.detail;
+                inst.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
+            }
         }
         this.on('dragend', () => {
             //   if (this.fromFreeDrag) {
             // set position to grid
             const box = this.background.bbox();
             this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
+            this.snaped = false;
             //   } else {
             //     this.fromFreeDrag = true
             //   }
