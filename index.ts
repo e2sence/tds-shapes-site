@@ -214,9 +214,11 @@ let mit = shape
 
 draw.add(mit)
 
-draw.add(
-  shape.mitemCreator('Move tool', { x: 650, y: 300 }).draggable()
-)
+// setInterval(() => {
+//   mit.titleString = Create_ID()
+// }, 5000)
+
+draw.add(shape.mitemCreator('Move tool', { x: 0, y: 0 }).draggable())
 draw.add(
   shape.mitemCreator('Machine time', { x: 700, y: 400 }).draggable()
 )

@@ -11861,6 +11861,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
+    // widthFactor: number
     constructor(attr) {
         var _a, _b;
         super();
@@ -11868,7 +11869,7 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-label');
         (_a = attr.backgroundRule) !== null && _a !== void 0 ? _a : (attr.backgroundRule = ['none']);
         this.rules.push(...attr.backgroundRule);
-        attr.widthFactor && (this.widthFactor = attr.widthFactor);
+        // attr.widthFactor && (this.widthFactor = attr.widthFactor)
         (_b = attr.indents) !== null && _b !== void 0 ? _b : (attr.indents = [0, 0, 0, 0]);
         this.indents = attr.indents;
         if (attr.title instanceof _title__WEBPACK_IMPORTED_MODULE_2__.title) {
@@ -11885,7 +11886,9 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 this.background = new _background__WEBPACK_IMPORTED_MODULE_3__.background(attr.background);
             }
         }
-        applyRules(this.title, this.background, this.rules, this.indents, this.widthFactor);
+        applyRules(this.title, this.background, this.rules, this.indents
+        // this.widthFactor
+        );
         this.background && this.add(this.background);
         this.add(this.title);
         attr.position && this.move(attr.position.x, attr.position.y);
@@ -11911,7 +11914,9 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.rules = [];
         this.rules.push(...r);
         this.indents = i;
-        applyRules(this.title, this.background, this.rules, this.indents, this.widthFactor);
+        applyRules(this.title, this.background, this.rules, this.indents
+        // this.widthFactor
+        );
     }
 }
 /**
@@ -11923,8 +11928,9 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
  * @param i indents array [0,0,0,0] by default
  * @param wf width factor
  */
-const applyRules = (t, b, r, i, //| { sp: Position; tp: Position }
-wf) => {
+const applyRules = (t, b, r, i //| { sp: Position; tp: Position }
+// wf?: number
+) => {
     r.forEach((rule) => {
         switch (rule) {
             case 'centered':
@@ -11945,10 +11951,6 @@ wf) => {
                 break;
         }
         // check factor
-        if (wf) {
-            let rw = b.width() - (b.width() % wf);
-            b.width(rw);
-        }
     });
 };
 
@@ -12316,7 +12318,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 const mitemCreator = (v, p) => {
     return new mitem({
         title: {
@@ -12334,9 +12335,8 @@ const mitemCreator = (v, p) => {
             stroke: { color: 'black', width: 1 },
         },
         backgroundRule: ['indent', 'centered'],
-        indents: [4, 2, 18, 2],
+        indents: [4, 2, 4, 2],
         position: { x: p.x, y: p.y },
-        widthFactor: 9,
     }, {
         border: {
             width: 1,
@@ -12346,16 +12346,19 @@ const mitemCreator = (v, p) => {
             radius: 3,
         },
         indents: [2, 2, 2, 2],
-    });
+    }, 9);
 };
+const MITEM_FRIENDS_ZONE = 200;
+const GRID_STEP = 9;
 /** base item for tds-core */
 class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
-    constructor(attr, outline) {
+    constructor(attr, outline, wFactor) {
         super(attr);
+        this.fromFreeDrag = true;
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-mitem');
+        this.widthFactor = wFactor;
         // set outline
         this.outline = new mitemOutline(outline.border, outline.indents);
-        this.setOutline();
         this.add(this.outline);
         this.outline.hide();
         this.on('mouseenter', () => {
@@ -12364,61 +12367,95 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
         this.on('mouseleave', () => {
             this.outline.hide();
         });
+        // correct width according to widthFactor
+        this.correctWidth();
+        // set initial position to grid
+        const bb = this.background.bbox();
+        let tx = bb.x - (bb.x % this.widthFactor) + attr.indents[1];
+        let ty = bb.y - (bb.y % this.widthFactor) + attr.indents[3];
+        this.move(tx, ty);
+        // correct outline
+        this.setOutline();
         this.on('dragmove', (ev) => {
-            let cb = this.bbox();
+            snapHandler(ev, this);
+        });
+        function snapHandler(ev, inst) {
+            let cb = inst.bbox();
             // find mitem instances
-            this.parent()
+            inst
+                .parent()
                 .children()
-                .filter((el) => el.hasClass('tds-mitem') && el != this)
+                .filter((el) => el.hasClass('tds-mitem') && el != inst)
                 .forEach((el) => {
                 let elb = el.bbox();
-                // mitem in range
+                // get distance to mitems
                 let dist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(cb.x, cb.y, elb.x, elb.y);
-                if (dist < 200 && el instanceof mitem) {
-                    // el - element in range
+                if (dist < MITEM_FRIENDS_ZONE && el instanceof mitem) {
+                    // el - mitem in range
                     let can = el.anchors;
-                    this.anchors.forEach((this_el) => {
+                    inst.anchors.forEach((this_el) => {
                         can.forEach((c_el) => {
                             let adist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
-                            if (adist < 18) {
+                            // turn on snap to grid mode
+                            if (adist < inst.widthFactor) {
+                                //   let dx = this_el[0] - c_el[0]
+                                //   let dy = this_el[1] - c_el[1]
+                                //   let q = inst.getQuater(dx, dy)
+                                //   console.log(`${dx} ${dy} ${q}`)
                                 ev.preventDefault();
                                 const { box } = ev.detail;
-                                ev.detail.handler.el.move(box.x - (box.x % 9), box.y - (box.y % 9));
+                                ev.detail.handler.el.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
+                                //   inst.fromFreeDrag = false
                                 return true;
                             }
                         });
                     });
                 }
             });
+        }
+        this.on('dragend', () => {
+            //   if (this.fromFreeDrag) {
+            // set position to grid
+            const box = this.background.bbox();
+            this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
+            //   } else {
+            //     this.fromFreeDrag = true
+            //   }
         });
-        this.on('dragend', (ev) => {
-            const box = this.bbox();
-            this.move(box.x - (box.x % 9), box.y - (box.y % 9));
-            // 639 288
-            // 632 281
-        });
-        const bb = this.bbox();
-        let tx = bb.x - (bb.x % this.widthFactor); //- this.widthFactor
-        let ty = bb.y - (bb.y % this.widthFactor); //- this.widthFactor
-        this.move(tx, ty);
-        // console.log(this.bbox())
     }
     /**
-     * 1 | 2
-     * -----
-     * 4 | 3
+     *          41
+     *        4 | 1
+     *     34 ----- 12
+     *        3 | 2
+     *          23
      */
     /** control of the quarter approach to the goal */
     getQuater(dx, dy) {
-        if (dx >= 0 && dy >= 0)
+        if (dx > 0 && dy < 0)
             return 1;
-        if (dx <= 0 && dy >= 0)
+        if (dx > 0 && dy > 0)
             return 2;
-        if (dx <= 0 && dy <= 0)
+        if (dx < 0 && dy > 0)
             return 3;
-        if (dx >= 0 && dy <= 0)
+        if (dx < 0 && dy < 0)
             return 4;
+        if (dx > 0 && dy == 0)
+            return 12;
+        if (dx == 0 && dy > 0)
+            return 23;
+        if (dx < 0 && dy == 0)
+            return 34;
+        if (dx == 0 && dy < 0)
+            return 41;
+        if (dx == 0 && dy == 0)
+            return 5;
         return 5;
+    }
+    /**  correct width according to widthFactor */
+    correctWidth() {
+        let curWidth = this.background.width();
+        this.background.width(curWidth - (curWidth % this.widthFactor) + this.widthFactor);
     }
     /** get string value from item */
     get titleString() {
@@ -12427,6 +12464,8 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
     /** set string value to item */
     set titleString(v) {
         this.value = v;
+        // correct width according to width factor
+        this.correctWidth();
         this.setOutline();
     }
     /** stick points */
@@ -14167,7 +14206,10 @@ draw.add(gi);
 let mit = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Reach by hand', { x: 700, y: 230 })
     .draggable();
 draw.add(mit);
-draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Move tool', { x: 650, y: 300 }).draggable());
+// setInterval(() => {
+//   mit.titleString = Create_ID()
+// }, 5000)
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Move tool', { x: 0, y: 0 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Machine time', { x: 700, y: 400 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Установить', { x: 650, y: 700 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Перевести взгляд', { x: 850, y: 400 })
