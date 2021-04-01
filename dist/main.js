@@ -12309,13 +12309,10 @@ class listItemGrouped extends _listItem__WEBPACK_IMPORTED_MODULE_1__.listItem {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "mitemCreator": () => (/* binding */ mitemCreator),
-/* harmony export */   "mitem": () => (/* binding */ mitem),
-/* harmony export */   "mitemOutline": () => (/* binding */ mitemOutline)
+/* harmony export */   "mitem": () => (/* binding */ mitem)
 /* harmony export */ });
-/* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
-/* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
-
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
+/* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
 
 
 const mitemCreator = (v, p) => {
@@ -12337,50 +12334,31 @@ const mitemCreator = (v, p) => {
         backgroundRule: ['indent', 'centered'],
         indents: [4, 2, 4, 2],
         position: { x: p.x, y: p.y },
-    }, {
-        border: {
-            width: 1,
-            height: 1,
-            fill: { color: 'transparent' },
-            stroke: { color: '#3F8EFC', width: 1, dasharray: '5 5' },
-            radius: 3,
-        },
-        indents: [2, 2, 2, 2],
     }, 9);
 };
 const MITEM_FRIENDS_ZONE = 200;
-const GRID_STEP = 9;
+const GRID_STEP = 18;
 /** base item for tds-core */
-class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
-    constructor(attr, outline, wFactor) {
+class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
+    constructor(attr, wFactor) {
         super(attr);
-        this.fromFreeDrag = true;
         this.snaped = false;
-        this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-mitem');
+        this.id((0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)()).addClass('tds-mitem');
         this.widthFactor = wFactor;
         // correct width according to widthFactor
         this.correctWidth();
         // set initial position to grid
         const bb = this.background.bbox();
-        let tx = bb.x - (bb.x % this.widthFactor) + attr.indents[1];
-        let ty = bb.y - (bb.y % this.widthFactor) + attr.indents[3];
+        let tx = bb.x - (bb.x % this.widthFactor);
+        let ty = bb.y - (bb.y % this.widthFactor);
         this.move(tx, ty);
-        // set outline
-        this.outline = new mitemOutline(outline.border, outline.indents);
-        this.add(this.outline);
-        this.outline.hide();
         this.on('mouseenter', () => {
-            this.outline.show();
-        });
-        this.on('touchstart', () => {
-            console.log('ts');
-            this.outline.show();
+            this.background.stroke({ color: '#E8871E', width: 2 });
+            this.front();
         });
         this.on('mouseleave', () => {
-            this.outline.hide();
+            this.background.stroke({ color: 'black', width: 1 });
         });
-        // correct outline
-        this.setOutline();
         this.on('dragmove', (ev) => {
             snapHandler(ev, this);
         });
@@ -12396,21 +12374,17 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
                     .forEach((el) => {
                     let elb = el.bbox();
                     // get distance to mitems
-                    let dist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(cb.x, cb.y, elb.x, elb.y);
+                    let dist = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(cb.x, cb.y, elb.x, elb.y);
                     if (dist < MITEM_FRIENDS_ZONE && el instanceof mitem) {
                         // el - mitem in range
                         let can = el.anchors;
                         inst.anchors.forEach((this_el) => {
                             can.forEach((c_el) => {
-                                let adist = (0,_common__WEBPACK_IMPORTED_MODULE_1__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
+                                let adist = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
                                 // turn on snap to grid mode
                                 if (adist < inst.widthFactor) {
-                                    let dx = this_el[0] - c_el[0];
-                                    let dy = this_el[1] - c_el[1];
-                                    let q = inst.getQuater(dx, dy);
-                                    console.log(q);
-                                    ev.preventDefault();
                                     const { box } = ev.detail;
+                                    ev.preventDefault();
                                     if (!inst.snaped) {
                                         inst.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
                                         inst.snaped = true;
@@ -12423,50 +12397,16 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
                 });
             }
             else {
-                ev.preventDefault();
                 const { box } = ev.detail;
+                ev.preventDefault();
                 inst.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
             }
         }
         this.on('dragend', () => {
-            //   if (this.fromFreeDrag) {
-            // set position to grid
             const box = this.background.bbox();
             this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
             this.snaped = false;
-            //   } else {
-            //     this.fromFreeDrag = true
-            //   }
         });
-    }
-    /**
-     *          41
-     *        4 | 1
-     *     34 ----- 12
-     *        3 | 2
-     *          23
-     */
-    /** control of the quarter approach to the goal */
-    getQuater(dx, dy) {
-        if (dx > 0 && dy < 0)
-            return 1;
-        if (dx > 0 && dy > 0)
-            return 2;
-        if (dx < 0 && dy > 0)
-            return 3;
-        if (dx < 0 && dy < 0)
-            return 4;
-        if (dx > 0 && dy == 0)
-            return 12;
-        if (dx == 0 && dy > 0)
-            return 23;
-        if (dx < 0 && dy == 0)
-            return 34;
-        if (dx == 0 && dy < 0)
-            return 41;
-        if (dx == 0 && dy == 0)
-            return 5;
-        return 5;
     }
     /**  correct width according to widthFactor */
     correctWidth() {
@@ -12482,7 +12422,6 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
         this.value = v;
         // correct width according to width factor
         this.correctWidth();
-        this.setOutline();
     }
     /** stick points */
     get anchors() {
@@ -12497,28 +12436,6 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
             [bb.x + bb.width / 2, bb.y2],
             [bb.x, bb.y2],
         ];
-    }
-    /** set outline size and position according to its indents  */
-    setOutline() {
-        let bb = this.background.bbox();
-        let b = this.outline;
-        b.border.width(bb.width + b.indents[0] + b.indents[2]);
-        b.border.height(bb.height + b.indents[1] + b.indents[3]);
-        b.x(bb.x - b.indents[0]);
-        b.y(bb.y - b.indents[0]);
-    }
-}
-/** the stroke line is activated when you hover over an object */
-class mitemOutline extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
-    /** create outline instance */
-    constructor(attr, i) {
-        super();
-        this.indents = i;
-        this.border = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
-            .fill(Object.assign({}, attr.fill))
-            .stroke(Object.assign({}, attr.stroke))
-            .radius(attr.radius);
-        this.add(this.border);
     }
 }
 
@@ -13945,8 +13862,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_9__.list),
 /* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_10__.combobox),
 /* harmony export */   "mitem": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitem),
-/* harmony export */   "mitemCreator": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemCreator),
-/* harmony export */   "mitemOutline": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemOutline)
+/* harmony export */   "mitemCreator": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemCreator)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
