@@ -13824,7 +13824,7 @@ const textareaDefStyle = {
     fill: { color: '#D2D2D2' },
     stroke: { color: '#999999', width: 1 },
     radius: 6,
-    position: { x: 320, y: 700 },
+    position: { x: 0, y: 0 },
 };
 /** default style for single row */
 const extendsTittleDefStyle = {
@@ -13862,6 +13862,10 @@ class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.maxRows = 0;
         /** dom element id */
         this.inputID = (0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)();
+        if (attr.position) {
+            attr.body.position.x += attr.position.x;
+            attr.body.position.y += attr.position.y;
+        }
         // body
         this.body = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
             .width(attr.body.width)
@@ -13924,7 +13928,7 @@ class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             // DOM string of input
             let inputHTML = `<textarea id="${ta.inputID}" 
                                     class="txtinput"
-                                    style="width:90%;height:90%;font-family:Menlo;font-size:"12">${_v}</textarea>`;
+                                    style="resize:none;width:90%;height:90%;font-family:Menlo;font-size:"12">${_v}</textarea>`;
             // show input with new data
             ta.input.node.innerHTML = inputHTML;
             ta.setInputVisibility(true);
@@ -14611,6 +14615,7 @@ draw.on('tds-mitem-directSelect', (ev) => {
     });
 });
 let tt = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textarea({
+    position: { x: 320, y: 700 },
     body: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textareaDefStyle,
     rowsTitleStyle: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.extendsTittleDefStyle,
     headerTitleStyle: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.extendsHeaderDefStyle,

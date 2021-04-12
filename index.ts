@@ -264,6 +264,7 @@ draw.on('tds-mitem-directSelect', (ev: CustomEvent) => {
 })
 
 let tt = new textarea({
+  position: { x: 320, y: 700 },
   body: textareaDefStyle,
   rowsTitleStyle: extendsTittleDefStyle,
   headerTitleStyle: extendsHeaderDefStyle,
