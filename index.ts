@@ -13,11 +13,19 @@ import {
   ListAttrGroupDefault,
   TitleStyle,
 } from '../tds-shapes/src/common'
-import { ListItemAttr } from '../tds-shapes/tds-shapes-entry'
+import {
+  extendsTittleDefStyle,
+  // extendsTittleDefStyle,
+  ListItemAttr,
+  mitem,
+  textarea,
+  textareaDefStyle,
+} from '../tds-shapes/tds-shapes-entry'
 import {
   Behavior,
   ItemPartsBehavior,
 } from '../tds-shapes/src/listItem'
+import { textbox } from '../tds-shapes/src/textbox'
 
 const startMS = performance.now()
 
@@ -89,6 +97,12 @@ let tb2 = new shape.textbox({
   inputType: 'number',
 }).draggable()
 draw.add(tb2)
+
+let tb3 = new shape.textbox({
+  label: la('1984 long data element', { x: 190, y: 160 }),
+  inputType: 'text',
+}).draggable()
+draw.add(tb3)
 
 /** slider demo item */
 let slidersGroup = new G().addClass('draggable')
@@ -214,11 +228,9 @@ let mit = shape
 
 draw.add(mit)
 
-// setInterval(() => {
-//   mit.titleString = Create_ID()
-// }, 5000)
-
-draw.add(shape.mitemCreator('Move tool', { x: 0, y: 0 }).draggable())
+draw.add(
+  shape.mitemCreator('Move tool', { x: 610, y: 300 }).draggable()
+)
 draw.add(
   shape.mitemCreator('Machine time', { x: 700, y: 400 }).draggable()
 )
@@ -241,5 +253,21 @@ draw.add(
     .mitemCreator('Very long element for acc...', { x: 550, y: 550 })
     .draggable()
 )
+
+draw.on('tds-mitem-directSelect', (ev: CustomEvent) => {
+  draw.children().map((el) => {
+    el instanceof mitem &&
+      el.id() != ev.detail.id() &&
+      (el.selected = false)
+  })
+})
+
+let tt = new textarea({
+  body: textareaDefStyle,
+  rowsTitleStyle: extendsTittleDefStyle,
+  data:
+    'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
+}).draggable()
+draw.add(tt)
 
 console.log(performance.now() - startMS)

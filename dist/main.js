@@ -11425,13 +11425,23 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         super();
         this.pdy = 0;
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-combobox');
+        !attr.position && (attr.position = { x: 0, y: 0 });
         // set title
-        attr.title && (this.title = new _title__WEBPACK_IMPORTED_MODULE_3__.title(attr.title));
+        attr.title &&
+            ((attr.title.position.x += attr.position.x),
+                (attr.title.position.y += attr.position.y),
+                (this.title = new _title__WEBPACK_IMPORTED_MODULE_3__.title(attr.title)));
         // set initial state
         this.state = 'openend';
+        !attr.position && (attr.position = { x: 0, y: 0 });
+        !attr.listAttr.position &&
+            (attr.listAttr.position = { x: 0, y: 0 });
         // create list
+        attr.listAttr.position.x += attr.position.x;
+        attr.listAttr.position.y += attr.position.y;
         this.list = new _list__WEBPACK_IMPORTED_MODULE_2__.list(Object.assign({}, attr.listAttr));
         // set selection
+        // let r = attr.selection <= 0 && 0
         this.curntSelection = this.list.items[attr.selection];
         // add list to instance
         this.add(this.list);
@@ -11439,6 +11449,7 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.initialSet();
         // add title
         this.add(this.title);
+        //? move it
         attr.autohide &&
             this.on('mouseleave', () => {
                 this.state == 'openend' && this.switchState();
@@ -11513,6 +11524,8 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             el.condition = 'normal';
             el.applyBehavior();
         });
+        this.dispatch('tds-combobox-hidelist', this);
+        this.dispatch('tds-combobox-itemselected', this);
     }
     showList() {
         // show list
@@ -11524,6 +11537,7 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.curntSelection.applyBehavior();
         // move selection to its initial position
         this.curntSelection.dmove(0, this.pdy);
+        this.dispatch('tds-combobox-showlist', this);
     }
 }
 
@@ -11549,6 +11563,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "distP": () => (/* binding */ distP),
 /* harmony export */   "createTempLine": () => (/* binding */ createTempLine),
 /* harmony export */   "createPinPoint": () => (/* binding */ createPinPoint),
+/* harmony export */   "shrinkString": () => (/* binding */ shrinkString),
 /* harmony export */   "ListAttrGroupDefault": () => (/* binding */ ListAttrGroupDefault),
 /* harmony export */   "ListAttrDefault": () => (/* binding */ ListAttrDefault)
 /* harmony export */ });
@@ -11631,9 +11646,9 @@ const objectMerge = (s, t) => {
 };
 /** random hex color */
 const getRandomColor = () => {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
@@ -11695,6 +11710,15 @@ const createPinPoint = (root, x, y, r, id, la, fd) => {
         .cy(y)
         .addClass('tds-pinpoint' + id));
 };
+/**
+ * truncates the string to the specified number of characters
+ * @param s the string to trim
+ * @param n number of characters, including the number of characters in the specified ending 'es'
+ * @param es characters set at the end of a line
+ */
+function shrinkString(s, n, es) {
+    return s.length - n > 0 ? s.substr(0, n - es.length) + es : s;
+}
 /**
  * list group config example
  */
@@ -11785,6 +11809,7 @@ const ListAttrDefault = {
         itemIcon: 20,
         itemShortcut: 20,
     },
+    position: { x: 0, y: 0 },
     //
     itemWidth: 190,
     itemsStyle: {
@@ -11865,33 +11890,33 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
     constructor(attr) {
         var _a, _b;
         super();
+        this.title = undefined;
+        this.background = undefined;
         this.rules = [];
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-label');
         (_a = attr.backgroundRule) !== null && _a !== void 0 ? _a : (attr.backgroundRule = ['none']);
         this.rules.push(...attr.backgroundRule);
-        // attr.widthFactor && (this.widthFactor = attr.widthFactor)
         (_b = attr.indents) !== null && _b !== void 0 ? _b : (attr.indents = [0, 0, 0, 0]);
         this.indents = attr.indents;
         if (attr.title instanceof _title__WEBPACK_IMPORTED_MODULE_2__.title) {
-            Object.assign(attr.title, this.title);
+            this.title = attr.title;
         }
         else {
             this.title = new _title__WEBPACK_IMPORTED_MODULE_2__.title(attr.title);
         }
         if (attr.background && !this.rules.includes('none')) {
             if (attr.background instanceof _background__WEBPACK_IMPORTED_MODULE_3__.background) {
-                Object.assign(attr.background, this.background);
+                this.background = attr.background;
             }
             else {
                 this.background = new _background__WEBPACK_IMPORTED_MODULE_3__.background(attr.background);
             }
         }
-        applyRules(this.title, this.background, this.rules, this.indents
-        // this.widthFactor
-        );
+        applyRules(this.title, this.background, this.rules, this.indents);
         this.background && this.add(this.background);
         this.add(this.title);
-        attr.position && this.move(attr.position.x, attr.position.y);
+        attr.position &&
+            this.move(attr.position.x, attr.position.y);
     }
     // value operations
     /** get value from title */
@@ -11991,23 +12016,29 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             this.title = new _title__WEBPACK_IMPORTED_MODULE_5__.title(attr.titleStyle);
             this.add(this.title);
         }
+        !attr.position && (attr.position = { x: 0, y: 0 });
         // create body rectangle
         this.body = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
             .width(attr.body.width)
             .height(attr.body.height)
             .fill(Object.assign({}, attr.body.fill))
             .stroke(Object.assign({}, attr.body.stroke))
-            .radius(attr.body.radius);
+            .radius(attr.body.radius)
+            .x(attr.position.x)
+            .y(attr.position.y);
         this.add(this.body);
         // create items
         let summHeight = 0;
         attr.itemsInstances.forEach((ii, num) => {
+            var _a;
+            // add top indent to fist item
             num == 0 && (summHeight += attr.indents[1]);
             // check separator
-            let isSep = attr.separatorsInstances.find((el) => el.order == num);
+            let isSep = (_a = attr.separatorsInstances) === null || _a === void 0 ? void 0 : _a.find((el) => el.order == num);
             if (isSep) {
                 isSep.value.start.y =
-                    summHeight + attr.subItemIndents.separator;
+                    summHeight + attr.subItemIndents.separator + attr.position.y;
+                isSep.value.start.x += attr.position.x;
                 let cs = new _separator__WEBPACK_IMPORTED_MODULE_4__.separator(isSep.value);
                 this.separators.push(cs);
                 this.add(cs);
@@ -12019,8 +12050,8 @@ class list extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             // set string
             is.title.value = ii.str;
             // set position
-            is.position.y = summHeight;
-            is.position.x = attr.indents[0];
+            is.position.y = summHeight + attr.position.y;
+            is.position.x = attr.indents[0] + attr.position.x;
             if (ii.kind == 'general') {
                 el = new _listItem__WEBPACK_IMPORTED_MODULE_2__.listItem({
                     label: is,
@@ -12150,6 +12181,9 @@ const ItemDefaultBehavior = [
         ], },
 ];
 class listItem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
+    /**
+     * caution position of instance defined by 'position' in label ... position
+     */
     constructor(attr) {
         var _a, _b;
         super(attr.label);
@@ -12184,7 +12218,9 @@ class listItem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
             .fill({ color: 'transparent' })
             .move(this.background.x(), this.background.y());
         // set state and condition
-        this.condition = attr.condition ? attr.condition : 'normal';
+        this.condition = attr.condition
+            ? attr.condition
+            : 'normal';
         this.state = attr.state ? attr.state : 'inactive';
         // finally set how it will look )
         attr.behavior
@@ -12192,30 +12228,34 @@ class listItem extends _label__WEBPACK_IMPORTED_MODULE_2__.label {
             : (this.behavior = ItemDefaultBehavior);
         this.applyBehavior();
         // adds supp item and foreground
-        this.add(this.suppItem);
+        this.suppItem && this.add(this.suppItem);
         this.add(this.foreground);
         // handle mouseenter / mouseleave and mousedown
         this.foreground.on('mouseenter', () => {
-            this.condition != 'highlight' && this.state != 'inactive'
+            this.condition != 'highlight' &&
+                this.state != 'inactive'
                 ? (this.condition = 'mouseenter')
                 : 0;
             this.front();
             this.applyBehavior();
         });
         this.foreground.on('mouseleave', () => {
-            this.condition != 'highlight' && this.state != 'inactive'
+            this.condition != 'highlight' &&
+                this.state != 'inactive'
                 ? (this.condition = 'normal')
                 : 0;
             this.applyBehavior();
         });
         this.foreground.on('mousedown', () => {
-            this.condition != 'highlight' && this.state != 'inactive'
+            this.condition != 'highlight' &&
+                this.state != 'inactive'
                 ? (this.condition = 'onclick')
                 : 0;
             this.applyBehavior();
         });
         this.foreground.on('mouseup', () => {
-            this.condition != 'highlight' && this.state != 'inactive'
+            this.condition != 'highlight' &&
+                this.state != 'inactive'
                 ? (this.condition = 'mouseenter')
                 : 0;
             this.front();
@@ -12315,6 +12355,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
 
 
+const mitemLabelAtr = {
+    title: {
+        value: '',
+        font: 'Menlo',
+        fontWeight: 'normal',
+        size: 12,
+        fill: { color: 'black' },
+    },
+    background: {
+        width: 5,
+        height: 5,
+        radius: 4,
+        fill: { color: '#FFFFFF' },
+        stroke: { color: '#999999', width: 1 },
+    },
+    backgroundRule: ['indent', 'centered'],
+    indents: [4, 2, 4, 2],
+    position: { x: 0, y: 0 },
+};
+const mitemHighliteStyle = {
+    fill: { color: '#FFFFFF' },
+    stroke: { color: '#000000', width: 1 },
+};
+const mitemSelectStyle = {
+    fill: { color: '#D0D0D0' },
+    stroke: { color: '#000000', width: 1 },
+};
+const GRID_STEP = 9;
+const MITEM_FRIENDS_ZONE = 100;
 const mitemCreator = (v, p) => {
     return new mitem({
         title: {
@@ -12322,96 +12391,188 @@ const mitemCreator = (v, p) => {
             font: 'Menlo',
             fontWeight: 'normal',
             size: 12,
-            fill: { color: 'black' },
+            fill: { color: '#000000' },
         },
         background: {
             width: 5,
-            height: 5,
+            height: 36,
             radius: 4,
             fill: { color: '#FFFFFF' },
-            stroke: { color: 'black', width: 1 },
+            stroke: { color: '#999999', width: 1 },
         },
-        backgroundRule: ['indent', 'centered'],
-        indents: [4, 2, 4, 2],
+        backgroundRule: ['centered', 'indent'],
+        indents: [4, 2, 2, 2],
         position: { x: p.x, y: p.y },
-    }, 9);
+    }, 
+    // widthFactor
+    9, 
+    // highlightStyle
+    {
+        fill: { color: '#FFFFFF' },
+        stroke: { color: '#000000', width: 1 },
+    }, 
+    // selectStyle
+    {
+        fill: { color: '#D0D0D0' },
+        stroke: { color: '#000000', width: 1 },
+    });
 };
-const MITEM_FRIENDS_ZONE = 200;
-const GRID_STEP = 18;
-/** base item for tds-core */
+/** base item for tds-core
+ *  'label' that can
+ *  - snap to grid or other item
+ *  - be 'selected'
+ */
 class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
-    constructor(attr, wFactor) {
+    constructor(attr, wFactor = GRID_STEP, highlightStyle = mitemHighliteStyle, selectStyle = mitemSelectStyle) {
         super(attr);
         this.snaped = false;
+        this.selected = false;
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)()).addClass('tds-mitem');
-        this.widthFactor = wFactor;
+        // set styles
+        this.highlightStyle = highlightStyle;
+        this.selectStyle = selectStyle;
+        this.normalStateStyle = {
+            fill: Object.assign({}, attr.background.fill),
+            stroke: Object.assign({}, attr.background.stroke),
+        };
         // correct width according to widthFactor
+        this.widthFactor = wFactor;
         this.correctWidth();
         // set initial position to grid
         const bb = this.background.bbox();
-        let tx = bb.x - (bb.x % this.widthFactor);
-        let ty = bb.y - (bb.y % this.widthFactor);
-        this.move(tx, ty);
+        let bbx = bb.x % this.widthFactor;
+        let bby = bb.y % this.widthFactor;
+        if (bbx != 0 || bby != 0) {
+            this.move(bb.x - bbx, bb.y - bby);
+        }
+        // hightlight item on mouse over
         this.on('mouseenter', () => {
-            this.background.stroke({ color: '#E8871E', width: 2 });
+            !this.selected && this.setHighLightStyle();
             this.front();
         });
+        // 'select' on mouse down
+        this.on('mousedown', () => {
+            !this.selected
+                ? ((this.selected = true),
+                    this.setSelectStyle(),
+                    this.fire('tds-mitem-directSelect', this))
+                : // dont switch state
+                    0;
+        });
+        // restore normal state on 'mouseleave'
         this.on('mouseleave', () => {
-            this.background.stroke({ color: 'black', width: 1 });
+            !this.selected && this.setNormalStyle();
         });
         this.on('dragmove', (ev) => {
-            snapHandler(ev, this);
-        });
-        function snapHandler(ev, inst) {
-            //
-            if (!inst.snaped) {
-                let cb = inst.bbox();
-                // find mitem instances
-                inst
-                    .parent()
-                    .children()
-                    .filter((el) => el.hasClass('tds-mitem') && el != inst)
-                    .forEach((el) => {
-                    let elb = el.bbox();
-                    // get distance to mitems
-                    let dist = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(cb.x, cb.y, elb.x, elb.y);
-                    if (dist < MITEM_FRIENDS_ZONE && el instanceof mitem) {
-                        // el - mitem in range
-                        let can = el.anchors;
-                        inst.anchors.forEach((this_el) => {
-                            can.forEach((c_el) => {
-                                let adist = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(this_el[0], this_el[1], c_el[0], c_el[1]);
-                                // turn on snap to grid mode
-                                if (adist < inst.widthFactor) {
-                                    const { box } = ev.detail;
-                                    ev.preventDefault();
-                                    if (!inst.snaped) {
-                                        inst.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
-                                        inst.snaped = true;
-                                    }
-                                    return true;
-                                }
-                            });
-                        });
-                    }
-                });
+            // turn on snap
+            snapHandler(this);
+            const { box } = ev.detail;
+            ev.preventDefault();
+            if (this.snaped) {
+                this.move(box.x -
+                    (box.x % this.widthFactor) +
+                    this.widthFactor, box.y -
+                    (box.y % this.widthFactor) +
+                    this.widthFactor);
+                this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
             }
             else {
-                const { box } = ev.detail;
-                ev.preventDefault();
-                inst.move(box.x - (box.x % inst.widthFactor), box.y - (box.y % inst.widthFactor));
+                this.move(box.x, box.y);
+            }
+        });
+        /**
+         * set snap if one item to close to another
+         * @param inst drag instance
+         * @param ff flag for free not snaped item
+         */
+        function snapHandler(inst) {
+            let cb = inst.bbox();
+            let ff = 0;
+            let fi = inst
+                .parent()
+                .children()
+                .filter((el) => el.hasClass('tds-mitem') && el != inst);
+            let instgiag = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(cb.x, cb.y, cb.x2, cb.y2);
+            let trgI = [];
+            for (let i = 0; i < fi.length; i++) {
+                let ib = fi[i].bbox();
+                let idiag = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(ib.x, ib.y, ib.x2, ib.y2);
+                if ((0,_common__WEBPACK_IMPORTED_MODULE_0__.isPointInCircle)(ib.cx, ib.cy, cb.cx, cb.cy, (idiag + instgiag) * 0.75)) {
+                    let dist = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(ib.cx, ib.cy, cb.cx, cb.cy);
+                    if (fi[i] instanceof mitem)
+                        trgI.push([fi[i], dist]);
+                }
+            }
+            let srtT = trgI.sort((a, b) => a[1] - b[1]);
+            for (let i = 0; i < srtT.length; i++) {
+                let ti = srtT[i][0];
+                if (ti instanceof mitem) {
+                    for (let tii = 0; tii < ti.anchors.length; tii++) {
+                        for (let ia = 0; ia < inst.anchors.length; ia++) {
+                            let adist = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(ti.anchors[tii][0], ti.anchors[tii][1], inst.anchors[ia][0], inst.anchors[ia][1]);
+                            if (adist < inst.widthFactor * 2) {
+                                inst.snaped = true;
+                                ff = 1;
+                            }
+                        }
+                        if (ff == 1)
+                            break;
+                    }
+                    if (ff == 1)
+                        break;
+                }
+            }
+            if (ff == 0) {
+                inst.snaped = false;
             }
         }
+        /** set to grid on drop */
         this.on('dragend', () => {
             const box = this.background.bbox();
             this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
             this.snaped = false;
         });
     }
+    /** proxy move */
+    move(x, y) {
+        super.move(x, y);
+        return this;
+    }
+    /** set styles */
+    setHighLightStyle() {
+        this.background.fill(Object.assign({}, this.highlightStyle.fill));
+        this.background.stroke(Object.assign({}, this.highlightStyle.stroke));
+    }
+    setSelectStyle() {
+        this.background.fill(Object.assign({}, this.selectStyle.fill));
+        this.background.stroke(Object.assign({}, this.selectStyle.stroke));
+    }
+    setNormalStyle() {
+        this.background.fill(Object.assign({}, this.normalStateStyle.fill));
+        this.background.stroke(Object.assign({}, this.normalStateStyle.stroke));
+    }
+    /** switch selection
+     * state - if defined, sets directly to 'true' or 'false'
+     * in other case just 'switch'
+     */
+    select(state) {
+        state != undefined
+            ? state
+                ? // set select
+                    ((this.selected = true), this.setSelectStyle())
+                : // remove select
+                    ((this.selected = false), this.setNormalStyle())
+            : // switch
+                this.selected
+                    ? ((this.selected = false), this.setNormalStyle())
+                    : ((this.selected = true), this.setSelectStyle());
+    }
     /**  correct width according to widthFactor */
     correctWidth() {
         let curWidth = this.background.width();
-        this.background.width(curWidth - (curWidth % this.widthFactor) + this.widthFactor);
+        this.background.width(curWidth -
+            (curWidth % this.widthFactor) +
+            this.widthFactor);
     }
     /** get string value from item */
     get titleString() {
@@ -12512,7 +12673,11 @@ var _orientation, _sliderType;
 
 
 
-const tickKindOrder = ['main', 'half', 'subhalf'];
+const tickKindOrder = [
+    'main',
+    'half',
+    'subhalf',
+];
 class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
     constructor(attr) {
         super();
@@ -12521,7 +12686,9 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.ticksGroup = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G();
         // ticks storage
         attr.ticks && (this.ticks = attr.ticks);
-        this.ticksGroup.id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)()).addClass('tds-ticksgroup');
+        this.ticksGroup
+            .id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)())
+            .addClass('tds-ticksgroup');
         this.add(this.ticksGroup);
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)()).addClass('tds-slider');
         // apply properties from attr
@@ -12814,9 +12981,13 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 if (t[el]) {
                     let count = Math.floor((p.max - p.min) / t[el].step);
                     // distance between ticks
-                    let len = or == 'horizontal' ? rb.width / count : rb.height / count;
+                    let len = or == 'horizontal'
+                        ? rb.width / count
+                        : rb.height / count;
                     for (let i = 0; i < count + 1; i++) {
-                        let r = or == 'horizontal' ? rb.x + len * i : rb.y2 - len * i;
+                        let r = or == 'horizontal'
+                            ? rb.x + len * i
+                            : rb.y2 - len * i;
                         switch (el) {
                             case 'main':
                                 res.main.push(r);
@@ -12851,7 +13022,8 @@ class slider extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 }
                 if (or == 'vertical') {
                     let verCor = cel - noUseLine.bbox().h / 2;
-                    sd == 'down' && noUseLine.move(rb.x2 - rb.width / 2, verCor);
+                    sd == 'down' &&
+                        noUseLine.move(rb.x2 - rb.width / 2, verCor);
                     sd == 'up' &&
                         noUseLine.move(rb.x - noUseLine.bbox().w + rb.width / 2, verCor);
                     sd == 'both' &&
@@ -13626,6 +13798,251 @@ const style = (el, draggable) => {
 
 /***/ }),
 
+/***/ "../tds-shapes/src/textarea.ts":
+/*!*************************************!*\
+  !*** ../tds-shapes/src/textarea.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "textareaDefStyle": () => (/* binding */ textareaDefStyle),
+/* harmony export */   "extendsTittleDefStyle": () => (/* binding */ extendsTittleDefStyle),
+/* harmony export */   "textarea": () => (/* binding */ textarea)
+/* harmony export */ });
+/* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
+/* harmony import */ var _title__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./title */ "../tds-shapes/src/title.ts");
+
+
+
+/** default body style for textarea */
+const textareaDefStyle = {
+    width: 236,
+    height: 80,
+    fill: { color: '#D2D2D2' },
+    stroke: { color: '#999999', width: 1 },
+    radius: 6,
+    position: { x: 320, y: 700 },
+};
+/** default style for single row */
+const extendsTittleDefStyle = {
+    value: '\u2800',
+    font: 'Menlo',
+    fontWeight: 'normal',
+    size: 12,
+    position: { x: 10, y: 10 },
+    fill: { color: 'black' },
+};
+/**
+ * smth like this: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea
+ */
+class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
+    /**
+     * create textarea  instance
+     * @param attr - BackgroundStyle, TitleStyle, data - directly the string to be displayed
+     */
+    constructor(attr) {
+        super();
+        /** collection of titles when data in SVG mode */
+        this.rows = [];
+        /** max allowed row lenght */
+        this.rowLen = 0;
+        /** max number of rows allowed */
+        this.maxRows = 0;
+        /** dom element id */
+        this.inputID = (0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)();
+        // body
+        this.body = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect()
+            .width(attr.body.width)
+            .height(attr.body.height)
+            .fill(Object.assign({}, attr.body.fill))
+            .stroke(Object.assign({}, attr.body.stroke))
+            .radius(attr.body.radius)
+            .x(attr.body.position.x)
+            .y(attr.body.position.y);
+        this.add(this.body);
+        // calc single sing lenght and overal no wrap string
+        attr.rowLen
+            ? (this.rowLen = attr.rowLen)
+            : (this.rowLen = this.setRowLen(attr.body.width, attr.rowsTitleStyle));
+        // calc single row height and overal rows count
+        attr.maxRows
+            ? (this.maxRows = attr.maxRows)
+            : (this.maxRows = this.setMaxRows(attr.body.height, attr.rowsTitleStyle, 0.7));
+        // adds rows to body
+        this.fillRows(attr.data, this.rowLen, attr.rowsTitleStyle);
+        // handle click - start edit
+        this.on('click', () => {
+            //dblclick
+            changeHandler(this);
+        });
+        /**
+         * adds to canvas <foreignObject> with <textarea>
+         * @param ta textarea instance
+         */
+        function changeHandler(ta) {
+            // id for foreing element
+            let frid = (0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)();
+            // create foreign object
+            ta.input = ta
+                .root()
+                .element('foreignObject')
+                .attr({
+                width: ta.body.width() + 20,
+                height: ta.body.height() + 20,
+                x: ta.bbox().x + 3,
+                y: ta.bbox().y + 3,
+                id: frid,
+            });
+            let _v = ta.value;
+            if (_v == '\u2800') {
+                _v = '';
+            }
+            // DOM string of input
+            let inputHTML = `<textarea id="${ta.inputID}" 
+                                    class="txtinput"
+                                    style="width:90%;height:90%;font-family:Menlo;font-size:"12">${_v}</textarea>`;
+            // show input with new data
+            ta.input.node.innerHTML = inputHTML;
+            ta.setInputVisibility(true);
+            // handle loose focus
+            ta.input.node.addEventListener('blur', () => {
+                ta.setInputVisibility(false);
+                ta.input.node.remove();
+            }, true);
+            // handle keyboard
+            ta.input.node.addEventListener('keydown', (ev) => {
+                if (ev.key == 'Enter') {
+                    // if (!ev.shiftKey) {
+                    ta.clearRows();
+                    let _v = ta.getInput().value;
+                    _v == '' && (_v = '\u2800');
+                    ta.fillRows(_v, ta.rowLen, extendsTittleDefStyle);
+                    ta.dispatch('tds-textarea-valuechanged', ta);
+                    ta.setInputVisibility(false);
+                }
+                //   }
+                if (ev.key == 'Escape') {
+                    ta.setInputVisibility(false);
+                }
+            }, true);
+        }
+    }
+    /** calculating line length depending on body width */
+    setRowLen(bw, ta, f = 0.97) {
+        return Math.floor((bw / new _title__WEBPACK_IMPORTED_MODULE_2__.title(ta).bbox().width) * f);
+    }
+    /** calculating maxRows depending on body height */
+    setMaxRows(bh, ta, f = 0.97) {
+        return Math.floor((bh / new _title__WEBPACK_IMPORTED_MODULE_2__.title(ta).bbox().height) * f);
+    }
+    /**
+     * translate string to rows
+     * @param data string for translate to rows
+     * @param len max row lenght
+     * @param style single row style
+     */
+    fillRows(data, len, style) {
+        // store data localy
+        this.value = data;
+        // separate string to rows
+        let rd = wordwrap(data, len);
+        // check not more number then 'maxRow'
+        let endFlag = 0;
+        // iterate rows and adds labels to area
+        rd.forEach((el, i) => {
+            // if not last element
+            if (endFlag == 0) {
+                if (i < this.maxRows) {
+                    // create instance for row
+                    let _t = new _title__WEBPACK_IMPORTED_MODULE_2__.title(style);
+                    _t.value = el;
+                    // heck first
+                    if (i == 0) {
+                        this.rows.push(_t);
+                        _t.y(this.body.y() + style.position.y);
+                    }
+                    else {
+                        let ph = this.rows[i - 1].bbox();
+                        _t.y(ph.y + ph.height);
+                        this.rows.push(_t);
+                    }
+                    // add class property for ability remove
+                    _t.addClass('tds-textarearow');
+                    _t.x(this.body.x() + style.position.x);
+                    this.add(_t);
+                }
+                else {
+                    // if you have reached the maximum possible number of rows
+                    let ss = this.rows[i - 1].value;
+                    this.rows[i - 1].value = ss.slice(0, -3) + '...';
+                    console.log(this.rows[i - 1].value);
+                    endFlag = 1;
+                }
+            }
+        });
+    }
+    /**
+     * realy clear rows
+     */
+    clearRows() {
+        this.children()
+            .filter((el) => el.hasClass('tds-textarearow'))
+            .forEach((el) => el.remove());
+        this.rows = []; //.slice(0, this.rows.length - 1)
+    }
+    /**
+     * split rows to string
+     * @returns resulted string
+     */
+    collectString() {
+        let r = '';
+        let rl = this.rows.length;
+        this.rows.forEach((el, i) => {
+            if (i < rl - 1)
+                r += el.value + ' ';
+            if (i == rl - 1)
+                r += el.value;
+        });
+        return r.replace(/\s{2,}/g, ' ');
+    }
+    /** hide input */
+    reset() {
+        this.setInputVisibility(false);
+    }
+    /** get input as HTMLInputElement */
+    getInput() {
+        return document.getElementById(this.inputID);
+    }
+    /** hide/ show input field */
+    setInputVisibility(isVisible) {
+        var _a, _b;
+        let el = this.getInput();
+        if (isVisible) {
+            this.hide();
+            this.input.node.setAttribute('style', 'display: inline-block;');
+            el.focus();
+            el.selectionEnd = el.selectionStart = this.value.length;
+        }
+        else {
+            this.show();
+            if (this.input)
+                (_b = (_a = this.input) === null || _a === void 0 ? void 0 : _a.node) === null || _b === void 0 ? void 0 : _b.setAttribute('style', 'display: none;');
+        }
+    }
+}
+/** word wrap */
+function wordwrap(str, width) {
+    let strn = str
+        .replace(new RegExp(`(?:\\S(?:.{0,${width}}\\S)?(?:\\s+|-|$)|(?:\\S{${width}}))`, 'g'), (s) => `${s}\n`)
+        .slice(0, -1);
+    return strn.split('\n');
+}
+
+
+/***/ }),
+
 /***/ "../tds-shapes/src/textbox.ts":
 /*!************************************!*\
   !*** ../tds-shapes/src/textbox.ts ***!
@@ -13649,7 +14066,7 @@ class textbox extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
         this.inputID = (0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)();
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)()).addClass('tds-textbox');
         this.inputType = attr.inputType;
-        this.on('dblclick', () => {
+        this.on('click', () => {
             changeHandler(this);
         });
         let tf = 0;
@@ -13690,9 +14107,11 @@ class textbox extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
                 id: frid,
             });
             // value to transfer to input
+            tb.dispatch('tds-textbox-beforechange', tb);
             let _v = tb.title.value;
-            if (_v == '\u2800')
+            if (_v == '\u2800') {
                 _v = '';
+            }
             // DOM string of input
             let inputHTML = `<input id="${tb.inputID}" 
                                 class="txtinput"
@@ -13709,6 +14128,7 @@ class textbox extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             tb.input.node.addEventListener('blur', () => {
                 tb.setInputVisibility(false);
                 tb.input.node.remove();
+                tb.dispatch('tds-textbox-changingEnd', tb);
             }, true);
             // handle keyboard
             tb.input.node.addEventListener('keydown', (ev) => {
@@ -13720,10 +14140,10 @@ class textbox extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
                             ? (tb.value = '\u2800')
                             : (tb.value = Number(0).toString());
                     tb.setInputVisibility(false);
-                    tb.dispatch('tds-textbox-changingEnd', tb);
                 }
                 if (ev.key == 'Escape') {
                     tb.setInputVisibility(false);
+                    tb.dispatch('tds-textbox-changingCancel', tb);
                 }
             }, true);
         }
@@ -13805,7 +14225,7 @@ class title extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Text {
     constructor(attr) {
         super();
         Object.assign(this, createText(attr));
-        this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-background');
+        this.id((0,_common__WEBPACK_IMPORTED_MODULE_1__.Create_ID)()).addClass('tds-title');
     }
     // value operations
     /** get string from node */
@@ -13848,6 +14268,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isPointInCircle": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.isPointInCircle),
 /* harmony export */   "objectMerge": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.objectMerge),
 /* harmony export */   "rndX": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.rndX),
+/* harmony export */   "shrinkString": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.shrinkString),
 /* harmony export */   "vTo01": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.vTo01),
 /* harmony export */   "StyleClasses": () => (/* reexport safe */ _src_style__WEBPACK_IMPORTED_MODULE_1__.StyleClasses),
 /* harmony export */   "style": () => (/* reexport safe */ _src_style__WEBPACK_IMPORTED_MODULE_1__.style),
@@ -13862,7 +14283,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "list": () => (/* reexport safe */ _src_list__WEBPACK_IMPORTED_MODULE_9__.list),
 /* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_10__.combobox),
 /* harmony export */   "mitem": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitem),
-/* harmony export */   "mitemCreator": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemCreator)
+/* harmony export */   "mitemCreator": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemCreator),
+/* harmony export */   "extendsTittleDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_12__.extendsTittleDefStyle),
+/* harmony export */   "textarea": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_12__.textarea),
+/* harmony export */   "textareaDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_12__.textareaDefStyle)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -13876,6 +14300,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_list__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./src/list */ "../tds-shapes/src/list.ts");
 /* harmony import */ var _src_combobox__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./src/combobox */ "../tds-shapes/src/combobox.ts");
 /* harmony import */ var _src_mitem__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./src/mitem */ "../tds-shapes/src/mitem.ts");
+/* harmony import */ var _src_textarea__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./src/textarea */ "../tds-shapes/src/textarea.ts");
+
 
 
 
@@ -13976,6 +14402,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const startMS = performance.now();
 var draw = (0,_svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.SVG)().size(1300, 1300).addTo('body');
 //#region  DATA
@@ -14035,6 +14462,11 @@ let tb2 = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textbox(
     inputType: 'number',
 }).draggable();
 draw.add(tb2);
+let tb3 = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textbox({
+    label: la('1984 long data element', { x: 190, y: 160 }),
+    inputType: 'text',
+}).draggable();
+draw.add(tb3);
 /** slider demo item */
 let slidersGroup = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G().addClass('draggable');
 let sliderDemo = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.slider.demo(draw);
@@ -14138,10 +14570,7 @@ draw.add(gi);
 let mit = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Reach by hand', { x: 700, y: 230 })
     .draggable();
 draw.add(mit);
-// setInterval(() => {
-//   mit.titleString = Create_ID()
-// }, 5000)
-draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Move tool', { x: 0, y: 0 }).draggable());
+draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Move tool', { x: 610, y: 300 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Machine time', { x: 700, y: 400 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Установить', { x: 650, y: 700 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Перевести взгляд', { x: 850, y: 400 })
@@ -14150,6 +14579,19 @@ draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator(
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Наклониться', { x: 750, y: 600 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Very long element for acc...', { x: 550, y: 550 })
     .draggable());
+draw.on('tds-mitem-directSelect', (ev) => {
+    draw.children().map((el) => {
+        el instanceof _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitem &&
+            el.id() != ev.detail.id() &&
+            (el.selected = false);
+    });
+});
+let tt = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textarea({
+    body: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textareaDefStyle,
+    rowsTitleStyle: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.extendsTittleDefStyle,
+    data: 'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
+}).draggable();
+draw.add(tt);
 console.log(performance.now() - startMS);
 
 })();
