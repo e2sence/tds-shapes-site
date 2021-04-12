@@ -13939,6 +13939,7 @@ class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                     // if (!ev.shiftKey) {
                     ta.clearRows();
                     let _v = ta.getInput().value;
+                    console.log(ta.getInput().innerHTML);
                     _v == '' && (_v = '\u2800');
                     ta.fillRows(_v, ta.rowLen, extendsTittleDefStyle);
                     ta.dispatch('tds-textarea-valuechanged', ta);
@@ -14613,8 +14614,7 @@ let tt = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textarea(
     body: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textareaDefStyle,
     rowsTitleStyle: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.extendsTittleDefStyle,
     headerTitleStyle: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.extendsHeaderDefStyle,
-    data: 'привет о новый чудный мир длинной не менее трех',
-    // 'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
+    data: 'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
 }).draggable();
 draw.add(tt);
 console.log(performance.now() - startMS);

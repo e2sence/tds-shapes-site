@@ -6,7 +6,7 @@ body {
   background-color: #e2e2e2;
   /* font-family: 'Menlo', 'Arial Narrow', Arial, sans-serif; */
 
-  /* disable text selection */
+  /* disable text selection, check safari !!!!!! textarea not working */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
