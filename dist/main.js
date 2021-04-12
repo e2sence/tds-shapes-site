@@ -13808,6 +13808,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "textareaDefStyle": () => (/* binding */ textareaDefStyle),
 /* harmony export */   "extendsTittleDefStyle": () => (/* binding */ extendsTittleDefStyle),
+/* harmony export */   "extendsHeaderDefStyle": () => (/* binding */ extendsHeaderDefStyle),
 /* harmony export */   "textarea": () => (/* binding */ textarea)
 /* harmony export */ });
 /* harmony import */ var _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @svgdotjs/svg.js */ "./node_modules/@svgdotjs/svg.js/dist/svg.esm.js");
@@ -13832,6 +13833,15 @@ const extendsTittleDefStyle = {
     fontWeight: 'normal',
     size: 12,
     position: { x: 10, y: 10 },
+    fill: { color: 'black' },
+};
+/** default style for header row */
+const extendsHeaderDefStyle = {
+    value: 'textArea:',
+    font: 'Menlo',
+    fontWeight: 'normal',
+    size: 12,
+    position: { x: 0, y: -15 },
     fill: { color: 'black' },
 };
 /**
@@ -13862,6 +13872,14 @@ class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             .x(attr.body.position.x)
             .y(attr.body.position.y);
         this.add(this.body);
+        // adds title if available
+        if (attr.headerTitleStyle) {
+            // correct position according to 'body'
+            attr.headerTitleStyle.position.x += attr.body.position.x;
+            attr.headerTitleStyle.position.y += attr.body.position.y;
+            this.title = new _title__WEBPACK_IMPORTED_MODULE_2__.title(attr.headerTitleStyle);
+            this.add(this.title);
+        }
         // calc single sing lenght and overal no wrap string
         attr.rowLen
             ? (this.rowLen = attr.rowLen)
@@ -13872,6 +13890,10 @@ class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
             : (this.maxRows = this.setMaxRows(attr.body.height, attr.rowsTitleStyle, 0.7));
         // adds rows to body
         this.fillRows(attr.data, this.rowLen, attr.rowsTitleStyle);
+        // hide input before drag
+        this.on('beforedrag', () => {
+            this.reset();
+        });
         // handle click - start edit
         this.on('click', () => {
             //dblclick
@@ -13891,8 +13913,8 @@ class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
                 .attr({
                 width: ta.body.width() + 20,
                 height: ta.body.height() + 20,
-                x: ta.bbox().x + 3,
-                y: ta.bbox().y + 3,
+                x: ta.body.bbox().x + 3,
+                y: ta.body.bbox().y + 3,
                 id: frid,
             });
             let _v = ta.value;
@@ -14020,13 +14042,13 @@ class textarea extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         var _a, _b;
         let el = this.getInput();
         if (isVisible) {
-            this.hide();
+            this.body.hide();
             this.input.node.setAttribute('style', 'display: inline-block;');
             el.focus();
             el.selectionEnd = el.selectionStart = this.value.length;
         }
         else {
-            this.show();
+            this.body.show();
             if (this.input)
                 (_b = (_a = this.input) === null || _a === void 0 ? void 0 : _a.node) === null || _b === void 0 ? void 0 : _b.setAttribute('style', 'display: none;');
         }
@@ -14284,6 +14306,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_10__.combobox),
 /* harmony export */   "mitem": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitem),
 /* harmony export */   "mitemCreator": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_11__.mitemCreator),
+/* harmony export */   "extendsHeaderDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_12__.extendsHeaderDefStyle),
 /* harmony export */   "extendsTittleDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_12__.extendsTittleDefStyle),
 /* harmony export */   "textarea": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_12__.textarea),
 /* harmony export */   "textareaDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_12__.textareaDefStyle)
@@ -14589,7 +14612,9 @@ draw.on('tds-mitem-directSelect', (ev) => {
 let tt = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textarea({
     body: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textareaDefStyle,
     rowsTitleStyle: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.extendsTittleDefStyle,
-    data: 'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
+    headerTitleStyle: _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.extendsHeaderDefStyle,
+    data: 'привет о новый чудный мир длинной не менее трех',
+    // 'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
 }).draggable();
 draw.add(tt);
 console.log(performance.now() - startMS);

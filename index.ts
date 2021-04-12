@@ -14,6 +14,7 @@ import {
   TitleStyle,
 } from '../tds-shapes/src/common'
 import {
+  extendsHeaderDefStyle,
   extendsTittleDefStyle,
   // extendsTittleDefStyle,
   ListItemAttr,
@@ -265,8 +266,9 @@ draw.on('tds-mitem-directSelect', (ev: CustomEvent) => {
 let tt = new textarea({
   body: textareaDefStyle,
   rowsTitleStyle: extendsTittleDefStyle,
-  data:
-    'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
+  headerTitleStyle: extendsHeaderDefStyle,
+  data: 'привет о новый чудный мир длинной не менее трех',
+  // 'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
 }).draggable()
 draw.add(tt)
 
