@@ -27,6 +27,10 @@ import {
   ItemPartsBehavior,
 } from '../tds-shapes/src/listItem'
 import { textbox } from '../tds-shapes/src/textbox'
+import {
+  mitemjail,
+  mitemjailAttrDef,
+} from '../tds-shapes/src/mitemjail'
 
 const startMS = performance.now()
 
@@ -223,54 +227,59 @@ draw.add(gi)
 
 //#endregion
 
-let mit = shape
-  .mitemCreator('Reach by hand', { x: 700, y: 230 })
-  .draggable()
-
+// prettier-ignore
+let mit = shape.mitemCreator('Reach by hand', { x: 600, y: 200 }).draggable()
 draw.add(mit)
-
 draw.add(
-  shape.mitemCreator('Move tool', { x: 610, y: 300 }).draggable()
+  shape.mitemCreator('Move tool', { x: 600, y: 218 }).draggable()
 )
 draw.add(
-  shape.mitemCreator('Machine time', { x: 700, y: 400 }).draggable()
+  shape.mitemCreator('Machine time', { x: 600, y: 236 }).draggable()
 )
 draw.add(
-  shape.mitemCreator('Установить', { x: 650, y: 700 }).draggable()
+  shape.mitemCreator('Установить', { x: 600, y: 254 }).draggable()
 )
-
 draw.add(
   shape
-    .mitemCreator('Перевести взгляд', { x: 850, y: 400 })
+    .mitemCreator('Перевести взгляд', { x: 600, y: 272 })
     .draggable()
 )
-draw.add(shape.mitemCreator('Сесть', { x: 600, y: 200 }).draggable())
+draw.add(shape.mitemCreator('Сесть', { x: 600, y: 290 }).draggable())
 draw.add(
-  shape.mitemCreator('Наклониться', { x: 750, y: 600 }).draggable()
+  shape.mitemCreator('Наклониться', { x: 600, y: 308 }).draggable()
 )
-
 draw.add(
   shape
-    .mitemCreator('Very long element for acc...', { x: 550, y: 550 })
+    .mitemCreator('long element for acc...', { x: 600, y: 326 })
     .draggable()
 )
 
 draw.on('tds-mitem-directSelect', (ev: CustomEvent) => {
   draw.children().map((el) => {
-    el instanceof mitem &&
-      el.id() != ev.detail.id() &&
-      (el.selected = false)
+    el instanceof mitem && el.id() != ev.detail.id() && el.select()
   })
 })
+
+const ftext =
+  'Таким образом постоянное информационно-пропагандистское обеспечение нашей деятельности позволяет выполнять важные задания по разработке соответствующий условий активизации.'
 
 let tt = new textarea({
   position: { x: 320, y: 700 },
   body: textareaDefStyle,
   rowsTitleStyle: extendsTittleDefStyle,
   headerTitleStyle: extendsHeaderDefStyle,
-  data:
-    'привет о новый чудный мир длинной не менее трех строк описание которого нужно уместить в пределы тела материального и духовного разума стремившегося к истокам',
+  data: ftext,
 }).draggable()
 draw.add(tt)
+
+let mj = new mitemjail(
+  mitemjailAttrDef(ftext, { x: 580, y: 400 })
+).draggable()
+draw.add(mj)
+
+let mj1 = new mitemjail(
+  mitemjailAttrDef(ftext, { x: 600, y: 700 })
+).draggable()
+draw.add(mj1)
 
 console.log(performance.now() - startMS)
