@@ -12527,12 +12527,16 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             __classPrivateFieldSet(this, _friends, this.friendsMitems());
         });
         this.on('dragmove', (ev) => {
+            // skipping the mouse movement event through the element when dragging
+            this.attr({ 'pointer-events': 'none' });
             this.dragMoveHandler(ev);
         });
         /** set to grid on drop */
         this.on('dragend', (ev) => {
             this.checkLandingPosition(ev);
             this.dragEndHandler();
+            // returning the perception of mouse events
+            this.attr({ 'pointer-events': 'auto' });
         });
     }
     /** try to find 'mitemjail' */
@@ -12728,7 +12732,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "mitemjailHeaderDefStyle": () => (/* binding */ mitemjailHeaderDefStyle),
 /* harmony export */   "mitemjailRowDefStyle": () => (/* binding */ mitemjailRowDefStyle),
 /* harmony export */   "mitemjailBodyDefStyle": () => (/* binding */ mitemjailBodyDefStyle),
-/* harmony export */   "nitemjailPinDefStyle": () => (/* binding */ nitemjailPinDefStyle),
+/* harmony export */   "mitemjailPinDefStyle": () => (/* binding */ mitemjailPinDefStyle),
+/* harmony export */   "mitemHighliteStyles": () => (/* binding */ mitemHighliteStyles),
 /* harmony export */   "mitemjailAttrDef": () => (/* binding */ mitemjailAttrDef),
 /* harmony export */   "mitemjail": () => (/* binding */ mitemjail)
 /* harmony export */ });
@@ -12737,6 +12742,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _mitem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mitem */ "../tds-shapes/src/mitem.ts");
 /* harmony import */ var _textarea__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./textarea */ "../tds-shapes/src/textarea.ts");
+var __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _operMinSize;
 
 
 
@@ -12770,21 +12789,51 @@ const mitemjailBodyDefStyle = () => {
         width: 324,
         height: 144,
         radius: 4,
-        fill: { color: '#EEEEEE' },
+        fill: { color: '#F1F1F1' },
         stroke: { color: '#D2D2D2', width: 1, dasharray: '5 5' },
         position: { x: 0, y: 36 },
     };
 };
 /** default style for mitemjail pin */
-const nitemjailPinDefStyle = () => {
+const mitemjailPinDefStyle = () => {
     return {
         radius: 9,
         fill: { color: '#FFFFFF' },
         stroke: { color: '#999999', width: 1 },
     };
 };
+const mitemHighliteStyles = () => {
+    return {
+        highlite: {
+            headerStroke: { color: 'black', opacity: 0.5 },
+            bodyStroke: { color: 'black', opacity: 0.5 },
+            pinStroke: { color: 'black', opacity: 0.5 },
+        },
+        select: {
+            headerStroke: { color: 'black', opacity: 1 },
+            bodyStroke: { color: 'black', opacity: 1 },
+            pinStroke: { color: 'black', opacity: 1 },
+        },
+        normal: {
+            headerStroke: { color: '#D2D2D2', width: 1, opacity: 1 },
+            bodyStroke: {
+                color: '#D2D2D2',
+                width: 1,
+                dasharray: '5 5',
+                opacity: 1,
+            },
+            pinStroke: { color: '#D2D2D2', width: 1, opacity: 1 },
+        },
+    };
+};
+const acceptStyle = (el, s) => {
+    let sel = mitemHighliteStyles()[s];
+    el.header.body.stroke(Object.assign({}, sel.headerStroke));
+    el.body.stroke(Object.assign({}, sel.bodyStroke));
+    el.pin.stroke(Object.assign({}, sel.pinStroke));
+};
 const mitemjailAttrDef = (s, p) => {
-    let _p = nitemjailPinDefStyle();
+    let _p = mitemjailPinDefStyle();
     return {
         header: {
             body: mitemjailHeaderDefStyle(),
@@ -12800,13 +12849,17 @@ const mitemjailAttrDef = (s, p) => {
             .fill(_p.fill)
             .stroke(_p.stroke),
         position: p,
-        minSize: { width: 307, height: 44 },
+        minSize: { width: 279, height: 44 },
     };
 };
 class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
     constructor(attr) {
         super();
+        _operMinSize.set(this, void 0);
         this.collapsed = false;
+        this.beforeCollapseSize = { width: 0, height: 0 };
+        this.selected = false;
+        this.dragFlag = false;
         this.addClass('tds-container').id((0,_common__WEBPACK_IMPORTED_MODULE_2__.Create_ID)());
         attr.body.position.x += attr.position.x;
         attr.body.position.y += attr.position.y;
@@ -12822,37 +12875,124 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.pin.cx(_bb.x2);
         this.pin.cy(_bb.y2);
         this.add(this.pin);
+        this.pin.on('beforedrag', () => {
+            __classPrivateFieldSet(this, _operMinSize, this.maxXY);
+        });
         this.pin.on('dragmove', (ev) => {
             this.pinMoveHandler(ev);
         });
-        this.header.on('dblclick', () => {
-            if (!this.collapsed) {
-                this.items.forEach((el) => {
-                    el.hide();
-                });
-                this.collapsed = true;
-            }
-            else {
-                this.items.forEach((el) => {
-                    el.show();
-                });
-                this.collapsed = false;
-            }
-        });
         this.dragendHandler();
+        // hide items
+        this.header.on('dblclick', () => {
+            this.hideHandler();
+        });
+        this.pin.on('dblclick', () => {
+            this.autosize();
+        });
+        this.on('dragmove', () => { });
         this.on('dragend', () => {
             // snap to grid on drag end
             this.dragendHandler();
         });
+        // selection region
+        this.on('mouseenter', () => {
+            acceptStyle(this, 'highlite');
+        });
+        this.on('mouseleave', () => {
+            acceptStyle(this, 'normal');
+        });
+    }
+    /** automatic adjustment of the body size to the elements inside */
+    autosize() {
+        // check colapse state
+        if (!this.collapsed) {
+            const _actSize = this.maxXY;
+            // move pin
+            this.pin.cx(_actSize.x + _common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP);
+            this.pin.cy(_actSize.y + _common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP);
+            // resize body
+            this.body.width(_actSize.bodyWidht + _common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP);
+            this.body.height(_actSize.bodyHeight + _common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP);
+        }
+    }
+    hideHandler() {
+        if (!this.collapsed) {
+            // store size
+            this.beforeCollapseSize = {
+                width: this.body.width(),
+                height: this.body.height(),
+            };
+            // hide items
+            this.items.forEach((el) => {
+                el.hide();
+            });
+            // collapse body
+            this.body.width(0);
+            this.body.height(0);
+            // move pin
+            let cb = this.header.bbox();
+            this.pin.cx(cb.x2);
+            this.pin.cy(cb.y2);
+            this.pin.draggable(false);
+            this.pin.backward();
+            this.collapsed = true;
+        }
+        else {
+            // show items
+            this.items.forEach((el) => {
+                el.show();
+            });
+            // restore body size
+            this.body.width(this.beforeCollapseSize.width);
+            this.body.height(this.beforeCollapseSize.height);
+            //move pin
+            let cb = this.body.bbox();
+            this.pin.cx(cb.x2);
+            this.pin.cy(cb.y2);
+            this.pin.draggable(true);
+            this.pin.forward();
+            this.collapsed = false;
+        }
     }
     // snap to grid on drag end
     dragendHandler() {
         const box = this.bbox();
-        this.move(box.x - (box.x % (_common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP / 2)), box.y - (box.y % (_common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP / 2)));
+        this.move(box.x - (box.x % _common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP), box.y - (box.y % _common__WEBPACK_IMPORTED_MODULE_2__.GRID_STEP));
     }
     /** child elements */
     get items() {
         return this.children().filter((el) => el instanceof _mitem__WEBPACK_IMPORTED_MODULE_3__.mitem);
+    }
+    get maxXY() {
+        // take the coordinates as far as possible from the upper left corner
+        let xy = this.items.map((el) => el.bbox());
+        let cb = this.body.bbox();
+        if (xy.length > 0) {
+            let result = {
+                x: xy.sort((a, b) => b.x2 - a.x2)[0].x2,
+                y: xy.sort((a, b) => b.y2 - a.y2)[0].y2,
+            };
+            // check if we are in the minimum size zone
+            let maxSizeX = cb.x + this.minSize.width;
+            let maxSizeY = cb.y + this.minSize.height;
+            // compare max mitem coordinate with allow accordind to minSize
+            // calculate recomended body size
+            let _x = result.x < maxSizeX ? maxSizeX : result.x;
+            let _y = result.y < maxSizeY ? maxSizeY : result.y;
+            return {
+                x: _x,
+                y: _y,
+                bodyWidht: _x - cb.x,
+                bodyHeight: _y - cb.y,
+            };
+        }
+        // return default if there is no items inside
+        return {
+            x: cb.x + this.minSize.width,
+            y: cb.y + this.minSize.height,
+            bodyWidht: this.minSize.width,
+            bodyHeight: this.minSize.height,
+        };
     }
     /** proxy parent 'add' */
     add(el, i) {
@@ -12860,7 +13000,7 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         //// adds only mitem instances
         //highlight adding mitems
         if (el instanceof _mitem__WEBPACK_IMPORTED_MODULE_3__.mitem) {
-            console.log('mitem adds )');
+            //   console.log('mitem adds )')
         }
         return this;
     }
@@ -12868,8 +13008,9 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
      * support for marker movement that changes the working area
      */
     pinMoveHandler(ev) {
+        const _oper = __classPrivateFieldGet(this, _operMinSize);
         // min values for width, height
-        const { width, height } = this.minSize;
+        const { width, height } = _oper;
         // resizeShape instance and its box
         const { box, handler } = ev.detail;
         let { cx, cy, x, y } = box;
@@ -12882,16 +13023,13 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         // set it to min
         this.body.width(_w <= width ? width : _w);
         this.body.height(_h < height ? height : _h);
-        // callc min x, y of resizeShape
-        let minX = this.body.x() + width - (cx - x);
-        let minY = this.body.y() + height - (cy - y);
-        // set resizeShape x, y to min
-        x < minX ? (x = minX) : 0;
-        y < minY ? (y = minY) : 0;
-        // move resizeShape to callculated position
+        // control whether the limit on the current 'mitems' is not exceeded
+        x < _oper.x && (x = _oper.x);
+        y < _oper.y && (y = _oper.y);
         handler.move(x, y);
     }
 }
+_operMinSize = new WeakMap();
 
 
 /***/ }),
@@ -14612,12 +14750,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "extendsTittleDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_13__.extendsTittleDefStyle),
 /* harmony export */   "textarea": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_13__.textarea),
 /* harmony export */   "textareaDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_13__.textareaDefStyle),
+/* harmony export */   "mitemHighliteStyles": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemHighliteStyles),
 /* harmony export */   "mitemjail": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjail),
 /* harmony export */   "mitemjailAttrDef": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailAttrDef),
 /* harmony export */   "mitemjailBodyDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailBodyDefStyle),
 /* harmony export */   "mitemjailHeaderDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailHeaderDefStyle),
-/* harmony export */   "mitemjailRowDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailRowDefStyle),
-/* harmony export */   "nitemjailPinDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.nitemjailPinDefStyle)
+/* harmony export */   "mitemjailPinDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailPinDefStyle),
+/* harmony export */   "mitemjailRowDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailRowDefStyle)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -14930,9 +15069,9 @@ let tt = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textarea(
     data: ftext,
 }).draggable();
 draw.add(tt);
-let mj = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0,_tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjailAttrDef)(ftext, { x: 580, y: 400 })).draggable();
+let mj = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0,_tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjailAttrDef)('Установить на ПУ DRVU-3М(220) поз. 6, колонку-защелку - 5 шт. поз. 12, согласно чертежу.', { x: 580, y: 400 })).draggable();
 draw.add(mj);
-let mj1 = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0,_tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjailAttrDef)(ftext, { x: 600, y: 700 })).draggable();
+let mj1 = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0,_tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjailAttrDef)('Завернуть модуль в воздушно-пузырьковую пленку и уложить его в упаковочную коробку, контролировать совпадение номера на свидетельстве о приемке и номера модуля', { x: 600, y: 700 })).draggable();
 draw.add(mj1);
 console.log(performance.now() - startMS);
 

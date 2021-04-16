@@ -273,12 +273,18 @@ let tt = new textarea({
 draw.add(tt)
 
 let mj = new mitemjail(
-  mitemjailAttrDef(ftext, { x: 580, y: 400 })
+  mitemjailAttrDef(
+    'Установить на ПУ DRVU-3М(220) поз. 6, колонку-защелку - 5 шт. поз. 12, согласно чертежу.',
+    { x: 580, y: 400 }
+  )
 ).draggable()
 draw.add(mj)
 
 let mj1 = new mitemjail(
-  mitemjailAttrDef(ftext, { x: 600, y: 700 })
+  mitemjailAttrDef(
+    'Завернуть модуль в воздушно-пузырьковую пленку и уложить его в упаковочную коробку, контролировать совпадение номера на свидетельстве о приемке и номера модуля',
+    { x: 600, y: 700 }
+  )
 ).draggable()
 draw.add(mj1)
 
