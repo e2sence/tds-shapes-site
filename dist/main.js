@@ -11553,6 +11553,7 @@ class combobox extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "GRID_STEP": () => (/* binding */ GRID_STEP),
+/* harmony export */   "posdef": () => (/* binding */ posdef),
 /* harmony export */   "iconPath": () => (/* binding */ iconPath),
 /* harmony export */   "Create_ID": () => (/* binding */ Create_ID),
 /* harmony export */   "StyleSizeNumber": () => (/* binding */ StyleSizeNumber),
@@ -11575,6 +11576,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const GRID_STEP = 9;
+const posdef = {
+    x: 0,
+    y: 0,
+};
 const iconPath = {
     rightChevron: 'M6.8 6C6.8 5.8 6.7 5.7 6.6 5.5L1.1 0.2C1 0.1 0.8 0 0.6 0 0.3 0 0 0.3 0 0.6 0 0.8 0.1 1 0.2 1.1L5.2 6 0.2 10.9C0.1 11 0 11.2 0 11.4 0 11.7 0.3 12 0.6 12 0.8 12 1 11.9 1.1 11.8L6.6 6.5C6.7 6.3 6.8 6.2 6.8 6Z',
     dstack: 'M6.3 12C6.5 12 6.7 11.8 6.8 11.7L3.7 6.2C3.6 6.1 3.6 6.1 3.6 6 3.6 5.9 3.6 5.9 3.7 5.8L6.8 0.3C6.7 0.2 6.5 0 6.3 0 6.1 0 5.9 0.1 5.8 0.3L2.8 5.4C2.7 5.6 2.6 5.8 2.6 6 2.6 6.2 2.7 6.4 2.8 6.6L5.8 11.7C5.9 11.9 6.1 12 6.3 12ZM9.2 12C9.6 12 9.8 11.8 10 11.3L12.7 6.7C12.9 6.5 13 6.2 13 6 13 5.8 12.9 5.5 12.7 5.3L10 0.7C9.8 0.2 9.6 0 9.2 0 8.9 0 8.7 0.2 8.4 0.7L5.8 5.3C5.6 5.5 5.5 5.8 5.5 6 5.5 6.2 5.6 6.5 5.8 6.7L8.4 11.3C8.7 11.8 8.9 12 9.2 12ZM3.4 0.9C3.6 0.9 3.8 0.7 3.8 0.5 3.8 0.3 3.6 0.1 3.4 0.1 3.2 0.1 3 0.3 3 0.5 3 0.7 3.2 0.9 3.4 0.9ZM2.8 2C3 2 3.2 1.8 3.2 1.6 3.2 1.4 3 1.2 2.8 1.2 2.6 1.2 2.4 1.4 2.4 1.6 2.4 1.8 2.6 2 2.8 2ZM2.2 3.1C2.4 3.1 2.6 2.9 2.6 2.7 2.6 2.5 2.4 2.3 2.2 2.3 2 2.3 1.8 2.5 1.8 2.7 1.8 2.9 2 3.1 2.2 3.1ZM1.6 4.1C1.8 4.1 2 4 2 3.8 2 3.5 1.8 3.4 1.6 3.4 1.4 3.4 1.2 3.5 1.2 3.8 1.2 4 1.4 4.1 1.6 4.1ZM1 5.2C1.2 5.2 1.4 5.1 1.4 4.9 1.4 4.6 1.2 4.5 1 4.5 0.8 4.5 0.6 4.6 0.6 4.9 0.6 5.1 0.8 5.2 1 5.2ZM0.4 6.3C0.6 6.3 0.8 6.2 0.8 5.9 0.8 5.7 0.6 5.6 0.4 5.6 0.2 5.6 0 5.7 0 5.9 0 6.2 0.2 6.3 0.4 6.3ZM1 7.4C1.2 7.4 1.4 7.2 1.4 7 1.4 6.8 1.2 6.6 1 6.6 0.8 6.6 0.6 6.8 0.6 7 0.6 7.2 0.8 7.4 1 7.4ZM1.6 8.5C1.8 8.5 2 8.3 2 8.1 2 7.9 1.8 7.7 1.6 7.7 1.4 7.7 1.2 7.9 1.2 8.1 1.2 8.3 1.4 8.5 1.6 8.5ZM2.2 9.6C2.4 9.6 2.6 9.4 2.6 9.2 2.6 9 2.4 8.8 2.2 8.8 2 8.8 1.8 9 1.8 9.2 1.8 9.4 2 9.6 2.2 9.6ZM2.8 10.7C3 10.7 3.2 10.5 3.2 10.3 3.2 10.1 3 9.9 2.8 9.9 2.6 9.9 2.4 10.1 2.4 10.3 2.4 10.5 2.6 10.7 2.8 10.7ZM3.4 11.8C3.6 11.8 3.8 11.6 3.8 11.4 3.8 11.2 3.6 11 3.4 11 3.2 11 3 11.2 3 11.4 3 11.6 3.2 11.8 3.4 11.8Z',
@@ -11925,7 +11930,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
-    // widthFactor: number
     constructor(attr) {
         var _a, _b;
         super();
@@ -11954,8 +11958,7 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         applyRules(this.title, this.background, this.rules, this.indents);
         this.background && this.add(this.background);
         this.add(this.title);
-        attr.position &&
-            this.move(attr.position.x, attr.position.y);
+        attr.position && this.move(attr.position.x, attr.position.y);
     }
     // value operations
     /** get value from title */
@@ -12398,20 +12401,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
 /* harmony import */ var _mitemjail__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mitemjail */ "../tds-shapes/src/mitemjail.ts");
-var __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
-};
-var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
-};
-var _friends;
 
 
 
@@ -12482,11 +12471,11 @@ const mitemCreator = (v, p) => {
  *  - be 'selected'
  */
 class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
-    constructor(attr, wFactor = _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP / 2, highlightStyle = mitemHighliteStyle, selectStyle = mitemSelectStyle) {
+    constructor(attr, wFactor = _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP, highlightStyle = mitemHighliteStyle, selectStyle = mitemSelectStyle) {
         super(attr);
         this.snaped = false;
         this.selected = false;
-        _friends.set(this, []);
+        this.friends = [];
         this.id((0,_common__WEBPACK_IMPORTED_MODULE_0__.Create_ID)()).addClass('tds-mitem');
         // set styles
         this.highlightStyle = highlightStyle;
@@ -12522,9 +12511,8 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             // this.parents()[0].type
             if (this.parent() != this.root())
                 this.toRoot();
-            console.log(this.parents()[0].type);
             // fill friends
-            __classPrivateFieldSet(this, _friends, this.friendsMitems());
+            this.friends = this.friendsMitems();
         });
         this.on('dragmove', (ev) => {
             // skipping the mouse movement event through the element when dragging
@@ -12539,10 +12527,12 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             this.attr({ 'pointer-events': 'auto' });
         });
     }
+    initFriends() {
+        this.friends = this.friendsMitems();
+    }
     /** try to find 'mitemjail' */
     checkLandingPosition(ev) {
         let cb = this.bbox();
-        console.log(cb);
         // get stack of elements at item center
         const r = (0,_common__WEBPACK_IMPORTED_MODULE_0__.shapeStackAtPoint)(this.root(), { x: cb.cx, y: cb.cy }, this);
         // if we have 'tds-container'
@@ -12601,13 +12591,13 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
         let ff = 0;
         let instgiag = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(cb.x, cb.y, cb.x2, cb.y2);
         let trgI = [];
-        for (let i = 0; i < __classPrivateFieldGet(this, _friends).length; i++) {
-            let ib = __classPrivateFieldGet(this, _friends)[i].bbox();
+        for (let i = 0; i < this.friends.length; i++) {
+            let ib = this.friends[i].bbox();
             let idiag = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(ib.x, ib.y, ib.x2, ib.y2);
             if ((0,_common__WEBPACK_IMPORTED_MODULE_0__.isPointInCircle)(ib.cx, ib.cy, cb.cx, cb.cy, (idiag + instgiag) * 0.75)) {
                 let dist = (0,_common__WEBPACK_IMPORTED_MODULE_0__.distP)(ib.cx, ib.cy, cb.cx, cb.cy);
-                if (__classPrivateFieldGet(this, _friends)[i] instanceof mitem)
-                    trgI.push([__classPrivateFieldGet(this, _friends)[i], dist]);
+                if (this.friends[i] instanceof mitem)
+                    trgI.push([this.friends[i], dist]);
             }
         }
         let srtT = trgI.sort((a, b) => a[1] - b[1]);
@@ -12634,28 +12624,37 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             this.snaped = false;
         }
     }
-    dragMoveHandler(ev) {
+    dragMoveHandler(ev, c = false) {
         // handle snap
         this.snapHandler();
         const { box } = ev.detail;
         ev.preventDefault();
         if (this.snaped) {
-            this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
+            if (!c) {
+                this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
+            }
+            else {
+                this.cx(ev.detail.event.x - (ev.detail.event.x % this.widthFactor));
+                this.cy(ev.detail.event.y - (ev.detail.event.y % this.widthFactor));
+                c = false;
+            }
         }
         else {
-            this.move(box.x, box.y);
+            if (!c) {
+                this.move(box.x, box.y);
+            }
+            else {
+                this.cx(ev.detail.event.x);
+                this.cy(ev.detail.event.y);
+                c = false;
+            }
         }
     }
     /** handle grid snapping on end of drag */
     dragEndHandler() {
-        const box = this.background.bbox();
+        const box = this.bbox();
         this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
         this.snaped = false;
-    }
-    /** proxy move */
-    move(x, y) {
-        super.move(x, y);
-        return this;
     }
     /** set styles */
     setHighLightStyle() {
@@ -12703,7 +12702,7 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
     }
     /** stick points */
     get anchors() {
-        let bb = this.background.bbox();
+        let bb = this.bbox();
         return [
             [bb.x, bb.y + bb.height / 2],
             [bb.x, bb.y],
@@ -12716,7 +12715,6 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
         ];
     }
 }
-_friends = new WeakMap();
 
 
 /***/ }),
@@ -12790,7 +12788,11 @@ const mitemjailBodyDefStyle = () => {
         height: 144,
         radius: 4,
         fill: { color: '#F1F1F1' },
-        stroke: { color: '#D2D2D2', width: 1, dasharray: '5 5' },
+        stroke: {
+            color: '#D2D2D2',
+            width: 1,
+            dasharray: '5 5',
+        },
         position: { x: 0, y: 36 },
     };
 };
@@ -12805,7 +12807,7 @@ const mitemjailPinDefStyle = () => {
 const mitemHighliteStyles = () => {
     return {
         highlite: {
-            headerStroke: { color: 'black', opacity: 0.5 },
+            headerStroke: { color: 'black', opacity: 0.2 },
             bodyStroke: { color: 'black', opacity: 0.5 },
             pinStroke: { color: 'black', opacity: 0.5 },
         },
@@ -12815,7 +12817,11 @@ const mitemHighliteStyles = () => {
             pinStroke: { color: 'black', opacity: 1 },
         },
         normal: {
-            headerStroke: { color: '#D2D2D2', width: 1, opacity: 1 },
+            headerStroke: {
+                color: '#D2D2D2',
+                width: 1,
+                opacity: 1,
+            },
             bodyStroke: {
                 color: '#D2D2D2',
                 width: 1,
@@ -12886,7 +12892,8 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.header.on('dblclick', () => {
             this.hideHandler();
         });
-        this.pin.on('dblclick', () => {
+        this.pin.on('dblclick', (ev) => {
+            ev.preventDefault();
             this.autosize();
         });
         this.on('dragmove', () => { });
@@ -13008,28 +13015,244 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
      * support for marker movement that changes the working area
      */
     pinMoveHandler(ev) {
-        const _oper = __classPrivateFieldGet(this, _operMinSize);
-        // min values for width, height
-        const { width, height } = _oper;
-        // resizeShape instance and its box
-        const { box, handler } = ev.detail;
-        let { cx, cy, x, y } = box;
         // disable default behavior
         ev.preventDefault();
-        // check body size set it to min if it less then 'unionMinSize'
-        // current width, height
-        let _w = this.pin.cx() - this.body.x();
-        let _h = this.pin.cy() - this.body.y();
-        // set it to min
-        this.body.width(_w <= width ? width : _w);
-        this.body.height(_h < height ? height : _h);
+        const _oper = __classPrivateFieldGet(this, _operMinSize);
+        // resizeShape instance and its box
+        const { box, handler } = ev.detail;
+        let { x, y } = box;
         // control whether the limit on the current 'mitems' is not exceeded
         x < _oper.x && (x = _oper.x);
         y < _oper.y && (y = _oper.y);
+        this.body.width(x - this.body.x() + this.pin.width() / 2);
+        this.body.height(y - this.body.y() + this.pin.height() / 2);
         handler.move(x, y);
     }
 }
 _operMinSize = new WeakMap();
+
+
+/***/ }),
+
+/***/ "../tds-shapes/src/mitemmark.ts":
+/*!**************************************!*\
+  !*** ../tds-shapes/src/mitemmark.ts ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "markAttrCreator": () => (/* binding */ markAttrCreator),
+/* harmony export */   "mark": () => (/* binding */ mark),
+/* harmony export */   "marks": () => (/* binding */ marks)
+/* harmony export */ });
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./common */ "../tds-shapes/src/common.ts");
+/* harmony import */ var _label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./label */ "../tds-shapes/src/label.ts");
+
+
+/**
+ * collecting properties for 'mark' description
+ * @param sing sing
+ * @param tagSide tagside
+ * @param singColor sing color
+ * @param backColor back color
+ * @param strokeColor stroke color
+ * @returns LabelAttr
+ */
+const markAttrCreator = (attr, p) => {
+    attr.tagSide == 'left'
+        ? (attr.sing = attr.sing + '\u2800')
+        : (attr.sing = '\u2800' + attr.sing);
+    return {
+        title: {
+            value: attr.sing,
+            font: 'Menlo',
+            fontWeight: 'normal',
+            size: 12,
+            fill: { color: attr.singColor },
+            position: _common__WEBPACK_IMPORTED_MODULE_0__.posdef,
+        },
+        background: {
+            width: 1,
+            height: 1,
+            fill: { color: attr.backColor },
+            stroke: { color: attr.strokeColor },
+            radius: 4,
+            position: _common__WEBPACK_IMPORTED_MODULE_0__.posdef,
+        },
+        backgroundRule: ['indent'],
+        indents: [_common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP, 2, _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP, 2],
+        position: { x: p.x, y: p.y },
+    };
+};
+/**
+ * a small mark of 2-3 characters located on the left or right side of the mitem
+ */
+class mark extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
+    /**
+     * @param sing sing
+     * @param tagSide tagside
+     * @param singColor sing color
+     * @param backColor back color
+     * @param strokeColor stroke color
+     */
+    constructor(attr, p) {
+        super(markAttrCreator(attr, p));
+        this.addClass('tds-mark');
+        this.sing = attr.sing.replace('\u2800', '');
+        this.side = attr.tagSide;
+        this.widthTitleFix();
+    }
+    /** fix the width and position of the text */
+    widthTitleFix() {
+        // round width to current GRID_STEP
+        let _cw = this.background.width();
+        this.background.width(_cw - (_cw % _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP));
+        // slightly move title acording to 'tagSide'
+        this.title.dx(-_common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP * 0.25);
+    }
+}
+/** array of tags  attached to a specific element */
+class marks {
+    /** initial instance, fill and draw elements if it defines  */
+    constructor(b, els) {
+        this.left = [];
+        this.right = [];
+        this.parent = b;
+        els === null || els === void 0 ? void 0 : els.forEach((el) => this.add(el));
+        this.left.length > 0 && this.setPosition('left');
+        this.right.length > 0 && this.setPosition('right');
+    }
+    /** adds mark to local storage */
+    add(attr, i = -1) {
+        // create instance of mark
+        this.addHandler(new mark(attr, _common__WEBPACK_IMPORTED_MODULE_0__.posdef), i);
+    }
+    /** remove mark from storage and erase from canvas */
+    remove(s, side, animate = false) {
+        // get find string accordind to 'side'
+        let fs = side == 'left' ? s + '\u2800' : '\u2800' + s;
+        // get storage
+        let ar = this.getStorage(side);
+        // find and remove mark
+        let fnds = ar.filter((el) => el[0].value == fs);
+        if (fnds.length > 0) {
+            let _t = fnds[0][0];
+            const dx = fnds[0][1];
+            // remove element from storage
+            let _ti = ar.findIndex((el) => el[0] == _t);
+            ar.splice(_ti, 1);
+            // remove from canvas
+            if (animate) {
+                this.wiggle(_t, 'remove', () => {
+                    _t.remove();
+                    _t = undefined;
+                });
+            }
+            else {
+                _t.remove();
+                _t = undefined;
+            }
+            // restore inner mark positions
+            if (ar.length > 0) {
+                if (side == 'right') {
+                    for (let i = _ti; i < ar.length; i++) {
+                        ar[i][0].dx(-dx + _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP);
+                    }
+                    return;
+                }
+                if (side == 'left') {
+                    for (let i = _ti; i < ar.length; i++) {
+                        ar[i][0].dx(dx - _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP);
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * puts marks in its place, show element on canvas
+     * @param s the side to be processed
+     * @param nf set to true if use outside constructor
+     */
+    setPosition(s, nf = false) {
+        // get storage
+        let _st = this.getStorage(s);
+        let opX = 0;
+        let _cb = !nf ? this.parent.bbox() : this.parent.background.bbox();
+        let _x = 0;
+        if (s == 'left') {
+            for (let i = 0; i < _st.length; i++) {
+                let _el = _st[i][0];
+                if (i > 0) {
+                    _x = opX - _st[i][1] + _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP;
+                }
+                else {
+                    _x = _cb.x - _st[i][1] + _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP;
+                }
+                _el.move(_x, _cb.y);
+                this.parent.add(_el);
+                _el.back();
+                opX = _x;
+                setTimeout(() => {
+                    this.wiggle(_el, 'addorput');
+                }, 50 * i);
+            }
+            return;
+        }
+        if (s == 'right') {
+            for (let i = 0; i < _st.length; i++) {
+                let _el = _st[i][0];
+                if (i > 0) {
+                    _x = opX - _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP;
+                }
+                else {
+                    _x = _cb.x2 - _common__WEBPACK_IMPORTED_MODULE_0__.GRID_STEP;
+                }
+                _el.move(_x, _cb.y);
+                this.parent.add(_el);
+                _el.back();
+                opX = _x + _st[i][1];
+                setTimeout(() => {
+                    this.wiggle(_el, 'addorput');
+                }, 50 * i);
+            }
+            return;
+        }
+    }
+    /** return local storage according to marks side */
+    getStorage(el) {
+        return el instanceof mark
+            ? el.side == 'left'
+                ? this.left
+                : this.right
+            : el == 'left'
+                ? this.left
+                : this.right;
+    }
+    /** handler for 'put' or 'add' */
+    addHandler(el, i) {
+        // check storage place
+        let _ar = el.side == 'left' ? this.left : this.right;
+        // check operation type
+        let _op = i == -1 ? 'add' : 'put';
+        // make operation according to type
+        let _el = [el, el.width()];
+        _op == 'add' ? _ar.push(_el) : _ar.splice(i, 0, _el);
+    }
+    wiggle(el, t, efn) {
+        if (t == 'addorput') {
+            let d = !(el.side == 'left')
+                ? el.width() * 0.25
+                : -el.width() * 0.25;
+            el.animate(100).dx(d).loop(2, true);
+            return;
+        }
+        if (t == 'remove') {
+            let d = !(el.side == 'left') ? -el.width() : el.width();
+            el.animate(100).dx(d).after(efn);
+        }
+    }
+}
 
 
 /***/ }),
@@ -14727,6 +14950,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "objectMerge": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.objectMerge),
 /* harmony export */   "pointInRect": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.pointInRect),
 /* harmony export */   "pointInRectBox": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.pointInRectBox),
+/* harmony export */   "posdef": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.posdef),
 /* harmony export */   "rndX": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.rndX),
 /* harmony export */   "shapeStackAtPoint": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.shapeStackAtPoint),
 /* harmony export */   "shrinkString": () => (/* reexport safe */ _src_common__WEBPACK_IMPORTED_MODULE_0__.shrinkString),
@@ -14746,17 +14970,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "combobox": () => (/* reexport safe */ _src_combobox__WEBPACK_IMPORTED_MODULE_11__.combobox),
 /* harmony export */   "mitem": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_12__.mitem),
 /* harmony export */   "mitemCreator": () => (/* reexport safe */ _src_mitem__WEBPACK_IMPORTED_MODULE_12__.mitemCreator),
-/* harmony export */   "extendsHeaderDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_13__.extendsHeaderDefStyle),
-/* harmony export */   "extendsTittleDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_13__.extendsTittleDefStyle),
-/* harmony export */   "textarea": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_13__.textarea),
-/* harmony export */   "textareaDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_13__.textareaDefStyle),
-/* harmony export */   "mitemHighliteStyles": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemHighliteStyles),
-/* harmony export */   "mitemjail": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjail),
-/* harmony export */   "mitemjailAttrDef": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailAttrDef),
-/* harmony export */   "mitemjailBodyDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailBodyDefStyle),
-/* harmony export */   "mitemjailHeaderDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailHeaderDefStyle),
-/* harmony export */   "mitemjailPinDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailPinDefStyle),
-/* harmony export */   "mitemjailRowDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__.mitemjailRowDefStyle)
+/* harmony export */   "mark": () => (/* reexport safe */ _src_mitemmark__WEBPACK_IMPORTED_MODULE_13__.mark),
+/* harmony export */   "markAttrCreator": () => (/* reexport safe */ _src_mitemmark__WEBPACK_IMPORTED_MODULE_13__.markAttrCreator),
+/* harmony export */   "marks": () => (/* reexport safe */ _src_mitemmark__WEBPACK_IMPORTED_MODULE_13__.marks),
+/* harmony export */   "extendsHeaderDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_14__.extendsHeaderDefStyle),
+/* harmony export */   "extendsTittleDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_14__.extendsTittleDefStyle),
+/* harmony export */   "textarea": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_14__.textarea),
+/* harmony export */   "textareaDefStyle": () => (/* reexport safe */ _src_textarea__WEBPACK_IMPORTED_MODULE_14__.textareaDefStyle),
+/* harmony export */   "mitemHighliteStyles": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemHighliteStyles),
+/* harmony export */   "mitemjail": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjail),
+/* harmony export */   "mitemjailAttrDef": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailAttrDef),
+/* harmony export */   "mitemjailBodyDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailBodyDefStyle),
+/* harmony export */   "mitemjailHeaderDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailHeaderDefStyle),
+/* harmony export */   "mitemjailPinDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailPinDefStyle),
+/* harmony export */   "mitemjailRowDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailRowDefStyle)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -14771,8 +14998,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_list__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./src/list */ "../tds-shapes/src/list.ts");
 /* harmony import */ var _src_combobox__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./src/combobox */ "../tds-shapes/src/combobox.ts");
 /* harmony import */ var _src_mitem__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./src/mitem */ "../tds-shapes/src/mitem.ts");
-/* harmony import */ var _src_textarea__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./src/textarea */ "../tds-shapes/src/textarea.ts");
-/* harmony import */ var _src_mitemjail__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./src/mitemjail */ "../tds-shapes/src/mitemjail.ts");
+/* harmony import */ var _src_mitemmark__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./src/mitemmark */ "../tds-shapes/src/mitemmark.ts");
+/* harmony import */ var _src_textarea__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./src/textarea */ "../tds-shapes/src/textarea.ts");
+/* harmony import */ var _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./src/mitemjail */ "../tds-shapes/src/mitemjail.ts");
+
 
 
 
@@ -14872,6 +15101,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tds-shapes/tds-shapes-entry */ "../tds-shapes/tds-shapes-entry.ts");
 /* harmony import */ var _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tds-shapes/src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tds-shapes/src/mitemjail */ "../tds-shapes/src/mitemjail.ts");
+/* harmony import */ var _tds_shapes_src_mitemmark__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tds-shapes/src/mitemmark */ "../tds-shapes/src/mitemmark.ts");
+
 
 
 
@@ -15044,7 +15275,7 @@ gi.move(650, 100);
 draw.add(gi);
 //#endregion
 // prettier-ignore
-let mit = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Reach by hand', { x: 600, y: 200 }).draggable();
+let mit = _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Drop me !!!', { x: 600, y: 200 }).draggable();
 draw.add(mit);
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Move tool', { x: 600, y: 218 }).draggable());
 draw.add(_tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.mitemCreator('Machine time', { x: 600, y: 236 }).draggable());
@@ -15073,6 +15304,69 @@ let mj = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0
 draw.add(mj);
 let mj1 = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0,_tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjailAttrDef)('Завернуть модуль в воздушно-пузырьковую пленку и уложить его в упаковочную коробку, контролировать совпадение номера на свидетельстве о приемке и номера модуля', { x: 600, y: 700 })).draggable();
 draw.add(mj1);
+const mpl = (s, sd) => {
+    return {
+        sing: s,
+        tagSide: sd,
+        singColor: 'black',
+        backColor: 'white',
+        strokeColor: 'black',
+    };
+};
+mit.on('dragend', () => {
+    mit.marks = undefined;
+    mit.marks = new _tds_shapes_src_mitemmark__WEBPACK_IMPORTED_MODULE_5__.marks(mit, [
+        {
+            sing: 'C',
+            tagSide: 'right',
+            singColor: 'white',
+            backColor: '#3F8EFC',
+            strokeColor: 'transparent',
+        },
+        {
+            sing: 'O',
+            tagSide: 'right',
+            singColor: 'white',
+            backColor: '#E8871E',
+            strokeColor: 'transparent',
+        },
+        {
+            sing: '',
+            tagSide: 'left',
+            singColor: 'white',
+            backColor: '#E63946',
+            strokeColor: 'transparent',
+        },
+        {
+            sing: 'L',
+            tagSide: 'left',
+            singColor: 'white',
+            backColor: 'red',
+            strokeColor: 'transparent',
+        },
+    ]);
+    setTimeout(() => {
+        mit.marks.remove('L', 'left');
+    }, 500);
+    setTimeout(() => {
+        mit.marks.remove('', 'left', true);
+    }, 1000);
+    setTimeout(() => {
+        mit.marks.add({
+            sing: 'HELLO',
+            tagSide: 'left',
+            singColor: 'black',
+            backColor: 'white',
+            strokeColor: 'black',
+        });
+        mit.marks.setPosition('left', true);
+    }, 1500);
+    setTimeout(() => {
+        mit.marks.remove('HELLO', 'left', true);
+        mit.marks.remove('O', 'right', true);
+        mit.marks.remove('C', 'right', true);
+    }, 2000);
+});
 console.log(performance.now() - startMS);
 
 })();

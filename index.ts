@@ -31,6 +31,8 @@ import {
   mitemjail,
   mitemjailAttrDef,
 } from '../tds-shapes/src/mitemjail'
+import { mark, marks, MarkSide } from '../tds-shapes/src/mitemmark'
+import { style } from '../tds-shapes/src/style'
 
 const startMS = performance.now()
 
@@ -228,7 +230,7 @@ draw.add(gi)
 //#endregion
 
 // prettier-ignore
-let mit = shape.mitemCreator('Reach by hand', { x: 600, y: 200 }).draggable()
+let mit = shape.mitemCreator('Drop me !!!', { x: 600, y: 200 }).draggable()
 draw.add(mit)
 draw.add(
   shape.mitemCreator('Move tool', { x: 600, y: 218 }).draggable()
@@ -287,5 +289,73 @@ let mj1 = new mitemjail(
   )
 ).draggable()
 draw.add(mj1)
+
+const mpl = (s: string, sd: MarkSide) => {
+  return {
+    sing: s,
+    tagSide: sd,
+    singColor: 'black',
+    backColor: 'white',
+    strokeColor: 'black',
+  }
+}
+
+mit.on('dragend', () => {
+  mit.marks = undefined
+  mit.marks = new marks(mit, [
+    {
+      sing: 'C',
+      tagSide: 'right',
+      singColor: 'white',
+      backColor: '#3F8EFC',
+      strokeColor: 'transparent',
+    },
+    {
+      sing: 'O',
+      tagSide: 'right',
+      singColor: 'white',
+      backColor: '#E8871E',
+      strokeColor: 'transparent',
+    },
+
+    {
+      sing: '',
+      tagSide: 'left',
+      singColor: 'white',
+      backColor: '#E63946',
+      strokeColor: 'transparent',
+    },
+
+    {
+      sing: 'L',
+      tagSide: 'left',
+      singColor: 'white',
+      backColor: 'red',
+      strokeColor: 'transparent',
+    },
+  ])
+
+  setTimeout(() => {
+    mit.marks.remove('L', 'left')
+  }, 500)
+  setTimeout(() => {
+    mit.marks.remove('', 'left', true)
+  }, 1000)
+  setTimeout(() => {
+    mit.marks.add({
+      sing: 'HELLO',
+      tagSide: 'left',
+      singColor: 'black',
+      backColor: 'white',
+      strokeColor: 'black',
+    })
+    mit.marks.setPosition('left', true)
+  }, 1500)
+  setTimeout(() => {
+    mit.marks.remove('HELLO', 'left', true)
+    mit.marks.remove('O', 'right', true)
+    mit.marks.remove('C', 'right', true)
+  }, 2000)
+})
 
 console.log(performance.now() - startMS)
