@@ -30,9 +30,11 @@ import { textbox } from '../tds-shapes/src/textbox'
 import {
   mitemjail,
   mitemjailAttrDef,
+  stdots,
 } from '../tds-shapes/src/mitemjail'
 import { mark, marks, MarkSide } from '../tds-shapes/src/mitemmark'
 import { style } from '../tds-shapes/src/style'
+import { Circle } from '@svgdotjs/svg.js'
 
 const startMS = performance.now()
 
@@ -281,6 +283,22 @@ let mj = new mitemjail(
   )
 ).draggable()
 draw.add(mj)
+
+setTimeout(() => {
+  stdots.updateFillColor(mj.dots, { color: '#006157', opacity: 0.7 })
+}, 1000)
+
+setTimeout(() => {
+  stdots.setSign(mj.dots, [
+    new Circle()
+      .radius(10)
+      .fill('red')
+      .move(mj.dots.cx(), mj.dots.cy()),
+  ])
+}, 1000)
+setTimeout(() => {
+  stdots.setSign(mj.dots)
+}, 2000)
 
 let mj1 = new mitemjail(
   mitemjailAttrDef(

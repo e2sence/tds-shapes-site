@@ -11958,7 +11958,8 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         applyRules(this.title, this.background, this.rules, this.indents);
         this.background && this.add(this.background);
         this.add(this.title);
-        attr.position && this.move(attr.position.x, attr.position.y);
+        attr.position &&
+            this.move(attr.position.x, attr.position.y);
     }
     // value operations
     /** get value from title */
@@ -11984,6 +11985,7 @@ class label extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         applyRules(this.title, this.background, this.rules, this.indents
         // this.widthFactor
         );
+        return this;
     }
 }
 /**
@@ -12511,12 +12513,12 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
             // this.parents()[0].type
             if (this.parent() != this.root())
                 this.toRoot();
+            // skipping the mouse movement event through the element when dragging
+            this.attr({ 'pointer-events': 'none' });
             // fill friends
             this.friends = this.friendsMitems();
         });
         this.on('dragmove', (ev) => {
-            // skipping the mouse movement event through the element when dragging
-            this.attr({ 'pointer-events': 'none' });
             this.dragMoveHandler(ev);
         });
         /** set to grid on drop */
@@ -12634,8 +12636,10 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
                 this.move(box.x - (box.x % this.widthFactor), box.y - (box.y % this.widthFactor));
             }
             else {
-                this.cx(ev.detail.event.x - (ev.detail.event.x % this.widthFactor));
-                this.cy(ev.detail.event.y - (ev.detail.event.y % this.widthFactor));
+                this.cx(ev.detail.event.x -
+                    (ev.detail.event.x % this.widthFactor));
+                this.cy(ev.detail.event.y -
+                    (ev.detail.event.y % this.widthFactor));
                 c = false;
             }
         }
@@ -12688,7 +12692,9 @@ class mitem extends _label__WEBPACK_IMPORTED_MODULE_1__.label {
     /**  correct width according to widthFactor */
     correctWidth() {
         let curWidth = this.background.width();
-        this.background.width(curWidth - (curWidth % this.widthFactor) + this.widthFactor);
+        this.background.width(curWidth -
+            (curWidth % this.widthFactor) +
+            this.widthFactor);
     }
     /** get string value from item */
     get titleString() {
@@ -12732,6 +12738,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "mitemjailBodyDefStyle": () => (/* binding */ mitemjailBodyDefStyle),
 /* harmony export */   "mitemjailPinDefStyle": () => (/* binding */ mitemjailPinDefStyle),
 /* harmony export */   "mitemHighliteStyles": () => (/* binding */ mitemHighliteStyles),
+/* harmony export */   "stdots": () => (/* binding */ stdots),
 /* harmony export */   "mitemjailAttrDef": () => (/* binding */ mitemjailAttrDef),
 /* harmony export */   "mitemjail": () => (/* binding */ mitemjail)
 /* harmony export */ });
@@ -12838,7 +12845,63 @@ const acceptStyle = (el, s) => {
     el.body.stroke(Object.assign({}, sel.bodyStroke));
     el.pin.stroke(Object.assign({}, sel.pinStroke));
 };
-const mitemjailAttrDef = (s, p) => {
+/** shape at left side of mitemjail */
+var stdots;
+(function (stdots) {
+    /** just a white circle for 'stepDots' */
+    stdots.stepdotdef = (p = { x: 0, y: 0 }) => {
+        return new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Circle()
+            .radius(3)
+            .fill({ color: 'white' })
+            .move(p.x, p.y)
+            .addClass('tds-step-dotssing');
+    };
+    stdots.setSign = (sd, els, p = { x: 0, y: 0 }) => {
+        // clearing signs
+        sd.children().forEach((el) => {
+            if (el.hasClass('tds-step-dotssing')) {
+                el.remove(), (el = undefined);
+            }
+        });
+        // adds signs, three circles by default or user defined
+        if (!els) {
+            let _x = sd.x();
+            let _y = sd.y();
+            sd.add(stdots.stepdotdef({ x: _x + 6, y: _y + 6 }));
+            sd.add(stdots.stepdotdef({ x: _x + 6, y: _y + 15 }));
+            sd.add(stdots.stepdotdef({ x: _x + 6, y: _y + 25 }));
+        }
+        else {
+            els.forEach((el) => {
+                el.addClass('tds-step-dotssing');
+                sd.add(el);
+            });
+        }
+        return sd;
+    };
+    /** set background color for 'stepDots' */
+    stdots.updateFillColor = (sd, f) => {
+        sd.children()
+            .filter((el) => el.hasClass('tds-step-dotsbody'))[0]
+            .fill(Object.assign({}, f));
+        return sd;
+    };
+    /** shape at left side of mitemjail */
+    stdots.create = (attr) => {
+        let gr = new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G();
+        gr.addClass('tds-step-dots');
+        // body
+        gr.add(new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Rect({ width: 27, height: 36 })
+            .radius(5)
+            .fill(attr.rectFill ? Object.assign({}, attr.rectFill) : { color: '#F1F1F1' })
+            .stroke({ color: '#D2D2D2' })
+            .addClass('tds-step-dotsbody')
+            .move(attr.p.x, attr.p.y));
+        // set signs and return
+        return stdots.setSign(gr, attr.sings, attr.p);
+    };
+})(stdots || (stdots = {}));
+const mitemjailAttrDef = (s, p, d) => {
     let _p = mitemjailPinDefStyle();
     return {
         header: {
@@ -12848,6 +12911,11 @@ const mitemjailAttrDef = (s, p) => {
             position: { x: 0, y: 0 },
             maxRows: 2,
             disallowDirect: true,
+        },
+        dots: {
+            rectFill: (d === null || d === void 0 ? void 0 : d.f) && undefined,
+            sings: (d === null || d === void 0 ? void 0 : d.els) && undefined,
+            p: p,
         },
         body: mitemjailBodyDefStyle(),
         pin: new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Circle()
@@ -12874,6 +12942,9 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         this.minSize = attr.minSize;
         this.body = new _background__WEBPACK_IMPORTED_MODULE_1__.background(attr.body);
         this.header = new _textarea__WEBPACK_IMPORTED_MODULE_4__.textarea(attr.header);
+        this.dots = stdots.create(attr.dots);
+        this.dots.dx(-18);
+        this.add(this.dots);
         this.add(this.body);
         this.add(this.header);
         this.pin = attr.pin.draggable();
@@ -12889,7 +12960,7 @@ class mitemjail extends _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.G {
         });
         this.dragendHandler();
         // hide items
-        this.header.on('dblclick', () => {
+        this.dots.on('mousedown', () => {
             this.hideHandler();
         });
         this.pin.on('dblclick', (ev) => {
@@ -13123,6 +13194,15 @@ class marks {
         this.left.length > 0 && this.setPosition('left');
         this.right.length > 0 && this.setPosition('right');
     }
+    /** check is mark exist */
+    hasMark(s, side) {
+        // get find string accordind to 'side'
+        let fs = side == 'left' ? s + '\u2800' : '\u2800' + s;
+        // get storage
+        let ar = this.getStorage(side);
+        let fnds = ar.filter((el) => el[0].value == fs);
+        return fnds.length > 0 ? true : false;
+    }
     /** adds mark to local storage */
     add(attr, i = -1) {
         // create instance of mark
@@ -13178,7 +13258,9 @@ class marks {
         // get storage
         let _st = this.getStorage(s);
         let opX = 0;
-        let _cb = !nf ? this.parent.bbox() : this.parent.background.bbox();
+        let _cb = !nf
+            ? this.parent.bbox()
+            : this.parent.background.bbox();
         let _x = 0;
         if (s == 'left') {
             for (let i = 0; i < _st.length; i++) {
@@ -13248,7 +13330,9 @@ class marks {
             return;
         }
         if (t == 'remove') {
-            let d = !(el.side == 'left') ? -el.width() : el.width();
+            let d = !(el.side == 'left')
+                ? -el.width()
+                : el.width();
             el.animate(100).dx(d).after(efn);
         }
     }
@@ -14983,7 +15067,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "mitemjailBodyDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailBodyDefStyle),
 /* harmony export */   "mitemjailHeaderDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailHeaderDefStyle),
 /* harmony export */   "mitemjailPinDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailPinDefStyle),
-/* harmony export */   "mitemjailRowDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailRowDefStyle)
+/* harmony export */   "mitemjailRowDefStyle": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.mitemjailRowDefStyle),
+/* harmony export */   "stdots": () => (/* reexport safe */ _src_mitemjail__WEBPACK_IMPORTED_MODULE_15__.stdots)
 /* harmony export */ });
 /* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _src_style__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/style */ "../tds-shapes/src/style.ts");
@@ -15102,6 +15187,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tds_shapes_src_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tds-shapes/src/common */ "../tds-shapes/src/common.ts");
 /* harmony import */ var _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tds-shapes/src/mitemjail */ "../tds-shapes/src/mitemjail.ts");
 /* harmony import */ var _tds_shapes_src_mitemmark__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tds-shapes/src/mitemmark */ "../tds-shapes/src/mitemmark.ts");
+
 
 
 
@@ -15302,6 +15388,20 @@ let tt = new _tds_shapes_tds_shapes_entry__WEBPACK_IMPORTED_MODULE_2__.textarea(
 draw.add(tt);
 let mj = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0,_tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjailAttrDef)('Установить на ПУ DRVU-3М(220) поз. 6, колонку-защелку - 5 шт. поз. 12, согласно чертежу.', { x: 580, y: 400 })).draggable();
 draw.add(mj);
+setTimeout(() => {
+    _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.stdots.updateFillColor(mj.dots, { color: '#006157', opacity: 0.7 });
+}, 1000);
+setTimeout(() => {
+    _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.stdots.setSign(mj.dots, [
+        new _svgdotjs_svg_js__WEBPACK_IMPORTED_MODULE_0__.Circle()
+            .radius(10)
+            .fill('red')
+            .move(mj.dots.cx(), mj.dots.cy()),
+    ]);
+}, 1000);
+setTimeout(() => {
+    _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.stdots.setSign(mj.dots);
+}, 2000);
 let mj1 = new _tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjail((0,_tds_shapes_src_mitemjail__WEBPACK_IMPORTED_MODULE_4__.mitemjailAttrDef)('Завернуть модуль в воздушно-пузырьковую пленку и уложить его в упаковочную коробку, контролировать совпадение номера на свидетельстве о приемке и номера модуля', { x: 600, y: 700 })).draggable();
 draw.add(mj1);
 const mpl = (s, sd) => {
